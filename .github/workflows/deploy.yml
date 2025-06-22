@@ -27,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm test -- --watchAll=false
+        run: npm test --
 
   deploy:
     name: Deploy to S3
