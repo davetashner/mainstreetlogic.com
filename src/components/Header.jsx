@@ -6,7 +6,13 @@ function Header() {
   return (
     <header className="site-header">
       <div className="logo-container">
-        <img src="/assets/logo-white.png" alt="Main Street Logic Logo" className="site-logo" />
+        <NavLink to="/">
+          <img
+            src="/assets/logo-white.png"
+            alt="Main Street Logic Logo"
+            className="site-logo"
+          />
+        </NavLink>
       </div>
       <nav className="nav-links">
         <NavLink to="/">Home</NavLink>

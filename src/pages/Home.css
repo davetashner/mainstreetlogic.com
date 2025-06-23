@@ -1,0 +1,39 @@
+.home-hero-image {
+  border-radius: 0.5rem;
+  display: block;
+  margin-bottom: 2rem;
+  max-width: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.home-logo {
+  margin-bottom: 2rem;
+  width: 60%;
+}
+
+.home-page {
+  align-items: center;
+  /*background-image: url('/assets/blue-gradient-hero.png');*/
+  background-position: center;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 10vh 2rem;
+  text-align: center;
+}
+
+.home-page h1 {
+  color: black;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.home-page p {
+  color: black;
+  font-size: 1.5rem;
+  max-width: 600px;
+}
