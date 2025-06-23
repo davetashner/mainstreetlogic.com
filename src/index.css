@@ -5,6 +5,18 @@ body {
   margin: 0;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .site-header {
   align-items: center;
   background-color: #e6f0ff;
@@ -46,6 +58,9 @@ body {
 }
 
 .main-content {
+  display: flex;
+  flex: 1; /* Takes up all available space between header and footer */
+  flex-direction: column;
   padding: 2rem 5vw;
 }
 
