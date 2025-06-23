@@ -2,11 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders main page content', () => {
+test('renders the logo on the home page', () => {
   render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
   );
-  expect(screen.getByText(/welcome/i)).toBeInTheDocument();
+  const logo = screen.getByAltText(/Mountain Inspiration/i);
+  expect(logo).toBeInTheDocument();
 });
