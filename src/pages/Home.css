@@ -1,39 +1,58 @@
-.home-hero-image {
-  border-radius: 0.5rem;
-  display: block;
-  margin-bottom: 2rem;
-  max-width: 100%;
-  object-fit: cover;
-  width: 100%;
-}
-
-.home-logo {
-  margin-bottom: 2rem;
-  width: 60%;
-}
-
 .home-page {
   align-items: center;
-  /*background-image: url('/assets/blue-gradient-hero.png');*/
-  background-position: center;
-  background-size: cover;
-  color: white;
+  background: #ffffff;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 10vh 2rem;
-  text-align: center;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 4rem 2rem;
 }
 
-.home-page h1 {
-  color: black;
+.home-hero-content {
+  max-width: 50%;
+}
+
+.home-hero-content h1 {
+  color: #0d0d0d;
   font-size: 3rem;
+  font-weight: 700;
   margin-bottom: 1rem;
 }
 
-.home-page p {
-  color: black;
-  font-size: 1.5rem;
-  max-width: 600px;
+.home-hero-content p {
+  color: #4a4a4a;
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.get-started-button {
+  color: #ffffff;
+  background-color: #1e60d4;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.get-started-button:hover {
+  background-color: #144bb2;
+}
+
+.home-hero-image-container {
+  max-width: 40%;
+}
+
+.home-hero-image {
+  width: 100%;
+  height: auto;
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* Soft shadow */
+  max-width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-hero-image:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  transform: scale(1.02); /* Slight zoom on hover */
 }

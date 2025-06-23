@@ -11,7 +11,7 @@ import Team from './pages/Team';
 
 function App() {
   return (
-    <>
+    <div className="app-container">
       <Header />
       <div className="main-content">
         <Routes>
@@ -23,7 +23,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
