@@ -6,6 +6,7 @@ import Contact from './pages/Contact';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 import Team from './pages/Team';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="/team" element={<Team />} />
         </Routes>
       </div>

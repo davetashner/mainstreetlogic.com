@@ -1,0 +1,29 @@
+.about-container {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 2rem;
+  text-align: left;
+}
+
+.about-page {
+  background-color: #f6f8fa;
+  color: #021729;
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  padding-top: 4rem;
+}
+
+.about-section {
+  margin-bottom: 2.5rem;
+}
+
+.about-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-section p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
