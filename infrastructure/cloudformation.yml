@@ -15,6 +15,11 @@ Parameters:
     Default: mainstreetlogic.com
     Description: Primary domain name
 
+  HostedZoneId:
+    Type: String
+    Default: Z03404812DQ0BMKGOMJOB
+    Description: Route 53 Hosted Zone ID
+
   IncludeWww:
     Type: String
     Default: 'true'
@@ -25,9 +30,13 @@ Parameters:
 
 Conditions:
   HasCustomDomain: !Not [!Equals [!Ref DomainName, '']]
+  HasHostedZone: !Not [!Equals [!Ref HostedZoneId, '']]
   IncludeWwwDomain: !And
     - !Condition HasCustomDomain
     - !Equals [!Ref IncludeWww, 'true']
+  CanCreateDnsRecords: !And
+    - !Condition HasCustomDomain
+    - !Condition HasHostedZone
 
 Resources:
   # ACM Certificate for custom domain (must be in us-east-1 for CloudFront)
@@ -42,6 +51,14 @@ Resources:
           - !Sub 'www.${DomainName}'
           - !Ref AWS::NoValue
       ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !If [HasHostedZone, !Ref HostedZoneId, !Ref 'AWS::NoValue']
+        - !If
+          - IncludeWwwDomain
+          - DomainName: !Sub 'www.${DomainName}'
+            HostedZoneId: !If [HasHostedZone, !Ref HostedZoneId, !Ref 'AWS::NoValue']
+          - !Ref AWS::NoValue
       Tags:
         - Key: Project
           Value: mainstreetlogic
@@ -287,6 +304,32 @@ Resources:
         - Key: Environment
           Value: staging
 
+  # Route 53 DNS records for apex domain
+  DnsRecordApex:
+    Type: AWS::Route53::RecordSet
+    Condition: CanCreateDnsRecords
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ProductionDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (constant)
+        EvaluateTargetHealth: false
+
+  # Route 53 DNS record for www subdomain
+  DnsRecordWww:
+    Type: AWS::Route53::RecordSet
+    Condition: CanCreateDnsRecords
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Sub 'www.${DomainName}'
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ProductionDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (constant)
+        EvaluateTargetHealth: false
+
 Outputs:
   ProductionBucketName:
     Description: Production S3 bucket name
@@ -340,7 +383,7 @@ Outputs:
     Description: ACM Certificate ARN
     Value: !Ref Certificate
 
-  DnsRecordValue:
+  NameServers:
     Condition: HasCustomDomain
-    Description: Create CNAME/ALIAS DNS records pointing to this value
-    Value: !GetAtt ProductionDistribution.DomainName
+    Description: Update Namecheap to use these nameservers
+    Value: 'ns-1941.awsdns-50.co.uk, ns-539.awsdns-03.net, ns-467.awsdns-58.com, ns-1488.awsdns-58.org'
