@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  price: string;
+  period?: string;
+  description: string;
+  features: string[];
+  highlighted?: boolean;
+}
+
+const { title, price, period = '/month', description, features, highlighted = false } = Astro.props;
+---
+
+<div class:list={[
+  "rounded-lg p-8 border",
+  highlighted
+    ? "bg-steel-blue text-white border-steel-blue shadow-lg scale-105"
+    : "bg-white text-navy border-soft-gray/50"
+]}>
+  <h3 class="text-xl font-semibold mb-2">{title}</h3>
+  <p class:list={["text-sm mb-4", highlighted ? "text-white/80" : "text-navy/60"]}>
+    {description}
+  </p>
+  <div class="mb-6">
+    <span class="text-4xl font-bold">{price}</span>
+    {period && <span class:list={["text-sm", highlighted ? "text-white/80" : "text-navy/60"]}>{period}</span>}
+  </div>
+  <ul class="space-y-3">
+    {features.map((feature) => (
+      <li class="flex items-start gap-2">
+        <svg class:list={["w-5 h-5 mt-0.5 flex-shrink-0", highlighted ? "text-white" : "text-steel-blue"]} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class:list={[highlighted ? "text-white/90" : "text-navy/70"]}>{feature}</span>
+      </li>
+    ))}
+  </ul>
+</div>

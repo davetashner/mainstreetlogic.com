@@ -1,0 +1,64 @@
+---
+const currentYear = new Date().getFullYear();
+
+const navLinks = [
+  { href: '/about', label: 'About' },
+  { href: '/services', label: 'Services' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<footer class="bg-navy text-white">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Logo & Description -->
+      <div>
+        <img
+          src="/images/logo/light-and-dark-logo-name.png"
+          alt="Main Street Logic"
+          class="h-10 mb-4 brightness-0 invert"
+        />
+        <p class="text-white/70 text-sm">
+          Practical technology consulting for small business.
+        </p>
+      </div>
+
+      <!-- Navigation Links -->
+      <div>
+        <h3 class="font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          {navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h3 class="font-semibold mb-4">Contact</h3>
+        <ul class="space-y-2 text-white/70">
+          <li>
+            <a href="mailto:hello@mainstreetlogic.com" class="hover:text-white transition-colors">
+              hello@mainstreetlogic.com
+            </a>
+          </li>
+          <li>Serving small businesses everywhere</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/50 text-sm">
+      <p>&copy; {currentYear} Main Street Logic. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
