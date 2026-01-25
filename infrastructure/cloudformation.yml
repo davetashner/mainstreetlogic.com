@@ -12,13 +12,42 @@ Parameters:
 
   DomainName:
     Type: String
-    Default: ''
-    Description: Custom domain name (leave empty to use CloudFront domain)
+    Default: mainstreetlogic.com
+    Description: Primary domain name
+
+  IncludeWww:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Include www subdomain
 
 Conditions:
   HasCustomDomain: !Not [!Equals [!Ref DomainName, '']]
+  IncludeWwwDomain: !And
+    - !Condition HasCustomDomain
+    - !Equals [!Ref IncludeWww, 'true']
 
 Resources:
+  # ACM Certificate for custom domain (must be in us-east-1 for CloudFront)
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Condition: HasCustomDomain
+    Properties:
+      DomainName: !Ref DomainName
+      SubjectAlternativeNames:
+        - !If
+          - IncludeWwwDomain
+          - !Sub 'www.${DomainName}'
+          - !Ref AWS::NoValue
+      ValidationMethod: DNS
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: production
+
   # CloudFront Function to rewrite URLs for static site routing
   # Handles: /about -> /about/index.html, /about/ -> /about/index.html
   UrlRewriteFunction:
@@ -184,11 +213,23 @@ Resources:
             ResponsePagePath: /index.html
             ErrorCachingMinTTL: 10
 
-        # Custom domain configuration (conditional)
+        # Custom domain configuration
         Aliases: !If
           - HasCustomDomain
-          - - !Ref DomainName
+          - !If
+            - IncludeWwwDomain
+            - - !Ref DomainName
+              - !Sub 'www.${DomainName}'
+            - - !Ref DomainName
           - !Ref AWS::NoValue
+
+        ViewerCertificate: !If
+          - HasCustomDomain
+          - AcmCertificateArn: !Ref Certificate
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - CloudFrontDefaultCertificate: true
+
       Tags:
         - Key: Project
           Value: mainstreetlogic
@@ -285,8 +326,21 @@ Outputs:
 
   ProductionUrl:
     Description: Production website URL
-    Value: !Sub 'https://${ProductionDistribution.DomainName}'
+    Value: !If
+      - HasCustomDomain
+      - !Sub 'https://${DomainName}'
+      - !Sub 'https://${ProductionDistribution.DomainName}'
 
   StagingUrl:
     Description: Staging website URL
     Value: !Sub 'https://${StagingDistribution.DomainName}'
+
+  CertificateArn:
+    Condition: HasCustomDomain
+    Description: ACM Certificate ARN
+    Value: !Ref Certificate
+
+  DnsRecordValue:
+    Condition: HasCustomDomain
+    Description: Create CNAME/ALIAS DNS records pointing to this value
+    Value: !GetAtt ProductionDistribution.DomainName
