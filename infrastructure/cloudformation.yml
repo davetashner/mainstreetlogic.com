@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Main Street Logic website infrastructure - S3 + CloudFront static hosting'
+Description: 'Main Street Logic - S3 + CloudFront static website hosting'
 
 Parameters:
   Environment:
