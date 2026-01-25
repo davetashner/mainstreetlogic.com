@@ -17,7 +17,7 @@ Parameters:
 
   HostedZoneId:
     Type: String
-    Default: Z03404812DQ0BMKGOMJOB
+    Default: Z0323027WXRAQQHL711J
     Description: Route 53 Hosted Zone ID
 
   IncludeWww:
@@ -386,4 +386,4 @@ Outputs:
   NameServers:
     Condition: HasCustomDomain
     Description: Update Namecheap to use these nameservers
-    Value: 'ns-1941.awsdns-50.co.uk, ns-539.awsdns-03.net, ns-467.awsdns-58.com, ns-1488.awsdns-58.org'
+    Value: 'ns-754.awsdns-30.net, ns-203.awsdns-25.com, ns-1685.awsdns-18.co.uk, ns-1283.awsdns-32.org'
