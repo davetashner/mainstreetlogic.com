@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write \"src/**/*.{astro,js,ts,css}\" \"./*.{js,mjs,json}\"",
-    "format:check": "prettier --check \"src/**/*.{astro,js,ts,css}\" \"./*.{js,mjs,json}\""
+    "format:check": "prettier --check \"src/**/*.{astro,js,ts,css}\" \"./*.{js,mjs,json}\"",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
@@ -17,6 +19,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1"
   }
