@@ -1,0 +1,740 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run weekly on Mondays at 9am UTC to check for outdated deps
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  STACK_NAME: mainstreetlogic-website
+  AWS_REGION: us-east-1
+
+jobs:
+  # Check for outdated dependencies (runs weekly or on-demand)
+  dependency-health:
+    name: Dependency Health Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for outdated packages
+        run: |
+          echo "### Dependency Health Report" >> $GITHUB_STEP_SUMMARY
+          echo "_Generated: $(date -u)_" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Get outdated packages
+          OUTDATED=$(npm outdated --json || true)
+
+          if [ "$OUTDATED" = "{}" ] || [ -z "$OUTDATED" ]; then
+            echo "All packages are up to date!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "#### Outdated Packages" >> $GITHUB_STEP_SUMMARY
+            echo "| Package | Current | Wanted | Latest |" >> $GITHUB_STEP_SUMMARY
+            echo "|---------|---------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "$OUTDATED" | jq -r 'to_entries | .[] | "| \(.key) | \(.value.current) | \(.value.wanted) | \(.value.latest) |"' >> $GITHUB_STEP_SUMMARY
+
+            # Count major version updates (potential breaking changes)
+            MAJOR_UPDATES=$(echo "$OUTDATED" | jq '[to_entries | .[] | select(.value.current != .value.latest)] | length')
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**$MAJOR_UPDATES packages have updates available**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Security audit summary
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### Security Audit" >> $GITHUB_STEP_SUMMARY
+
+          AUDIT=$(npm audit --json || true)
+          VULNS=$(echo "$AUDIT" | jq '.metadata.vulnerabilities')
+
+          CRITICAL=$(echo "$VULNS" | jq '.critical')
+          HIGH=$(echo "$VULNS" | jq '.high')
+          MODERATE=$(echo "$VULNS" | jq '.moderate')
+          LOW=$(echo "$VULNS" | jq '.low')
+
+          echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Critical | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| High | $HIGH |" >> $GITHUB_STEP_SUMMARY
+          echo "| Moderate | $MODERATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Low | $LOW |" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Critical vulnerabilities require immediate attention!**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # Validate CloudFormation template before deployment
+  validate-infrastructure:
+    name: Validate CloudFormation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint CloudFormation template
+        uses: scottbrenner/cfn-lint-action@v2
+        with:
+          args: infrastructure/cloudformation.yml
+
+  # Detect what files changed to skip unnecessary deployments
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      deployable: ${{ steps.filter.outputs.deployable }}
+      infrastructure: ${{ steps.filter.outputs.infrastructure }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check changed files
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            deployable:
+              - 'src/**'
+              - 'public/**'
+              - 'package.json'
+              - 'package-lock.json'
+              - '*.config.*'
+              - 'index.html'
+            infrastructure:
+              - 'infrastructure/**'
+
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for package.json
+        id: check-package
+        run: |
+          if [ -f package.json ]; then
+            echo "has_package=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_package=false" >> $GITHUB_OUTPUT
+            echo "No package.json found - skipping build steps (early project phase)"
+          fi
+
+      - name: Setup Node.js (with cache)
+        if: steps.check-package.outputs.has_package == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Node.js (no cache)
+        if: steps.check-package.outputs.has_package == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        if: steps.check-package.outputs.has_package == 'true'
+        id: install
+        run: |
+          # Capture npm ci output to check for deprecation warnings
+          npm ci 2>&1 | tee npm-install.log
+
+          # Check for deprecation warnings
+          if grep -i "npm warn deprecated" npm-install.log; then
+            echo "### Deprecated Packages Detected" >> $GITHUB_STEP_SUMMARY
+            echo "The following deprecation warnings were found:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -i "npm warn deprecated" npm-install.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "These may be transitive dependencies. Run \`npm ls <package>\` locally to investigate." >> $GITHUB_STEP_SUMMARY
+            echo "::warning::Deprecated packages detected - check job summary for details"
+          else
+            echo "No deprecated packages" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Security audit
+        if: steps.check-package.outputs.has_package == 'true'
+        run: |
+          # Run npm audit, but don't fail on vulnerabilities (just report)
+          # Use --audit-level=critical to only fail on critical vulns
+          npm audit --audit-level=critical || true
+
+          echo "### Security Audit" >> $GITHUB_STEP_SUMMARY
+          npm audit --json | jq -r '.metadata.vulnerabilities | to_entries | .[] | select(.value > 0) | "- \(.key): \(.value)"' >> $GITHUB_STEP_SUMMARY || echo "- No vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+
+      - name: Lint
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm run lint --if-present
+
+      - name: Format check
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm run format:check --if-present
+
+      - name: Type check
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm run typecheck --if-present
+
+      - name: Run tests
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm test --if-present -- --coverage --passWithNoTests
+
+      - name: Upload coverage
+        if: steps.check-package.outputs.has_package == 'true'
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: false
+
+      - name: Build
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm run build --if-present
+
+      - name: Upload build artifacts
+        if: steps.check-package.outputs.has_package == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: dist/
+          retention-days: 3
+          if-no-files-found: warn
+
+  # Deploy infrastructure (idempotent - only if infra or deployable files changed)
+  deploy-infrastructure:
+    name: Deploy Infrastructure
+    needs: [changes, validate-infrastructure]
+    runs-on: ubuntu-latest
+    # Only deploy infra on main when infrastructure or deployable files changed
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      (needs.changes.outputs.infrastructure == 'true' || needs.changes.outputs.deployable == 'true')
+    outputs:
+      production-bucket: ${{ steps.get-outputs.outputs.production-bucket }}
+      staging-bucket: ${{ steps.get-outputs.outputs.staging-bucket }}
+      production-distribution-id: ${{ steps.get-outputs.outputs.production-distribution-id }}
+      staging-distribution-id: ${{ steps.get-outputs.outputs.staging-distribution-id }}
+      production-url: ${{ steps.get-outputs.outputs.production-url }}
+      staging-url: ${{ steps.get-outputs.outputs.staging-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation.yml \
+            --stack-name ${{ env.STACK_NAME }} \
+            --no-fail-on-empty-changeset \
+            --tags Project=mainstreetlogic
+
+      - name: Get stack outputs
+        id: get-outputs
+        run: |
+          # Get all outputs from the stack
+          OUTPUTS=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_NAME }} \
+            --query 'Stacks[0].Outputs' \
+            --output json)
+
+          # Extract individual values
+          PROD_BUCKET=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ProductionBucketName") | .OutputValue')
+          STAGING_BUCKET=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingBucketName") | .OutputValue')
+          PROD_DIST_ID=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ProductionDistributionId") | .OutputValue')
+          STAGING_DIST_ID=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingDistributionId") | .OutputValue')
+          PROD_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ProductionUrl") | .OutputValue')
+          STAGING_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingUrl") | .OutputValue')
+
+          echo "production-bucket=$PROD_BUCKET" >> $GITHUB_OUTPUT
+          echo "staging-bucket=$STAGING_BUCKET" >> $GITHUB_OUTPUT
+          echo "production-distribution-id=$PROD_DIST_ID" >> $GITHUB_OUTPUT
+          echo "staging-distribution-id=$STAGING_DIST_ID" >> $GITHUB_OUTPUT
+          echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
+          echo "staging-url=$STAGING_URL" >> $GITHUB_OUTPUT
+
+          echo "### Infrastructure Outputs" >> $GITHUB_STEP_SUMMARY
+          echo "- Production Bucket: \`$PROD_BUCKET\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Staging Bucket: \`$STAGING_BUCKET\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Production URL: $PROD_URL" >> $GITHUB_STEP_SUMMARY
+          echo "- Staging URL: $STAGING_URL" >> $GITHUB_STEP_SUMMARY
+
+  # Deploy to staging for PRs (only if deployable files changed)
+  deploy-staging:
+    name: Deploy to Staging
+    needs: [build, changes]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      deployed: ${{ steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true' }}
+      staging-url: ${{ steps.deploy.outputs.url }}
+      staging-base-url: ${{ steps.deploy.outputs.base_url }}
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: Check if deployment needed
+        id: should-deploy
+        run: |
+          # Skip deployment for Dependabot PRs (no secrets access)
+          if [ "${{ github.actor }}" = "dependabot[bot]" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "reason=Dependabot PRs cannot access secrets" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Skip if no deployable changes
+          if [ "${{ needs.changes.outputs.deployable }}" != "true" ] && [ "${{ needs.changes.outputs.infrastructure }}" != "true" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "reason=No deployable changes detected" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "skip=false" >> $GITHUB_OUTPUT
+
+      - name: Skip deployment notice
+        if: steps.should-deploy.outputs.skip == 'true'
+        run: |
+          echo "Skipping deployment: ${{ steps.should-deploy.outputs.reason }}"
+          echo "### Staging Deployment Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.should-deploy.outputs.reason }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Checkout code
+        if: steps.should-deploy.outputs.skip != 'true'
+        uses: actions/checkout@v4
+
+      - name: Check for package.json
+        id: check-package
+        if: steps.should-deploy.outputs.skip != 'true'
+        run: |
+          if [ -f package.json ]; then
+            echo "has_package=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_package=false" >> $GITHUB_OUTPUT
+            echo "No package.json found (early project phase)"
+          fi
+
+      - name: Setup Node.js
+        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
+        run: npm ci
+
+      - name: Build for staging
+        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
+        run: npm run build
+        env:
+          BASE_PATH: /pr-${{ github.event.pull_request.number }}/
+
+      - name: Configure AWS credentials
+        if: steps.should-deploy.outputs.skip != 'true'
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get infrastructure outputs
+        id: infra
+        if: steps.should-deploy.outputs.skip != 'true'
+        run: |
+          # Check if stack exists
+          if ! aws cloudformation describe-stacks --stack-name ${{ env.STACK_NAME }} &>/dev/null; then
+            echo "Infrastructure stack not deployed yet. Skipping staging deployment."
+            echo "stack_exists=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "stack_exists=true" >> $GITHUB_OUTPUT
+
+          OUTPUTS=$(aws cloudformation describe-stacks \
+            --stack-name ${{ env.STACK_NAME }} \
+            --query 'Stacks[0].Outputs' \
+            --output json)
+
+          STAGING_BUCKET=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingBucketName") | .OutputValue')
+          STAGING_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingDistributionDomain") | .OutputValue')
+
+          echo "staging-bucket=$STAGING_BUCKET" >> $GITHUB_OUTPUT
+          echo "staging-url=$STAGING_URL" >> $GITHUB_OUTPUT
+
+      - name: Create placeholder if no build
+        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'false' && steps.infra.outputs.stack_exists == 'true'
+        run: |
+          mkdir -p dist
+          echo "<!DOCTYPE html><html><head><title>Staging Preview</title></head><body><h1>Main Street Logic</h1><p>Staging preview for PR #${{ github.event.pull_request.number }}</p></body></html>" > dist/index.html
+
+      - name: Deploy to staging
+        id: deploy
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true'
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          aws s3 sync dist/ s3://${{ steps.infra.outputs.staging-bucket }}/pr-${PR_NUMBER}/ --delete
+
+          # Note: CloudFront doesn't auto-serve index.html for subdirs, so include it explicitly
+          STAGING_URL="https://${{ steps.infra.outputs.staging-url }}/pr-${PR_NUMBER}/index.html"
+          # Base URL with trailing slash for Playwright
+          STAGING_BASE_URL="https://${{ steps.infra.outputs.staging-url }}/pr-${PR_NUMBER}/"
+          echo "url=$STAGING_URL" >> $GITHUB_OUTPUT
+          echo "base_url=$STAGING_BASE_URL" >> $GITHUB_OUTPUT
+
+      - name: Validate staging deployment
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true'
+        run: |
+          echo "Testing: ${{ steps.deploy.outputs.url }}"
+
+          # Retry up to 3 times with delay (CloudFront propagation)
+          for i in 1 2 3; do
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "${{ steps.deploy.outputs.url }}")
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "HTTP 200 OK"
+              break
+            fi
+            echo "Attempt $i: HTTP $HTTP_STATUS, retrying in 10s..."
+            sleep 10
+          done
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::Staging site returned HTTP $HTTP_STATUS"
+            exit 1
+          fi
+
+      - name: Check security headers
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true'
+        run: |
+          HEADERS=$(curl -sI --max-time 30 "${{ steps.deploy.outputs.url }}")
+
+          echo "### Staging Security Headers" >> $GITHUB_STEP_SUMMARY
+
+          # CloudFront managed headers
+          if echo "$HEADERS" | grep -qi "x-content-type-options"; then
+            echo "- X-Content-Type-Options present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- X-Content-Type-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$HEADERS" | grep -qi "x-frame-options"; then
+            echo "- X-Frame-Options present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- X-Frame-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Comment PR with staging URL
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '**Staging deployment ready!**\n\nPreview: ${{ steps.deploy.outputs.url }}'
+            })
+
+  # Deploy to production on merge to main (only if deployable files changed)
+  deploy-production:
+    name: Deploy to Production
+    needs: [build, changes, deploy-infrastructure]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      (needs.changes.outputs.infrastructure == 'true' || needs.changes.outputs.deployable == 'true')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ needs.deploy-infrastructure.outputs.production-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for build artifacts
+        id: check-artifacts
+        run: |
+          if [ -f package.json ]; then
+            echo "has_artifacts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_artifacts=false" >> $GITHUB_OUTPUT
+            echo "No build artifacts expected (early project phase)"
+          fi
+
+      - name: Download build artifacts
+        if: steps.check-artifacts.outputs.has_artifacts == 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: build
+          path: dist/
+
+      - name: Create placeholder if no build
+        if: steps.check-artifacts.outputs.has_artifacts == 'false'
+        run: |
+          mkdir -p dist
+          cat > dist/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Main Street Logic - Coming Soon</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+              body { font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #f5f5f5; }
+              .container { text-align: center; padding: 2rem; }
+              h1 { color: #333; }
+              p { color: #666; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Main Street Logic</h1>
+              <p>Our new website is coming soon!</p>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to production
+        run: |
+          aws s3 sync dist/ s3://${{ needs.deploy-infrastructure.outputs.production-bucket }}/ --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ needs.deploy-infrastructure.outputs.production-distribution-id }} \
+            --paths "/*"
+
+      - name: Deployment summary
+        run: |
+          echo "### Production Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ needs.deploy-infrastructure.outputs.production-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Bucket: \`${{ needs.deploy-infrastructure.outputs.production-bucket }}\`" >> $GITHUB_STEP_SUMMARY
+
+  # Run E2E tests against staging deployment
+  e2e-tests:
+    name: E2E Tests
+    needs: [deploy-staging]
+    if: always() && needs.deploy-staging.result == 'success' && needs.deploy-staging.outputs.deployed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright deps (if cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run E2E tests
+        run: npx playwright test --project=chromium
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.deploy-staging.outputs.staging-base-url }}
+          CI: true
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: E2E test summary
+        if: always()
+        run: |
+          echo "### E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Base URL: ${{ needs.deploy-staging.outputs.staging-base-url }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "- All E2E tests passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Some E2E tests failed - check Playwright report artifact" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # Run Lighthouse against staging deployment
+  lighthouse-ci:
+    name: Lighthouse CI
+    needs: [deploy-staging]
+    if: always() && needs.deploy-staging.result == 'success' && needs.deploy-staging.outputs.deployed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse
+
+      - name: Run Lighthouse audit
+        run: |
+          lighthouse "${{ needs.deploy-staging.outputs.staging-base-url }}index.html" \
+            --output=json,html \
+            --output-path=./lighthouse-report \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo
+
+      - name: Check scores and report
+        run: |
+          PERF=$(jq '.categories.performance.score * 100' lighthouse-report.report.json)
+          A11Y=$(jq '.categories.accessibility.score * 100' lighthouse-report.report.json)
+          BP=$(jq '.categories["best-practices"].score * 100' lighthouse-report.report.json)
+          SEO=$(jq '.categories.seo.score * 100' lighthouse-report.report.json)
+
+          echo "### Lighthouse Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Category | Score |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | ${PERF%.*}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${A11Y%.*}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| Best Practices | ${BP%.*}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| SEO | ${SEO%.*}% |" >> $GITHUB_STEP_SUMMARY
+
+          # Fail if accessibility below 90%
+          if (( $(echo "$A11Y < 90" | bc -l) )); then
+            echo "::error::Accessibility score (${A11Y%.*}%) is below 90%"
+            exit 1
+          fi
+
+      - name: Upload Lighthouse report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: |
+            lighthouse-report.report.json
+            lighthouse-report.report.html
+          retention-days: 7
+
+  # Validate production deployment
+  validate-production:
+    name: Validate Production
+    needs: [deploy-production, deploy-infrastructure]
+    if: always() && needs.deploy-production.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: HTTP smoke test
+        run: |
+          PROD_URL="${{ needs.deploy-infrastructure.outputs.production-url }}"
+          echo "Testing: $PROD_URL"
+
+          # Retry up to 3 times with delay (CloudFront invalidation propagation)
+          for i in 1 2 3; do
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$PROD_URL")
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "HTTP 200 OK"
+              break
+            fi
+            echo "Attempt $i: HTTP $HTTP_STATUS, retrying in 10s..."
+            sleep 10
+          done
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::Production site returned HTTP $HTTP_STATUS"
+            exit 1
+          fi
+
+      - name: Check security headers
+        run: |
+          PROD_URL="${{ needs.deploy-infrastructure.outputs.production-url }}"
+          HEADERS=$(curl -sI --max-time 30 "$PROD_URL")
+
+          echo "### Production Security Headers" >> $GITHUB_STEP_SUMMARY
+
+          # Check for security headers
+          if echo "$HEADERS" | grep -qi "x-content-type-options"; then
+            echo "- X-Content-Type-Options present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- X-Content-Type-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if echo "$HEADERS" | grep -qi "x-frame-options"; then
+            echo "- X-Frame-Options present" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- X-Frame-Options missing" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Verify CloudFront cache behavior
+        run: |
+          PROD_URL="${{ needs.deploy-infrastructure.outputs.production-url }}"
+
+          # Make two requests and check for cache hit on second
+          curl -sI --max-time 30 "$PROD_URL" > /dev/null
+          sleep 2
+          CACHE_HEADER=$(curl -sI --max-time 30 "$PROD_URL" | grep -i "x-cache" | head -1)
+
+          echo "### CloudFront Cache" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$CACHE_HEADER" ]; then
+            echo "- $CACHE_HEADER" >> $GITHUB_STEP_SUMMARY
+            if echo "$CACHE_HEADER" | grep -qi "hit"; then
+              echo "- Cache is working" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- Cache miss (may be due to recent invalidation)" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- No X-Cache header found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Validation summary
+        run: |
+          echo "### Production Validation Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ needs.deploy-infrastructure.outputs.production-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- All smoke tests passed" >> $GITHUB_STEP_SUMMARY

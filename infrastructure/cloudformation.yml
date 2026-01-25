@@ -1,0 +1,292 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Main Street Logic website infrastructure - S3 + CloudFront static hosting'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: production
+    AllowedValues:
+      - production
+      - staging
+    Description: Deployment environment
+
+  DomainName:
+    Type: String
+    Default: ''
+    Description: Custom domain name (leave empty to use CloudFront domain)
+
+Conditions:
+  HasCustomDomain: !Not [!Equals [!Ref DomainName, '']]
+
+Resources:
+  # CloudFront Function to rewrite URLs for static site routing
+  # Handles: /about -> /about/index.html, /about/ -> /about/index.html
+  UrlRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub 'mainstreetlogic-url-rewrite-${AWS::AccountId}'
+      AutoPublish: true
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+
+          // If URI ends with / add index.html
+          if (uri.endsWith('/')) {
+            request.uri += 'index.html';
+          }
+          // If URI doesn't have a file extension, assume it's a directory
+          else if (!uri.includes('.')) {
+            request.uri += '/index.html';
+          }
+
+          return request;
+        }
+      FunctionConfig:
+        Comment: 'Rewrite URLs to serve index.html for clean URLs'
+        Runtime: cloudfront-js-2.0
+
+  # S3 bucket for production site
+  ProductionBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'mainstreetlogic-production-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: production
+
+  # S3 bucket for staging/PR previews
+  StagingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'mainstreetlogic-staging-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldPRPreviews
+            Status: Enabled
+            ExpirationInDays: 30
+            Prefix: 'pr-'
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: staging
+
+  # Origin Access Control for CloudFront to access S3
+  CloudFrontOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub 'mainstreetlogic-oac-${AWS::AccountId}'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # Bucket policy allowing CloudFront access via OAC
+  ProductionBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ProductionBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${ProductionBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${ProductionDistribution}'
+
+  StagingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StagingBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${StagingBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${StagingDistribution}'
+
+  # CloudFront distribution for production
+  ProductionDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: 'Main Street Logic - Production'
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100  # US, Canada, Europe only (cheapest)
+
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt ProductionBucket.RegionalDomainName
+            OriginAccessControlId: !Ref CloudFrontOAC
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # CachingOptimized
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt UrlRewriteFunction.FunctionMetadata.FunctionARN
+
+        # Custom error pages - S3 with OAC returns 403 for missing objects
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 10
+          - ErrorCode: 403
+            ResponseCode: 403
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 10
+
+        # Custom domain configuration (conditional)
+        Aliases: !If
+          - HasCustomDomain
+          - - !Ref DomainName
+          - !Ref AWS::NoValue
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: production
+
+  # CloudFront distribution for staging
+  StagingDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: 'Main Street Logic - Staging'
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100
+
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt StagingBucket.RegionalDomainName
+            OriginAccessControlId: !Ref CloudFrontOAC
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          # Use CachingDisabled for staging to always see latest
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # CachingDisabled
+          Compress: true
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt UrlRewriteFunction.FunctionMetadata.FunctionARN
+
+        # Custom error pages - S3 with OAC returns 403 for missing objects
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 403
+            ResponseCode: 403
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: staging
+
+Outputs:
+  ProductionBucketName:
+    Description: Production S3 bucket name
+    Value: !Ref ProductionBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-ProductionBucket'
+
+  StagingBucketName:
+    Description: Staging S3 bucket name
+    Value: !Ref StagingBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-StagingBucket'
+
+  ProductionDistributionId:
+    Description: Production CloudFront distribution ID
+    Value: !Ref ProductionDistribution
+    Export:
+      Name: !Sub '${AWS::StackName}-ProductionDistributionId'
+
+  ProductionDistributionDomain:
+    Description: Production CloudFront domain name
+    Value: !GetAtt ProductionDistribution.DomainName
+    Export:
+      Name: !Sub '${AWS::StackName}-ProductionDomain'
+
+  StagingDistributionId:
+    Description: Staging CloudFront distribution ID
+    Value: !Ref StagingDistribution
+    Export:
+      Name: !Sub '${AWS::StackName}-StagingDistributionId'
+
+  StagingDistributionDomain:
+    Description: Staging CloudFront domain name
+    Value: !GetAtt StagingDistribution.DomainName
+    Export:
+      Name: !Sub '${AWS::StackName}-StagingDomain'
+
+  ProductionUrl:
+    Description: Production website URL
+    Value: !Sub 'https://${ProductionDistribution.DomainName}'
+
+  StagingUrl:
+    Description: Staging website URL
+    Value: !Sub 'https://${StagingDistribution.DomainName}'
