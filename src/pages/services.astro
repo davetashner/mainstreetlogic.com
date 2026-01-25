@@ -4,53 +4,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const services = [
   {
     title: 'Custom Software & Automation',
-    description: 'Stop doing repetitive tasks manually. We build custom tools and automated workflows that save you hours every week.',
+    description:
+      'Stop doing repetitive tasks manually. We build custom tools and automated workflows that save you hours every week.',
     details: [
       'Custom internal tools and dashboards',
       'Workflow automation (Zapier, Make, custom scripts)',
       'Data processing and reporting automation',
       'Email and notification systems',
-    ]
+    ],
   },
   {
     title: 'Website Development',
-    description: 'Your website is often the first impression customers have of your business. We build fast, modern sites that work.',
+    description:
+      'Your website is often the first impression customers have of your business. We build fast, modern sites that work.',
     details: [
       'Business websites and landing pages',
       'E-commerce and online stores',
       'Website redesigns and updates',
       'Ongoing maintenance and hosting',
-    ]
+    ],
   },
   {
     title: 'System Integration',
-    description: 'Your tools should talk to each other. We connect your software so data flows automatically where it needs to go.',
+    description:
+      'Your tools should talk to each other. We connect your software so data flows automatically where it needs to go.',
     details: [
       'CRM and email marketing integration',
       'Payment and accounting sync',
       'Inventory management connections',
       'Custom API development',
-    ]
+    ],
   },
   {
     title: 'SaaS Audit & Optimization',
-    description: 'Most businesses are paying for software they don\'t fully use - or don\'t need at all. We help you find savings.',
+    description:
+      "Most businesses are paying for software they don't fully use - or don't need at all. We help you find savings.",
     details: [
       'Software subscription review',
       'Duplicate tool elimination',
       'Better alternatives recommendations',
       'Cost-benefit analysis',
-    ]
+    ],
   },
   {
     title: 'Hourly Tech Consulting',
-    description: 'Sometimes you just need expert advice. Book time with us to discuss any technology question or challenge.',
+    description:
+      'Sometimes you just need expert advice. Book time with us to discuss any technology question or challenge.',
     details: [
       'Technology strategy sessions',
       'Software selection guidance',
       'Vendor evaluation',
       'Technical problem-solving',
-    ]
+    ],
   },
 ];
 ---
@@ -62,9 +67,7 @@ const services = [
   <!-- Hero Section -->
   <section class="bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">
-        Services
-      </h1>
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">Services</h1>
       <p class="text-xl text-navy/70">
         Technology solutions designed for the unique needs of small businesses.
       </p>
@@ -75,29 +78,45 @@ const services = [
   <section class="py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
       <div class="space-y-12">
-        {services.map((service, index) => (
-          <div class="bg-white rounded-lg p-8 shadow-sm border border-soft-gray/50">
-            <div class="md:flex md:items-start md:gap-8">
-              <div class="flex-shrink-0 w-12 h-12 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-4 md:mb-0">
-                <span class="text-steel-blue font-bold text-lg">{index + 1}</span>
-              </div>
-              <div class="flex-grow">
-                <h2 class="text-2xl font-semibold text-navy mb-3">{service.title}</h2>
-                <p class="text-navy/70 mb-4">{service.description}</p>
-                <ul class="grid md:grid-cols-2 gap-2">
-                  {service.details.map((detail) => (
-                    <li class="flex items-start gap-2 text-navy/60">
-                      <svg class="w-5 h-5 text-steel-blue mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
+        {
+          services.map((service, index) => (
+            <div class="bg-white rounded-lg p-8 shadow-sm border border-soft-gray/50">
+              <div class="md:flex md:items-start md:gap-8">
+                <div class="flex-shrink-0 w-12 h-12 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-4 md:mb-0">
+                  <span class="text-steel-blue font-bold text-lg">
+                    {index + 1}
+                  </span>
+                </div>
+                <div class="flex-grow">
+                  <h2 class="text-2xl font-semibold text-navy mb-3">
+                    {service.title}
+                  </h2>
+                  <p class="text-navy/70 mb-4">{service.description}</p>
+                  <ul class="grid md:grid-cols-2 gap-2">
+                    {service.details.map((detail) => (
+                      <li class="flex items-start gap-2 text-navy/60">
+                        <svg
+                          class="w-5 h-5 text-steel-blue mt-0.5 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </div>
   </section>
@@ -109,7 +128,8 @@ const services = [
         Not sure what you need?
       </h2>
       <p class="text-xl text-white/70 mb-8">
-        Let's talk. We'll help you figure out the best approach for your business.
+        Let's talk. We'll help you figure out the best approach for your
+        business.
       </p>
       <a
         href="/contact"

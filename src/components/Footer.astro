@@ -29,16 +29,18 @@ const navLinks = [
       <div>
         <h3 class="font-semibold mb-4">Quick Links</h3>
         <ul class="space-y-2">
-          {navLinks.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="text-white/70 hover:text-white transition-colors"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {
+            navLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-white/70 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
@@ -47,7 +49,10 @@ const navLinks = [
         <h3 class="font-semibold mb-4">Contact</h3>
         <ul class="space-y-2 text-white/70">
           <li>
-            <a href="mailto:hello@mainstreetlogic.com" class="hover:text-white transition-colors">
+            <a
+              href="mailto:hello@mainstreetlogic.com"
+              class="hover:text-white transition-colors"
+            >
               hello@mainstreetlogic.com
             </a>
           </li>
@@ -57,7 +62,9 @@ const navLinks = [
     </div>
 
     <!-- Copyright -->
-    <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/50 text-sm">
+    <div
+      class="border-t border-white/20 mt-8 pt-8 text-center text-white/50 text-sm"
+    >
       <p>&copy; {currentYear} Main Street Logic. All rights reserved.</p>
     </div>
   </div>

@@ -9,9 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Hero Section -->
   <section class="bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">
-        Let's Talk
-      </h1>
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">Let's Talk</h1>
       <p class="text-xl text-navy/70">
         Ready to simplify your technology? We'd love to hear from you.
       </p>
@@ -27,7 +25,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <h2 class="text-2xl font-bold text-navy mb-6">Send a Message</h2>
           <form class="space-y-6" action="#" method="POST">
             <div>
-              <label for="name" class="block text-sm font-medium text-navy mb-2">
+              <label
+                for="name"
+                class="block text-sm font-medium text-navy mb-2"
+              >
                 Name
               </label>
               <input
@@ -41,7 +42,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
 
             <div>
-              <label for="email" class="block text-sm font-medium text-navy mb-2">
+              <label
+                for="email"
+                class="block text-sm font-medium text-navy mb-2"
+              >
                 Email
               </label>
               <input
@@ -55,7 +59,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
 
             <div>
-              <label for="business" class="block text-sm font-medium text-navy mb-2">
+              <label
+                for="business"
+                class="block text-sm font-medium text-navy mb-2"
+              >
                 Business Name (optional)
               </label>
               <input
@@ -68,7 +75,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
 
             <div>
-              <label for="message" class="block text-sm font-medium text-navy mb-2">
+              <label
+                for="message"
+                class="block text-sm font-medium text-navy mb-2"
+              >
                 Message
               </label>
               <textarea
@@ -95,17 +105,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <!-- Contact Info & Booking -->
         <div>
-          <h2 class="text-2xl font-bold text-navy mb-6">Other Ways to Reach Us</h2>
+          <h2 class="text-2xl font-bold text-navy mb-6">
+            Other Ways to Reach Us
+          </h2>
 
           <!-- Direct Contact -->
-          <div class="bg-white rounded-lg p-6 shadow-sm border border-soft-gray/50 mb-6">
+          <div
+            class="bg-white rounded-lg p-6 shadow-sm border border-soft-gray/50 mb-6"
+          >
             <h3 class="font-semibold text-navy mb-4">Direct Contact</h3>
             <ul class="space-y-3 text-navy/70">
               <li class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-steel-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  class="w-5 h-5 text-steel-blue"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path>
                 </svg>
-                <a href="mailto:hello@mainstreetlogic.com" class="hover:text-steel-blue">
+                <a
+                  href="mailto:hello@mainstreetlogic.com"
+                  class="hover:text-steel-blue"
+                >
                   hello@mainstreetlogic.com
                 </a>
               </li>
@@ -114,13 +141,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <!-- Book a Call -->
           <div class="bg-navy rounded-lg p-6">
-            <h3 class="font-semibold text-white mb-4">Schedule a Free Consultation</h3>
+            <h3 class="font-semibold text-white mb-4">
+              Schedule a Free Consultation
+            </h3>
             <p class="text-white/70 mb-4">
-              Book a 30-minute call to discuss your business needs. No pressure, no obligation.
+              Book a 30-minute call to discuss your business needs. No pressure,
+              no obligation.
             </p>
             <!-- Calendly placeholder - replace with actual embed or link -->
             <div class="bg-white/10 rounded-lg p-8 text-center">
-              <p class="text-white/60 text-sm mb-4">Calendly booking widget coming soon</p>
+              <p class="text-white/60 text-sm mb-4">
+                Calendly booking widget coming soon
+              </p>
               <a
                 href="mailto:hello@mainstreetlogic.com?subject=Consultation%20Request"
                 class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-medium-steel transition-colors no-underline"
@@ -133,8 +165,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <!-- Response Time -->
           <div class="mt-6 p-4 bg-soft-gray/30 rounded-lg">
             <p class="text-sm text-navy/70">
-              <strong class="text-navy">Quick Response:</strong> We respond to all inquiries
-              within 1 business day. For urgent matters, please mention it in your message.
+              <strong class="text-navy">Quick Response:</strong> We respond to all
+              inquiries within 1 business day. For urgent matters, please mention
+              it in your message.
             </p>
           </div>
         </div>

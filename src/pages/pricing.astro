@@ -33,19 +33,23 @@ const hostingPlans = [
 const faqs = [
   {
     question: 'How does project pricing work?',
-    answer: 'We provide fixed-price quotes for defined projects, or we can work on an hourly basis. After an initial consultation, we\'ll provide a clear estimate so there are no surprises.',
+    answer:
+      "We provide fixed-price quotes for defined projects, or we can work on an hourly basis. After an initial consultation, we'll provide a clear estimate so there are no surprises.",
   },
   {
     question: 'What is The Backlog Model?',
-    answer: 'For ongoing clients, we maintain a prioritized list of improvements and features for your systems. You control the priorities, and we work through items as your budget allows. This gives you predictable costs while ensuring continuous improvement.',
+    answer:
+      'For ongoing clients, we maintain a prioritized list of improvements and features for your systems. You control the priorities, and we work through items as your budget allows. This gives you predictable costs while ensuring continuous improvement.',
   },
   {
     question: 'Do you offer monthly retainers?',
-    answer: 'Yes. For clients who need ongoing support, we offer monthly retainer arrangements that guarantee availability and often come with discounted hourly rates.',
+    answer:
+      'Yes. For clients who need ongoing support, we offer monthly retainer arrangements that guarantee availability and often come with discounted hourly rates.',
   },
   {
-    question: 'What\'s included in a free consultation?',
-    answer: 'A 30-minute call where we learn about your business, understand your challenges, and discuss whether we\'re a good fit to help. No pressure, no obligation.',
+    question: "What's included in a free consultation?",
+    answer:
+      "A 30-minute call where we learn about your business, understand your challenges, and discuss whether we're a good fit to help. No pressure, no obligation.",
   },
 ];
 ---
@@ -69,21 +73,26 @@ const faqs = [
   <!-- Hosting Plans -->
   <section class="py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-4 text-center">Monthly Hosting Plans</h2>
+      <h2 class="text-3xl font-bold text-navy mb-4 text-center">
+        Monthly Hosting Plans
+      </h2>
       <p class="text-center text-navy/70 mb-12 max-w-2xl mx-auto">
-        Keep your website running smoothly with our managed hosting. Everything you need, nothing you don't.
+        Keep your website running smoothly with our managed hosting. Everything
+        you need, nothing you don't.
       </p>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        {hostingPlans.map((plan) => (
-          <PricingCard
-            title={plan.title}
-            price={plan.price}
-            description={plan.description}
-            features={plan.features}
-            highlighted={plan.highlighted}
-          />
-        ))}
+        {
+          hostingPlans.map((plan) => (
+            <PricingCard
+              title={plan.title}
+              price={plan.price}
+              description={plan.description}
+              features={plan.features}
+              highlighted={plan.highlighted}
+            />
+          ))
+        }
       </div>
     </div>
   </section>
@@ -91,31 +100,43 @@ const faqs = [
   <!-- Project Work -->
   <section class="bg-white py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-4 text-center">Project Work</h2>
+      <h2 class="text-3xl font-bold text-navy mb-4 text-center">
+        Project Work
+      </h2>
       <p class="text-center text-navy/70 mb-12 max-w-2xl mx-auto">
-        For larger initiatives, we provide custom quotes based on your specific needs.
+        For larger initiatives, we provide custom quotes based on your specific
+        needs.
       </p>
 
       <div class="grid md:grid-cols-3 gap-6">
         <div class="bg-light-bg rounded-lg p-6 text-center">
           <h3 class="font-semibold text-navy mb-2">Small Projects</h3>
           <p class="text-2xl font-bold text-steel-blue mb-2">$500 - $2,000</p>
-          <p class="text-sm text-navy/60">Simple websites, basic automation, quick integrations</p>
+          <p class="text-sm text-navy/60">
+            Simple websites, basic automation, quick integrations
+          </p>
         </div>
         <div class="bg-light-bg rounded-lg p-6 text-center">
           <h3 class="font-semibold text-navy mb-2">Medium Projects</h3>
-          <p class="text-2xl font-bold text-steel-blue mb-2">$2,000 - $10,000</p>
-          <p class="text-sm text-navy/60">Custom applications, complex integrations, full site redesigns</p>
+          <p class="text-2xl font-bold text-steel-blue mb-2">
+            $2,000 - $10,000
+          </p>
+          <p class="text-sm text-navy/60">
+            Custom applications, complex integrations, full site redesigns
+          </p>
         </div>
         <div class="bg-light-bg rounded-lg p-6 text-center">
           <h3 class="font-semibold text-navy mb-2">Large Projects</h3>
           <p class="text-2xl font-bold text-steel-blue mb-2">$10,000+</p>
-          <p class="text-sm text-navy/60">Enterprise solutions, multi-system overhauls</p>
+          <p class="text-sm text-navy/60">
+            Enterprise solutions, multi-system overhauls
+          </p>
         </div>
       </div>
 
       <p class="text-center text-navy/60 mt-8 text-sm">
-        These are general ranges. Every project is quoted individually based on your specific requirements.
+        These are general ranges. Every project is quoted individually based on
+        your specific requirements.
       </p>
     </div>
   </section>
@@ -126,17 +147,23 @@ const faqs = [
       <div class="bg-navy rounded-lg p-8 md:p-12">
         <h2 class="text-3xl font-bold text-white mb-4">The Backlog Model</h2>
         <p class="text-white/80 mb-6">
-          Technology needs don't stop after the initial build. The Backlog Model is our approach
-          to ongoing improvement:
+          Technology needs don't stop after the initial build. The Backlog Model
+          is our approach to ongoing improvement:
         </p>
         <ul class="space-y-4 text-white/80">
           <li class="flex items-start gap-3">
             <span class="text-steel-blue font-bold">1.</span>
-            <span>We maintain a prioritized list of improvements, features, and fixes for your systems.</span>
+            <span
+              >We maintain a prioritized list of improvements, features, and
+              fixes for your systems.</span
+            >
           </li>
           <li class="flex items-start gap-3">
             <span class="text-steel-blue font-bold">2.</span>
-            <span>You control the priorities based on what matters most to your business.</span>
+            <span
+              >You control the priorities based on what matters most to your
+              business.</span
+            >
           </li>
           <li class="flex items-start gap-3">
             <span class="text-steel-blue font-bold">3.</span>
@@ -144,7 +171,10 @@ const faqs = [
           </li>
           <li class="flex items-start gap-3">
             <span class="text-steel-blue font-bold">4.</span>
-            <span>Your systems get better continuously, without big up-front investments.</span>
+            <span
+              >Your systems get better continuously, without big up-front
+              investments.</span
+            >
           </li>
         </ul>
       </div>
@@ -154,15 +184,21 @@ const faqs = [
   <!-- FAQ -->
   <section class="bg-white py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-12 text-center">Frequently Asked Questions</h2>
+      <h2 class="text-3xl font-bold text-navy mb-12 text-center">
+        Frequently Asked Questions
+      </h2>
 
       <div class="space-y-6">
-        {faqs.map((faq) => (
-          <div class="border-b border-soft-gray pb-6">
-            <h3 class="text-xl font-semibold text-navy mb-2">{faq.question}</h3>
-            <p class="text-navy/70">{faq.answer}</p>
-          </div>
-        ))}
+        {
+          faqs.map((faq) => (
+            <div class="border-b border-soft-gray pb-6">
+              <h3 class="text-xl font-semibold text-navy mb-2">
+                {faq.question}
+              </h3>
+              <p class="text-navy/70">{faq.answer}</p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -170,11 +206,10 @@ const faqs = [
   <!-- CTA Section -->
   <section class="bg-navy py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">
-        Ready to get started?
-      </h2>
+      <h2 class="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
       <p class="text-xl text-white/70 mb-8">
-        Schedule a free consultation to discuss your project and get a custom quote.
+        Schedule a free consultation to discuss your project and get a custom
+        quote.
       </p>
       <a
         href="/contact"

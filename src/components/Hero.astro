@@ -7,23 +7,23 @@ interface Props {
   showImage?: boolean;
 }
 
-const {
-  title,
-  subtitle,
-  ctaText,
-  ctaHref,
-  showImage = true
-} = Astro.props;
+const { title, subtitle, ctaText, ctaHref, showImage = true } = Astro.props;
 ---
 
-<section class="relative bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24 overflow-hidden">
+<section
+  class="relative bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24 overflow-hidden"
+>
   <!-- Wave Pattern Background -->
   <div class="absolute inset-0 opacity-10">
-    <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <svg
+      class="w-full h-full"
+      viewBox="0 0 1440 320"
+      preserveAspectRatio="none"
+    >
       <path
         fill="#7B9DBB"
         d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,117.3C672,117,768,171,864,197.3C960,224,1056,224,1152,213.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-      />
+      ></path>
     </svg>
   </div>
 
@@ -33,29 +33,29 @@ const {
         <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6 leading-tight">
           {title}
         </h1>
-        {subtitle && (
-          <p class="text-xl text-navy/70 mb-8">
-            {subtitle}
-          </p>
-        )}
-        {ctaText && ctaHref && (
-          <a
-            href={ctaHref}
-            class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors no-underline"
-          >
-            {ctaText}
-          </a>
-        )}
+        {subtitle && <p class="text-xl text-navy/70 mb-8">{subtitle}</p>}
+        {
+          ctaText && ctaHref && (
+            <a
+              href={ctaHref}
+              class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors no-underline"
+            >
+              {ctaText}
+            </a>
+          )
+        }
       </div>
-      {showImage && (
-        <div class="hidden md:block">
-          <img
-            src="/images/hero/hero-light.png"
-            alt="Main Street Logic"
-            class="w-full h-auto rounded-lg shadow-lg"
-          />
-        </div>
-      )}
+      {
+        showImage && (
+          <div class="hidden md:block">
+            <img
+              src="/images/hero/hero-light.png"
+              alt="Main Street Logic"
+              class="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+        )
+      }
     </div>
   </div>
 </section>

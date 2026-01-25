@@ -6,28 +6,33 @@ import ServiceCard from '../components/ServiceCard.astro';
 const services = [
   {
     title: 'Custom Software & Automation',
-    description: 'Streamline your operations with custom tools and automated workflows tailored to your business.',
-    icon: '⚙️'
+    description:
+      'Streamline your operations with custom tools and automated workflows tailored to your business.',
+    icon: '⚙️',
   },
   {
     title: 'Website Development',
-    description: 'Modern, fast websites that represent your business professionally and convert visitors to customers.',
-    icon: '🌐'
+    description:
+      'Modern, fast websites that represent your business professionally and convert visitors to customers.',
+    icon: '🌐',
   },
   {
     title: 'System Integration',
-    description: 'Connect your tools and platforms so they work together seamlessly.',
-    icon: '🔗'
+    description:
+      'Connect your tools and platforms so they work together seamlessly.',
+    icon: '🔗',
   },
   {
     title: 'SaaS Audit & Optimization',
-    description: 'Review your software subscriptions and find ways to reduce costs while improving efficiency.',
-    icon: '📊'
+    description:
+      'Review your software subscriptions and find ways to reduce costs while improving efficiency.',
+    icon: '📊',
   },
   {
     title: 'Hourly Tech Consulting',
-    description: 'Get expert advice on any technology question, from choosing software to planning your tech strategy.',
-    icon: '💡'
+    description:
+      'Get expert advice on any technology question, from choosing software to planning your tech strategy.',
+    icon: '💡',
   },
 ];
 ---
@@ -44,20 +49,25 @@ const services = [
   <section class="py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">How We Help</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">
+          How We Help
+        </h2>
         <p class="text-xl text-navy/70 max-w-2xl mx-auto">
-          We provide technology solutions designed for the unique needs of small businesses.
+          We provide technology solutions designed for the unique needs of small
+          businesses.
         </p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service) => (
-          <ServiceCard
-            title={service.title}
-            description={service.description}
-            icon={service.icon}
-          />
-        ))}
+        {
+          services.map((service) => (
+            <ServiceCard
+              title={service.title}
+              description={service.description}
+              icon={service.icon}
+            />
+          ))
+        }
       </div>
 
       <div class="text-center mt-12">
