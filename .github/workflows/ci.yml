@@ -247,6 +247,10 @@ jobs:
           aws cloudformation deploy \
             --template-file infrastructure/cloudformation.yml \
             --stack-name ${{ env.STACK_NAME }} \
+            --parameter-overrides \
+              DomainName=mainstreetlogic.com \
+              HostedZoneId=Z0323027WXRAQQHL711J \
+              IncludeWww=true \
             --no-fail-on-empty-changeset \
             --tags Project=mainstreetlogic
 
