@@ -29,30 +29,44 @@ Small business owners (5-50 employees) struggling with:
 ### Backlog Status
 | Phase | Issues | Status |
 |-------|--------|--------|
-| Phase 1: Foundation | 6 | Not started |
-| Phase 2: Core Pages | 8 | Not started |
-| Phase 3: Integrations | 6 | Not started |
+| Phase 1: Foundation | 6 | **Complete** |
+| Phase 2: Core Pages | 8 | **Complete** |
+| Phase 3: Integrations | 6 | In progress |
 | Phase 4: Content & SEO | 8 | Not started |
 | Phase 5: Client Portal | 6 | Future (P3) |
 | Phase 6: Launch | 5 | Not started |
-| **Total** | **46** | **Ready to begin** |
+
+### Completed Items
+- [x] Initialize Astro project with Tailwind CSS
+- [x] Set up AWS infrastructure (CloudFormation)
+- [x] Configure CI/CD pipeline with GitHub Actions
+- [x] Copy and integrate brand assets
+- [x] Create base layout and navigation components
+- [x] Build Homepage with hero and value proposition
+- [x] Build About page
+- [x] Build Services page with all offerings
+- [x] Build Pricing page with transparent model
+- [x] Build Contact page (static form)
+- [x] Build Blog structure and layout
+- [x] Set up E2E tests with Playwright
+- [x] Configure custom domain (mainstreetlogic.com)
+- [x] SSL certificate via ACM
+- [x] DNS configuration (Route 53)
 
 ### Recommended Next Items
-Start with Phase 1 (Foundation) - these can run in parallel:
-1. **Initialize Astro project** (`mainstreetlogic.com-o71`) - Replace Vite with Astro + Tailwind
-2. **Set up AWS infrastructure** (`mainstreetlogic.com-5rr`) - CloudFormation for S3 + CloudFront
-
-After Astro init:
-3. **Copy brand assets** (`mainstreetlogic.com-mwx`) - From planning repo
-4. **Create base layout** (`mainstreetlogic.com-cqa`) - Header, footer, navigation
+Phase 3 (Integrations & Lead Generation):
+1. **Implement contact form backend** (`mainstreetlogic.com-1ta`) - Lambda + SES
+2. **Integrate consultation booking** (`mainstreetlogic.com-hov`) - Calendly embed
+3. **Configure CloudFlare Web Analytics** (`mainstreetlogic.com-dd5`)
+4. **Set up newsletter signup** (`mainstreetlogic.com-wv5`) - Buttondown
 
 ### Technical Decisions
 | Decision | Choice | Notes |
 |----------|--------|-------|
 | Framework | Astro | Static site, zero JS by default |
-| Styling | Tailwind CSS | Utility-first |
-| Hosting | S3 + CloudFront | Same as thehousefinch.com |
-| Contact Form | Lambda + SES | Self-hosted, spam-resistant |
+| Styling | Tailwind CSS v4 | Utility-first |
+| Hosting | S3 + CloudFront | Via CloudFormation |
+| Contact Form | Lambda + SES | Self-hosted, spam-resistant (pending) |
 | Booking | Calendly | Free tier, Google Calendar sync |
 | Newsletter | Buttondown | Simple, $9/mo |
 | Analytics | CloudFlare Web Analytics | Free, no cookies |
@@ -63,8 +77,15 @@ After Astro init:
 |------|-------|
 | Domain | mainstreetlogic.com |
 | Registrar | Namecheap |
-| DNS | Route 53 |
-| AWS Account | 205074708100 |
+| DNS | Route 53 (Z0323027WXRAQQHL711J) |
+| AWS Account | 108772197494 (mainstreetlogic.com) |
+| Production URL | https://mainstreetlogic.com |
+| Staging URL | https://d37bllkokemcy4.cloudfront.net |
+
+### Live URLs
+- **Production**: https://mainstreetlogic.com
+- **Production (www)**: https://www.mainstreetlogic.com
+- **Staging**: https://d37bllkokemcy4.cloudfront.net
 
 ### Lead Magnets
 1. **Tech Friction Checklist** - Free download, no email required
@@ -85,17 +106,10 @@ Planned features for when 5+ active clients:
 - Billing history
 - Support request system
 
-### Completed This Session
-- [x] Initialized beads in website repo
-- [x] Created comprehensive backlog (46 issues)
-- [x] Defined 6 phases with dependencies
-- [x] Documented all technical decisions
-- [x] Added hourly consulting service
-
 ### Open Questions
 - Hourly consulting rate (for Pricing page)
 - Exact monthly hosting tiers ($12-20 range)
 
 ### Branching Strategy
 - Trunk-based development
-- PR → Staging preview → Merge to main → Production
+- PR -> Staging preview -> Merge to main -> Production
