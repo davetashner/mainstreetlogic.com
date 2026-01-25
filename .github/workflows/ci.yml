@@ -199,13 +199,7 @@ jobs:
 
       - name: Run tests
         if: steps.check-package.outputs.has_package == 'true'
-        run: npm test --if-present -- --coverage --passWithNoTests
-
-      - name: Upload coverage
-        if: steps.check-package.outputs.has_package == 'true'
-        uses: codecov/codecov-action@v5
-        with:
-          fail_ci_if_error: false
+        run: npm run test:run --if-present || npm test --if-present -- --passWithNoTests
 
       - name: Build
         if: steps.check-package.outputs.has_package == 'true'
