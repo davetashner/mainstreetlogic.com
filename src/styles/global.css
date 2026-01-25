@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@theme {
+  /* Brand Colors */
+  --color-steel-blue: #7b9dbb;
+  --color-navy: #2d4966;
+  --color-medium-steel: #5c7e9e;
+  --color-dark-steel: #3c5e7e;
+  --color-soft-gray: #d1cdc7;
+  --color-light-bg: #f5f5f5;
+  --color-dark-bg: #1a2530;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-light-bg);
+  color: var(--color-navy);
+}
+
+/* Link styles */
+a {
+  color: var(--color-steel-blue);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
