@@ -12,13 +12,59 @@ Parameters:
 
   DomainName:
     Type: String
-    Default: ''
-    Description: Custom domain name (leave empty to use CloudFront domain)
+    Default: mainstreetlogic.com
+    Description: Primary domain name
+
+  HostedZoneId:
+    Type: String
+    Default: Z03404812DQ0BMKGOMJOB
+    Description: Route 53 Hosted Zone ID
+
+  IncludeWww:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Include www subdomain
 
 Conditions:
   HasCustomDomain: !Not [!Equals [!Ref DomainName, '']]
+  HasHostedZone: !Not [!Equals [!Ref HostedZoneId, '']]
+  IncludeWwwDomain: !And
+    - !Condition HasCustomDomain
+    - !Equals [!Ref IncludeWww, 'true']
+  CanCreateDnsRecords: !And
+    - !Condition HasCustomDomain
+    - !Condition HasHostedZone
 
 Resources:
+  # ACM Certificate for custom domain (must be in us-east-1 for CloudFront)
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Condition: HasCustomDomain
+    Properties:
+      DomainName: !Ref DomainName
+      SubjectAlternativeNames:
+        - !If
+          - IncludeWwwDomain
+          - !Sub 'www.${DomainName}'
+          - !Ref AWS::NoValue
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !If [HasHostedZone, !Ref HostedZoneId, !Ref 'AWS::NoValue']
+        - !If
+          - IncludeWwwDomain
+          - DomainName: !Sub 'www.${DomainName}'
+            HostedZoneId: !If [HasHostedZone, !Ref HostedZoneId, !Ref 'AWS::NoValue']
+          - !Ref AWS::NoValue
+      Tags:
+        - Key: Project
+          Value: mainstreetlogic
+        - Key: Environment
+          Value: production
+
   # CloudFront Function to rewrite URLs for static site routing
   # Handles: /about -> /about/index.html, /about/ -> /about/index.html
   UrlRewriteFunction:
@@ -184,11 +230,23 @@ Resources:
             ResponsePagePath: /index.html
             ErrorCachingMinTTL: 10
 
-        # Custom domain configuration (conditional)
+        # Custom domain configuration
         Aliases: !If
           - HasCustomDomain
-          - - !Ref DomainName
+          - !If
+            - IncludeWwwDomain
+            - - !Ref DomainName
+              - !Sub 'www.${DomainName}'
+            - - !Ref DomainName
           - !Ref AWS::NoValue
+
+        ViewerCertificate: !If
+          - HasCustomDomain
+          - AcmCertificateArn: !Ref Certificate
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - CloudFrontDefaultCertificate: true
+
       Tags:
         - Key: Project
           Value: mainstreetlogic
@@ -246,6 +304,32 @@ Resources:
         - Key: Environment
           Value: staging
 
+  # Route 53 DNS records for apex domain
+  DnsRecordApex:
+    Type: AWS::Route53::RecordSet
+    Condition: CanCreateDnsRecords
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ProductionDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (constant)
+        EvaluateTargetHealth: false
+
+  # Route 53 DNS record for www subdomain
+  DnsRecordWww:
+    Type: AWS::Route53::RecordSet
+    Condition: CanCreateDnsRecords
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Sub 'www.${DomainName}'
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt ProductionDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2  # CloudFront hosted zone ID (constant)
+        EvaluateTargetHealth: false
+
 Outputs:
   ProductionBucketName:
     Description: Production S3 bucket name
@@ -285,8 +369,21 @@ Outputs:
 
   ProductionUrl:
     Description: Production website URL
-    Value: !Sub 'https://${ProductionDistribution.DomainName}'
+    Value: !If
+      - HasCustomDomain
+      - !Sub 'https://${DomainName}'
+      - !Sub 'https://${ProductionDistribution.DomainName}'
 
   StagingUrl:
     Description: Staging website URL
     Value: !Sub 'https://${StagingDistribution.DomainName}'
+
+  CertificateArn:
+    Condition: HasCustomDomain
+    Description: ACM Certificate ARN
+    Value: !Ref Certificate
+
+  NameServers:
+    Condition: HasCustomDomain
+    Description: Update Namecheap to use these nameservers
+    Value: 'ns-1941.awsdns-50.co.uk, ns-539.awsdns-03.net, ns-467.awsdns-58.com, ns-1488.awsdns-58.org'
