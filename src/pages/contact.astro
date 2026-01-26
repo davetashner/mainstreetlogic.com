@@ -113,12 +113,12 @@ import GuaranteeBadge from '../components/GuaranteeBadge.astro';
             </div>
 
             <!-- Status message -->
-            <div id="form-status" class="hidden">
+            <div id="form-status" class="hidden" role="status" aria-live="polite">
               <div
                 id="form-loading"
                 class="hidden text-navy/70 dark:text-soft-gray/70 flex items-center gap-2"
               >
-                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
                   <circle
                     class="opacity-25"
                     cx="12"
@@ -185,6 +185,7 @@ import GuaranteeBadge from '../components/GuaranteeBadge.astro';
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     stroke-linecap="round"
@@ -211,6 +212,7 @@ import GuaranteeBadge from '../components/GuaranteeBadge.astro';
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"

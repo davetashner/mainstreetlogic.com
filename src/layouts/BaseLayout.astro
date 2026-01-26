@@ -87,8 +87,9 @@ const absoluteOgImage = ogImage.startsWith('http')
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <Header />
-    <main class="flex-grow">
+    <main id="main-content" class="flex-grow">
       <slot />
     </main>
     <Footer />

@@ -64,12 +64,14 @@ const currentPath = Astro.url.pathname;
           class="md:hidden p-2 text-navy dark:text-soft-gray hover:text-steel-blue"
           aria-label="Toggle menu"
           aria-expanded="false"
+          aria-controls="mobile-menu"
         >
           <svg
             class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               stroke-linecap="round"
