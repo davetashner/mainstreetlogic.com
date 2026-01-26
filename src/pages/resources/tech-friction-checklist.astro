@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageDescription =
+  'Free checklist to help small business owners identify technology friction in their operations. Find out where your tools are slowing you down.';
+
+const checklistSections = [
+  {
+    title: 'Data Entry & Manual Work',
+    icon: '📝',
+    items: [
+      'I enter the same information into multiple systems',
+      'I copy data between spreadsheets regularly',
+      'I manually send recurring emails or reminders',
+      'I spend time formatting reports that could be automated',
+      'I retype information from paper forms into digital systems',
+    ],
+  },
+  {
+    title: 'Tool Integration',
+    icon: '🔗',
+    items: [
+      "My tools don't sync with each other automatically",
+      'I export from one system to import into another',
+      'Customer information exists in multiple disconnected places',
+      'I use email to move data between team members',
+      'When one system updates, I manually update others',
+    ],
+  },
+  {
+    title: 'Communication & Workflow',
+    icon: '💬',
+    items: [
+      'Important updates get lost in email threads',
+      'Team members ask "where is that file?" frequently',
+      'I lack visibility into task/project status without asking',
+      'Customer requests fall through the cracks sometimes',
+      'Handoffs between team members cause delays or errors',
+    ],
+  },
+  {
+    title: 'Software Subscriptions',
+    icon: '💳',
+    items: [
+      "I pay for features I don't use in multiple tools",
+      'I have overlapping tools that do similar things',
+      "I'm locked into expensive software due to data",
+      'Monthly SaaS costs keep creeping up',
+      "I'm not sure what all my subscriptions cost monthly",
+    ],
+  },
+  {
+    title: 'Time Drains',
+    icon: '⏰',
+    items: [
+      'Routine tasks take longer than they should',
+      'I spend time waiting for slow systems or loading',
+      'Finding information requires searching multiple places',
+      'I do the same troubleshooting steps repeatedly',
+      'End-of-day/week/month closing takes hours of manual work',
+    ],
+  },
+];
+---
+
+<BaseLayout title="Tech Friction Checklist" description={pageDescription}>
+  <div class="print-styles">
+    <!-- Hero Section -->
+    <section class="bg-navy py-12 md:py-16 print:bg-white print:py-4">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h1
+          class="text-3xl md:text-4xl font-bold text-white print:text-navy mb-4"
+        >
+          Tech Friction Checklist
+        </h1>
+        <p
+          class="text-xl text-white/80 print:text-navy/70 mb-6 max-w-2xl mx-auto"
+        >
+          Identify where technology is slowing down your business. Check each
+          item that applies to your operations.
+        </p>
+        <button
+          onclick="window.print()"
+          class="inline-flex items-center gap-2 bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-medium-steel transition-colors print:hidden"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
+          </svg>
+          Download as PDF
+        </button>
+        <p class="text-sm text-white/60 print:hidden mt-3">
+          Free download - no email required
+        </p>
+      </div>
+    </section>
+
+    <!-- Checklist Content -->
+    <section class="py-12 md:py-16 print:py-4">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="space-y-8 print:space-y-4">
+          {
+            checklistSections.map((section) => (
+              <div class="bg-white dark:bg-navy rounded-lg p-6 shadow-sm border border-soft-gray/30 dark:border-soft-gray/20 print:shadow-none print:border print:border-gray-300 print:p-4 print:break-inside-avoid">
+                <h2 class="text-xl font-semibold text-navy dark:text-soft-gray mb-4 flex items-center gap-3 print:text-navy">
+                  <span class="text-2xl print:text-xl">{section.icon}</span>
+                  {section.title}
+                </h2>
+                <ul class="space-y-3 print:space-y-2">
+                  {section.items.map((item) => (
+                    <li class="flex items-start gap-3">
+                      <span class="flex-shrink-0 w-5 h-5 border-2 border-steel-blue rounded mt-0.5 print:border-gray-400" />
+                      <span class="text-navy/80 dark:text-soft-gray/80 print:text-navy">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Scoring Section -->
+        <div
+          class="mt-12 bg-steel-blue/10 dark:bg-steel-blue/20 rounded-lg p-6 print:bg-gray-100 print:mt-6"
+        >
+          <h2
+            class="text-xl font-semibold text-navy dark:text-soft-gray mb-4 print:text-navy"
+          >
+            Score Your Results
+          </h2>
+          <div
+            class="space-y-4 text-navy/80 dark:text-soft-gray/80 print:text-navy"
+          >
+            <p>Count the items you checked and see where you stand:</p>
+            <ul class="space-y-2">
+              <li>
+                <strong class="text-navy dark:text-soft-gray print:text-navy"
+                  >0-5 items:</strong
+                > Your tech stack is working well. Minor optimizations possible.
+              </li>
+              <li>
+                <strong class="text-navy dark:text-soft-gray print:text-navy"
+                  >6-12 items:</strong
+                > Moderate friction. A few integrations or automations could save
+                significant time.
+              </li>
+              <li>
+                <strong class="text-navy dark:text-soft-gray print:text-navy"
+                  >13-19 items:</strong
+                > High friction. You're likely spending 5-10+ hours weekly on tasks
+                that could be automated.
+              </li>
+              <li>
+                <strong class="text-navy dark:text-soft-gray print:text-navy"
+                  >20+ items:</strong
+                > Critical friction. Technology is significantly hindering your business
+                operations.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- CTA Section (hidden in print) -->
+        <div class="mt-12 text-center bg-navy rounded-lg p-8 print:hidden">
+          <h2 class="text-2xl font-bold text-white mb-3">
+            Checked more than 5 items?
+          </h2>
+          <p class="text-white/80 mb-6 max-w-xl mx-auto">
+            Let's talk about which friction points are costing you the most time
+            and money - and how to fix them.
+          </p>
+          <a
+            href="/contact"
+            class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
+          >
+            Schedule a Free Consultation
+          </a>
+          <p class="text-sm text-white/60 mt-3">
+            30 minutes. No obligation. No pressure.
+          </p>
+        </div>
+
+        <!-- Print Footer -->
+        <div
+          class="hidden print:block mt-8 pt-4 border-t border-gray-300 text-center text-sm text-gray-600"
+        >
+          <p>
+            <strong>Main Street Logic</strong> - Technology consulting for small business
+          </p>
+          <p>mainstreetlogic.com | Schedule a free consultation</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  @media print {
+    /* Hide site header and footer in print */
+    :global(header),
+    :global(footer) {
+      display: none !important;
+    }
+
+    :global(body) {
+      background: white !important;
+      color: #2d4966 !important;
+    }
+
+    :global(main) {
+      padding: 0 !important;
+    }
+
+    /* Ensure checkboxes print clearly */
+    .print-styles li span:first-child {
+      border-color: #666 !important;
+    }
+  }
+</style>
