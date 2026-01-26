@@ -42,6 +42,14 @@ const absoluteOgImage = ogImage.startsWith('http')
     />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Preload hero image for LCP optimization -->
+    <link
+      rel="preload"
+      href="/images/hero/hero-light.webp"
+      as="image"
+      type="image/webp"
+    />
+
     <!-- Theme initialization (prevents FOUC) -->
     <script is:inline>
       (function () {
