@@ -5,6 +5,96 @@ import ServiceCard from '../components/ServiceCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import GuaranteeBadge from '../components/GuaranteeBadge.astro';
 
+const siteUrl = 'https://mainstreetlogic.com';
+const pageDescription =
+  'Work directly with a developer, not an agency. Custom software, automation, and website development for small businesses. Save 10+ hours per week with solutions tailored to your workflow.';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Main Street Logic',
+  description:
+    'Technology consulting for small businesses. Custom software, automation, website development, and system integration.',
+  url: siteUrl,
+  logo: `${siteUrl}/images/logo.png`,
+  sameAs: [],
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'US',
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'United States',
+  },
+  priceRange: '$$',
+  serviceType: [
+    'Custom Software Development',
+    'Business Automation',
+    'Website Development',
+    'System Integration',
+    'SaaS Consulting',
+    'Technology Consulting',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Technology Services',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Custom Software & Automation',
+          description:
+            'Streamline your operations with custom tools and automated workflows tailored to your business.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Website Development',
+          description:
+            'Modern, fast websites that represent your business professionally and convert visitors to customers.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'System Integration',
+          description:
+            'Connect your tools and platforms so they work together seamlessly.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'SaaS Audit & Optimization',
+          description:
+            'Review your software subscriptions and find ways to reduce costs while improving efficiency.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Hourly Tech Consulting',
+          description:
+            'Get expert advice on any technology question, from choosing software to planning your tech strategy.',
+        },
+      },
+    ],
+  },
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Main Street Logic',
+  url: siteUrl,
+};
+
 const services = [
   {
     title: 'Custom Software & Automation',
@@ -39,7 +129,17 @@ const services = [
 ];
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" description={pageDescription}>
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationSchema)}
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteSchema)}
+    />
+  </Fragment>
   <Hero
     title="Tired of paying for software that doesn't work together?"
     subtitle="Work directly with a developer, not a revolving door of agency staff. Get real solutions from someone who understands both code and business."
