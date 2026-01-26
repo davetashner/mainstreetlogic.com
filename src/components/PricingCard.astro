@@ -23,14 +23,14 @@ const {
     'rounded-lg p-8 border',
     highlighted
       ? 'bg-steel-blue text-white border-steel-blue shadow-lg scale-105'
-      : 'bg-white text-navy border-soft-gray/50',
+      : 'bg-white dark:bg-navy text-navy dark:text-soft-gray border-soft-gray/50 dark:border-soft-gray/20',
   ]}
 >
   <h3 class="text-xl font-semibold mb-2">{title}</h3>
   <p
     class:list={[
       'text-sm mb-4',
-      highlighted ? 'text-white/80' : 'text-navy/60',
+      highlighted ? 'text-white/80' : 'text-navy/60 dark:text-soft-gray/60',
     ]}
   >
     {description}
@@ -42,7 +42,7 @@ const {
         <span
           class:list={[
             'text-sm',
-            highlighted ? 'text-white/80' : 'text-navy/60',
+            highlighted ? 'text-white/80' : 'text-navy/60 dark:text-soft-gray/60',
           ]}
         >
           {period}
@@ -70,7 +70,11 @@ const {
               d="M5 13l4 4L19 7"
             />
           </svg>
-          <span class:list={[highlighted ? 'text-white/90' : 'text-navy/70']}>
+          <span
+            class:list={[
+              highlighted ? 'text-white/90' : 'text-navy/70 dark:text-soft-gray/70',
+            ]}
+          >
             {feature}
           </span>
         </li>

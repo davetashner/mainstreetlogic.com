@@ -59,12 +59,12 @@ const faqs = [
   description="Transparent pricing for small business technology consulting. Monthly hosting plans, project work, and flexible engagement models."
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24">
+  <section class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">
+      <h1 class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6">
         Simple, Transparent Pricing
       </h1>
-      <p class="text-xl text-navy/70">
+      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
         No hidden fees. No surprises. Just honest pricing for quality work.
       </p>
     </div>
@@ -73,10 +73,10 @@ const faqs = [
   <!-- Hosting Plans -->
   <section class="py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-4 text-center">
+      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-4 text-center">
         Monthly Hosting Plans
       </h2>
-      <p class="text-center text-navy/70 mb-12 max-w-2xl mx-auto">
+      <p class="text-center text-navy/70 dark:text-soft-gray/70 mb-12 max-w-2xl mx-auto">
         Keep your website running smoothly with our managed hosting. Everything
         you need, nothing you don't.
       </p>
@@ -98,43 +98,43 @@ const faqs = [
   </section>
 
   <!-- Project Work -->
-  <section class="bg-white py-16 md:py-24">
+  <section class="bg-white dark:bg-navy py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-4 text-center">
+      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-4 text-center">
         Project Work
       </h2>
-      <p class="text-center text-navy/70 mb-12 max-w-2xl mx-auto">
+      <p class="text-center text-navy/70 dark:text-soft-gray/70 mb-12 max-w-2xl mx-auto">
         For larger initiatives, we provide custom quotes based on your specific
         needs.
       </p>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-light-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy mb-2">Small Projects</h3>
+        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
+          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">Small Projects</h3>
           <p class="text-2xl font-bold text-steel-blue mb-2">$500 - $2,000</p>
-          <p class="text-sm text-navy/60">
+          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
             Simple websites, basic automation, quick integrations
           </p>
         </div>
-        <div class="bg-light-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy mb-2">Medium Projects</h3>
+        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
+          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">Medium Projects</h3>
           <p class="text-2xl font-bold text-steel-blue mb-2">
             $2,000 - $10,000
           </p>
-          <p class="text-sm text-navy/60">
+          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
             Custom applications, complex integrations, full site redesigns
           </p>
         </div>
-        <div class="bg-light-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy mb-2">Large Projects</h3>
-          <p class="text-2xl font-bold text-steel-blue mb-2">$10,000+</p>
-          <p class="text-sm text-navy/60">
-            Enterprise solutions, multi-system overhauls
+        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
+          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">Large Projects</h3>
+          <p class="text-2xl font-bold text-steel-blue mb-2">Let's Chat</p>
+          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
+            Multi-system overhauls, complex requirements
           </p>
         </div>
       </div>
 
-      <p class="text-center text-navy/60 mt-8 text-sm">
+      <p class="text-center text-navy/60 dark:text-soft-gray/60 mt-8 text-sm">
         These are general ranges. Every project is quoted individually based on
         your specific requirements.
       </p>
@@ -182,20 +182,20 @@ const faqs = [
   </section>
 
   <!-- FAQ -->
-  <section class="bg-white py-16 md:py-24">
+  <section class="bg-white dark:bg-navy py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy mb-12 text-center">
+      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-12 text-center">
         Frequently Asked Questions
       </h2>
 
       <div class="space-y-6">
         {
           faqs.map((faq) => (
-            <div class="border-b border-soft-gray pb-6">
-              <h3 class="text-xl font-semibold text-navy mb-2">
+            <div class="border-b border-soft-gray dark:border-soft-gray/20 pb-6">
+              <h3 class="text-xl font-semibold text-navy dark:text-soft-gray mb-2">
                 {faq.question}
               </h3>
-              <p class="text-navy/70">{faq.answer}</p>
+              <p class="text-navy/70 dark:text-soft-gray/70">{faq.answer}</p>
             </div>
           ))
         }
