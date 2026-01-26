@@ -42,7 +42,9 @@ const {
         <span
           class:list={[
             'text-sm',
-            highlighted ? 'text-white/80' : 'text-navy/60 dark:text-soft-gray/60',
+            highlighted
+              ? 'text-white/80'
+              : 'text-navy/60 dark:text-soft-gray/60',
           ]}
         >
           {period}
@@ -72,7 +74,9 @@ const {
           </svg>
           <span
             class:list={[
-              highlighted ? 'text-white/90' : 'text-navy/70 dark:text-soft-gray/70',
+              highlighted
+                ? 'text-white/90'
+                : 'text-navy/70 dark:text-soft-gray/70',
             ]}
           >
             {feature}
