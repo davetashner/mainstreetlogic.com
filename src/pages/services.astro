@@ -13,6 +13,11 @@ const services = [
       'Data processing and reporting automation',
       'Email and notification systems',
     ],
+    example: {
+      client: 'Landscaping Company',
+      project: 'Automated invoice processing from job completion photos',
+      outcome: 'Reduced 10+ hours of weekly data entry to 30 minutes',
+    },
   },
   {
     title: 'Website Development',
@@ -24,6 +29,11 @@ const services = [
       'Website redesigns and updates',
       'Ongoing maintenance and hosting',
     ],
+    example: {
+      client: 'Local Bakery',
+      project: 'New website with online ordering and pickup scheduling',
+      outcome: '40% increase in online orders within the first month',
+    },
   },
   {
     title: 'System Integration',
@@ -35,6 +45,11 @@ const services = [
       'Inventory management connections',
       'Custom API development',
     ],
+    example: {
+      client: 'Boutique Retailer',
+      project: 'Connected Shopify to QuickBooks with automatic inventory sync',
+      outcome: 'Eliminated 5 hours/week of manual entry, zero reconciliation errors',
+    },
   },
   {
     title: 'SaaS Audit & Optimization',
@@ -46,6 +61,11 @@ const services = [
       'Better alternatives recommendations',
       'Cost-benefit analysis',
     ],
+    example: {
+      client: 'Real Estate Agency',
+      project: 'Full software audit across 12 team members',
+      outcome: 'Reduced monthly software spend from $780 to $290',
+    },
   },
   {
     title: 'Hourly Tech Consulting',
@@ -57,6 +77,11 @@ const services = [
       'Vendor evaluation',
       'Technical problem-solving',
     ],
+    example: {
+      client: 'Growing HVAC Company',
+      project: 'Technology roadmap and software selection guidance',
+      outcome: 'Clear 12-month IT plan, avoided $15K in unnecessary purchases',
+    },
   },
 ];
 ---
@@ -122,6 +147,39 @@ const services = [
                       </li>
                     ))}
                   </ul>
+                  {service.example && (
+                    <div class="mt-6 pt-6 border-t border-soft-gray/30 dark:border-soft-gray/10">
+                      <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                          <svg
+                            class="w-4 h-4 text-green-600 dark:text-green-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="text-sm font-medium text-navy dark:text-soft-gray">
+                            Example: {service.example.client}
+                          </p>
+                          <p class="text-sm text-navy/60 dark:text-soft-gray/60 mt-1">
+                            {service.example.project}
+                          </p>
+                          <p class="text-sm font-medium text-green-600 dark:text-green-400 mt-1">
+                            Result: {service.example.outcome}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
