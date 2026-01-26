@@ -1,0 +1,80 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  variant?: 'full' | 'compact' | 'inline';
+}
+
+const {
+  title = 'Satisfaction Guaranteed',
+  description = "Not happy with our first project? We'll make it right.",
+  variant = 'full',
+} = Astro.props;
+---
+
+{
+  variant === 'full' && (
+    <div class="flex items-start gap-4 p-6 bg-white dark:bg-navy rounded-lg border border-soft-gray/50 dark:border-soft-gray/20 shadow-sm">
+      <div class="flex-shrink-0 w-12 h-12 bg-steel-blue/10 rounded-full flex items-center justify-center">
+        <svg
+          class="w-6 h-6 text-steel-blue"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-navy dark:text-soft-gray mb-1">
+          {title}
+        </h3>
+        <p class="text-navy/70 dark:text-soft-gray/70">{description}</p>
+      </div>
+    </div>
+  )
+}
+
+{
+  variant === 'compact' && (
+    <div class="inline-flex items-center gap-2 px-4 py-2 bg-steel-blue/10 rounded-full">
+      <svg
+        class="w-5 h-5 text-steel-blue"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        />
+      </svg>
+      <span class="text-sm font-medium text-navy dark:text-soft-gray">
+        {title}
+      </span>
+    </div>
+  )
+}
+
+{
+  variant === 'inline' && (
+    <span class="inline-flex items-center gap-1.5 text-steel-blue">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        />
+      </svg>
+      <span class="text-sm font-medium">{title}</span>
+    </span>
+  )
+}

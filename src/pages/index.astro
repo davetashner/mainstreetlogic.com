@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
+import GuaranteeBadge from '../components/GuaranteeBadge.astro';
 
 const services = [
   {
@@ -89,6 +90,33 @@ const services = [
 
   <!-- How It Works Section -->
   <ProcessSteps />
+  <!-- Guarantee Section -->
+  <section class="py-16 md:py-20 bg-white dark:bg-navy">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="text-center mb-8">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
+        >
+          Risk-Free to Get Started
+        </h2>
+        <p class="text-xl text-navy/70 dark:text-soft-gray/70 max-w-2xl mx-auto">
+          We understand small business owners are careful with every decision.
+          That's why we make it easy to work with us.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <GuaranteeBadge
+          title="Satisfaction Guaranteed"
+          description="Not happy with our first project? We'll make it right—no questions asked."
+        />
+        <GuaranteeBadge
+          title="Free Consultation"
+          description="30-minute consultation to discuss your needs. No pressure, no obligation."
+        />
+      </div>
+    </div>
+  </section>
 
   <!-- CTA Section -->
   <section class="bg-navy py-16 md:py-24">
