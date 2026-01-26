@@ -54,7 +54,11 @@ function renderStars(rating: number): string[] {
       {
         testimonials.map((testimonial) => (
           <div class="bg-white dark:bg-navy rounded-lg border border-soft-gray/50 dark:border-soft-gray/20 shadow-sm p-6 flex flex-col">
-            <div class="flex gap-1 mb-4" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
+            <div
+              class="flex gap-1 mb-4"
+              role="img"
+              aria-label={`${testimonial.rating} out of 5 stars`}
+            >
               {renderStars(testimonial.rating).map((star) => (
                 <svg
                   class={`w-5 h-5 ${star === 'filled' ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
