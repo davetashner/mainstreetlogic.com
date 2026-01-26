@@ -1,0 +1,103 @@
+---
+const comparisons = [
+  {
+    alternative: 'vs. Agencies',
+    them: 'Account managers, project coordinators, and layers between you and the work',
+    us: 'Direct access to your developer—the person actually building your solution',
+    highlight: 'No middlemen',
+  },
+  {
+    alternative: 'vs. Freelancers',
+    them: 'Great for one-off projects, but often disappear after delivery',
+    us: 'Long-term partnership with ongoing support and someone who knows your business',
+    highlight: 'Lasting relationship',
+  },
+  {
+    alternative: 'vs. In-House',
+    them: 'Full-time salary, benefits, recruiting, and management overhead',
+    us: 'Fractional expertise—pay for what you need, when you need it',
+    highlight: 'No overhead',
+  },
+  {
+    alternative: 'vs. DIY',
+    them: 'Steep learning curve that takes time away from running your business',
+    us: 'Focus on what you do best while we handle the technology',
+    highlight: 'Your time back',
+  },
+];
+---
+
+<section class="py-16 md:py-24 bg-soft-gray/30 dark:bg-navy/50">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
+      >
+        Why Main Street Logic?
+      </h2>
+      <p class="text-xl text-navy/70 dark:text-soft-gray/70 max-w-2xl mx-auto">
+        Different options work for different situations. Here's how we compare.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      {
+        comparisons.map((item) => (
+          <div class="bg-white dark:bg-navy rounded-lg p-6 shadow-sm border border-soft-gray/50 dark:border-soft-gray/20">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-navy dark:text-soft-gray">
+                {item.alternative}
+              </h3>
+              <span class="text-xs font-medium bg-steel-blue/10 text-steel-blue px-2 py-1 rounded">
+                {item.highlight}
+              </span>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 w-5 h-5 rounded-full bg-soft-gray/50 dark:bg-soft-gray/20 flex items-center justify-center mt-0.5">
+                  <span class="text-navy/40 dark:text-soft-gray/40 text-xs">
+                    —
+                  </span>
+                </div>
+                <p class="text-sm text-navy/60 dark:text-soft-gray/60">
+                  {item.them}
+                </p>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 w-5 h-5 rounded-full bg-steel-blue/20 flex items-center justify-center mt-0.5">
+                  <svg
+                    class="w-3 h-3 text-steel-blue"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <p class="text-sm text-navy dark:text-soft-gray font-medium">
+                  {item.us}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 text-center">
+      <p class="text-navy/60 dark:text-soft-gray/60 text-sm max-w-xl mx-auto">
+        Every option has its place. Agencies are great for large, complex
+        projects. Freelancers excel at specialized skills. In-house works when
+        you need constant support. We're the right fit when you want a dedicated
+        partner who understands small business.
+      </p>
+    </div>
+  </div>
+</section>
