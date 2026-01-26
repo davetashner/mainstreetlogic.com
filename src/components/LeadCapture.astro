@@ -1,0 +1,158 @@
+---
+/**
+ * LeadCapture - Scroll-triggered banner for capturing leads
+ *
+ * Shows after user scrolls past a threshold, offering a lead magnet
+ * in exchange for email. Remembers dismissal preference in localStorage.
+ */
+
+interface Props {
+  /** Scroll percentage to trigger banner (0-100) */
+  triggerPercent?: number;
+  /** Hours to remember dismissal */
+  dismissHours?: number;
+}
+
+const { triggerPercent = 50, dismissHours = 24 } = Astro.props;
+---
+
+<div
+  id="lead-capture"
+  class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-300 ease-out"
+  role="region"
+  aria-label="Newsletter signup"
+  data-trigger-percent={triggerPercent}
+  data-dismiss-hours={dismissHours}
+>
+  <div
+    class="bg-white dark:bg-navy border-t border-soft-gray/50 dark:border-soft-gray/20 shadow-lg"
+  >
+    <div class="max-w-6xl mx-auto px-4 py-4 md:py-5">
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+      >
+        <!-- Content -->
+        <div class="flex-1">
+          <p
+            class="font-semibold text-navy dark:text-white text-base md:text-lg"
+          >
+            Free: Tech Friction Checklist
+          </p>
+          <p class="text-sm text-navy/70 dark:text-soft-gray/70 mt-1">
+            Identify what's slowing your business down. No email required.
+          </p>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="flex items-center gap-3">
+          <a
+            href="/downloads/tech-friction-checklist.pdf"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-steel-blue text-white font-medium rounded-md hover:bg-dark-steel transition-colors text-sm md:text-base"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              ></path>
+            </svg>
+            Download Free
+          </a>
+
+          <!-- Dismiss Button -->
+          <button
+            id="lead-capture-dismiss"
+            type="button"
+            class="p-2 text-navy/50 dark:text-soft-gray/50 hover:text-navy dark:hover:text-soft-gray transition-colors"
+            aria-label="Dismiss"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'leadCaptureDismissed';
+
+  const banner = document.getElementById('lead-capture');
+  const dismissBtn = document.getElementById('lead-capture-dismiss');
+
+  if (banner && dismissBtn) {
+    const triggerPercent = parseInt(banner.dataset.triggerPercent || '50', 10);
+    const dismissHours = parseInt(banner.dataset.dismissHours || '24', 10);
+
+    // Check if previously dismissed
+    function isDismissed(): boolean {
+      const dismissed = localStorage.getItem(STORAGE_KEY);
+      if (!dismissed) return false;
+
+      const dismissedAt = parseInt(dismissed, 10);
+      const hoursElapsed = (Date.now() - dismissedAt) / (1000 * 60 * 60);
+      return hoursElapsed < dismissHours;
+    }
+
+    // Show the banner
+    function showBanner(): void {
+      banner.classList.remove('translate-y-full');
+      banner.classList.add('translate-y-0');
+    }
+
+    // Hide the banner
+    function hideBanner(): void {
+      banner.classList.remove('translate-y-0');
+      banner.classList.add('translate-y-full');
+    }
+
+    // Dismiss and remember
+    function dismissBanner(): void {
+      localStorage.setItem(STORAGE_KEY, Date.now().toString());
+      hideBanner();
+    }
+
+    // Check scroll position
+    let hasShown = false;
+    function checkScroll(): void {
+      if (hasShown || isDismissed()) return;
+
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (window.scrollY / scrollHeight) * 100;
+
+      if (scrollPercent >= triggerPercent) {
+        hasShown = true;
+        showBanner();
+      }
+    }
+
+    // Event listeners
+    dismissBtn.addEventListener('click', dismissBanner);
+    window.addEventListener('scroll', checkScroll, { passive: true });
+
+    // Check initial scroll position (in case page loaded mid-scroll)
+    checkScroll();
+  }
+</script>
