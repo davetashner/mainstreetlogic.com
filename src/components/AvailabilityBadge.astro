@@ -1,0 +1,52 @@
+---
+/**
+ * AvailabilityBadge - Subtle urgency/scarcity indicator for consultations
+ *
+ * Displays limited availability messaging in a tasteful, non-pushy way.
+ * Update the props when capacity changes to keep messaging honest.
+ */
+
+interface Props {
+  /** Number of spots available (e.g., 3) */
+  spotsAvailable?: number;
+  /** Time period for availability (e.g., "this month", "this week") */
+  period?: string;
+  /** Custom message override - if set, spotsAvailable and period are ignored */
+  customMessage?: string;
+  /** Visual variant: 'subtle' (muted) or 'highlight' (more prominent) */
+  variant?: 'subtle' | 'highlight';
+}
+
+const {
+  spotsAvailable = 3,
+  period = 'this month',
+  customMessage,
+  variant = 'subtle',
+} = Astro.props;
+
+const message = customMessage || `Only ${spotsAvailable} consultation spots left ${period}`;
+
+const baseClasses = 'inline-flex items-center gap-2 text-sm rounded-full px-3 py-1.5';
+const variantClasses = {
+  subtle: 'bg-soft-gray/50 dark:bg-soft-gray/10 text-navy/70 dark:text-soft-gray/80',
+  highlight: 'bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800/50',
+};
+---
+
+<div class={`${baseClasses} ${variantClasses[variant]}`}>
+  <svg
+    class="w-4 h-4 flex-shrink-0"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    ></path>
+  </svg>
+  <span>{message}</span>
+</div>

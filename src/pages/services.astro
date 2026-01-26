@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WhyChooseUs from '../components/WhyChooseUs.astro';
+import AvailabilityBadge from '../components/AvailabilityBadge.astro';
 
 const services = [
   {
@@ -182,12 +183,19 @@ const services = [
           <span>Satisfaction guaranteed</span>
         </div>
       </div>
-      <a
-        href="/contact"
-        class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
-      >
-        Schedule a Free Consultation
-      </a>
+      <div class="flex flex-col items-center gap-4">
+        <a
+          href="/contact"
+          class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
+        >
+          Schedule a Free Consultation
+        </a>
+        <AvailabilityBadge
+          spotsAvailable={3}
+          period="this month"
+          variant="subtle"
+        />
+      </div>
     </div>
   </section>
 </BaseLayout>

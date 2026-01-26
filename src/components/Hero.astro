@@ -1,4 +1,6 @@
 ---
+import AvailabilityBadge from './AvailabilityBadge.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -6,6 +8,12 @@ interface Props {
   ctaText?: string;
   ctaHref?: string;
   showImage?: boolean;
+  /** Show availability badge below CTA for urgency */
+  showAvailability?: boolean;
+  /** Number of consultation spots available */
+  spotsAvailable?: number;
+  /** Time period for availability */
+  availabilityPeriod?: string;
 }
 
 const {
@@ -15,6 +23,9 @@ const {
   ctaText,
   ctaHref,
   showImage = true,
+  showAvailability = false,
+  spotsAvailable = 3,
+  availabilityPeriod = 'this month',
 } = Astro.props;
 ---
 
@@ -59,12 +70,23 @@ const {
         }
         {
           ctaText && ctaHref && (
-            <a
-              href={ctaHref}
-              class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors no-underline"
-            >
-              {ctaText}
-            </a>
+            <div class="space-y-3">
+              <a
+                href={ctaHref}
+                class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors no-underline"
+              >
+                {ctaText}
+              </a>
+              {showAvailability && (
+                <div>
+                  <AvailabilityBadge
+                    spotsAvailable={spotsAvailable}
+                    period={availabilityPeriod}
+                    variant="subtle"
+                  />
+                </div>
+              )}
+            </div>
           )
         }
       </div>
