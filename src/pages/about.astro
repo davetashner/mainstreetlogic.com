@@ -23,33 +23,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Our Story Section -->
+  <!-- Meet the Founder Section -->
   <section class="py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-6">
-        Our Story
-      </h2>
-      <div
-        class="prose prose-lg max-w-none text-navy/80 dark:text-soft-gray/80 space-y-4"
-      >
-        <p>
-          Main Street Logic was founded with a simple idea: small businesses
-          shouldn't have to navigate the complex world of technology alone. Too
-          often, we saw local businesses struggling with outdated systems,
-          paying for software they didn't need, or missing opportunities because
-          they didn't know what was possible.
-        </p>
-        <p>
-          We started by helping a few local businesses in our community. Word
-          spread, and we realized there was a real need for technology
-          consulting that speaks the language of small business owners - not
-          tech jargon, but practical solutions that make sense.
-        </p>
-        <p>
-          Today, we work with small businesses across the country, helping them
-          make smart technology decisions that save time, reduce costs, and set
-          them up for growth.
-        </p>
+      <div class="md:flex md:gap-12 md:items-start">
+        <!-- Photo -->
+        <div class="flex-shrink-0 mb-8 md:mb-0">
+          <img
+            src="/images/headshot.png"
+            alt="Dave Tashner, Founder of Main Street Logic"
+            class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover mx-auto md:mx-0 shadow-lg"
+          />
+        </div>
+
+        <!-- Bio -->
+        <div>
+          <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-2">
+            Dave Tashner
+          </h2>
+          <p class="text-steel-blue font-medium mb-6">Founder</p>
+          <div class="text-navy/80 dark:text-soft-gray/80 space-y-4">
+            <p>
+              Main Street Logic was founded with a simple idea: small businesses
+              shouldn't have to navigate the complex world of technology alone.
+              Too often, I saw local businesses struggling with outdated
+              systems, paying for software they didn't need, or missing
+              opportunities because they didn't know what was possible.
+            </p>
+            <p>
+              I started by helping a few local businesses in my community. Word
+              spread, and I realized there was a real need for technology
+              consulting that speaks the language of small business owners - not
+              tech jargon, but practical solutions that make sense.
+            </p>
+            <p>
+              Today, I work with small businesses across the country, helping
+              them make smart technology decisions that save time, reduce costs,
+              and set them up for growth.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
