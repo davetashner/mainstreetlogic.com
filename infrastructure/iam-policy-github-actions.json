@@ -66,6 +66,103 @@
         "arn:aws:s3:::mainstreetlogic-*",
         "arn:aws:s3:::mainstreetlogic-*/*"
       ]
+    },
+    {
+      "Sid": "ACMCertificates",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "acm:ListCertificates",
+        "acm:RequestCertificate",
+        "acm:DeleteCertificate",
+        "acm:AddTagsToCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53Management",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets",
+        "route53:GetHostedZone",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": "arn:aws:route53:::hostedzone/*"
+    },
+    {
+      "Sid": "Route53ListZones",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:GetChange"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaManagement",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:DeleteFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:GetPolicy",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:ListTags"
+      ],
+      "Resource": "arn:aws:lambda:us-east-1:*:function:mainstreetlogic-*"
+    },
+    {
+      "Sid": "APIGatewayManagement",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:DELETE",
+        "apigateway:PATCH"
+      ],
+      "Resource": [
+        "arn:aws:apigateway:us-east-1::/restapis",
+        "arn:aws:apigateway:us-east-1::/restapis/*"
+      ]
+    },
+    {
+      "Sid": "SESManagement",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateEmailIdentity",
+        "ses:DeleteEmailIdentity",
+        "ses:GetEmailIdentity",
+        "ses:PutEmailIdentityDkimAttributes",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMRoleManagement",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:UpdateRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:PassRole",
+        "iam:TagRole",
+        "iam:UntagRole"
+      ],
+      "Resource": "arn:aws:iam::*:role/mainstreetlogic-*"
     }
   ]
 }
