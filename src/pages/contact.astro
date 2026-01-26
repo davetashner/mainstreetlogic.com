@@ -23,7 +23,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Contact Form -->
         <div>
           <h2 class="text-2xl font-bold text-navy mb-6">Send a Message</h2>
-          <form class="space-y-6" action="#" method="POST">
+          <form id="contact-form" class="space-y-6">
             <div>
               <label
                 for="name"
@@ -91,9 +91,62 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               ></textarea>
             </div>
 
+            <!-- Honeypot field - hidden from users, bots will fill it -->
+            <div class="hidden" aria-hidden="true">
+              <label for="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Status message -->
+            <div id="form-status" class="hidden">
+              <div
+                id="form-loading"
+                class="hidden text-navy/70 flex items-center gap-2"
+              >
+                <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                    fill="none"></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Sending...
+              </div>
+              <div
+                id="form-success"
+                class="hidden text-green-700 bg-green-50 border border-green-200 rounded-md p-4"
+              >
+                Thank you for your message! We'll get back to you within 1
+                business day.
+              </div>
+              <div
+                id="form-error"
+                class="hidden text-red-700 bg-red-50 border border-red-200 rounded-md p-4"
+              >
+                <span id="error-message"
+                  >Something went wrong. Please try again.</span
+                >
+              </div>
+            </div>
+
             <button
               type="submit"
-              class="w-full bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors"
+              id="submit-button"
+              class="w-full bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-dark-steel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Send Message
             </button>
@@ -174,4 +227,101 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
   </section>
+
+  <script>
+    const CONTACT_API_URL = import.meta.env.PUBLIC_CONTACT_API_URL || '';
+
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const submitButton = document.getElementById(
+      'submit-button'
+    ) as HTMLButtonElement;
+    const statusContainer = document.getElementById(
+      'form-status'
+    ) as HTMLDivElement;
+    const loadingEl = document.getElementById('form-loading') as HTMLDivElement;
+    const successEl = document.getElementById('form-success') as HTMLDivElement;
+    const errorEl = document.getElementById('form-error') as HTMLDivElement;
+    const errorMessage = document.getElementById(
+      'error-message'
+    ) as HTMLSpanElement;
+
+    function showStatus(
+      type: 'loading' | 'success' | 'error',
+      message?: string
+    ) {
+      statusContainer.classList.remove('hidden');
+      loadingEl.classList.add('hidden');
+      successEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+
+      if (type === 'loading') {
+        loadingEl.classList.remove('hidden');
+      } else if (type === 'success') {
+        successEl.classList.remove('hidden');
+      } else if (type === 'error') {
+        errorEl.classList.remove('hidden');
+        if (message) {
+          errorMessage.textContent = message;
+        }
+      }
+    }
+
+    function hideStatus() {
+      statusContainer.classList.add('hidden');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!CONTACT_API_URL) {
+        showStatus(
+          'error',
+          'Contact form is not configured. Please email us directly.'
+        );
+        return;
+      }
+
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        business: formData.get('business'),
+        message: formData.get('message'),
+        website: formData.get('website'), // honeypot
+      };
+
+      submitButton.disabled = true;
+      showStatus('loading');
+
+      try {
+        const response = await fetch(CONTACT_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          showStatus('success');
+          form.reset();
+        } else {
+          showStatus(
+            'error',
+            result.error || 'Failed to send message. Please try again.'
+          );
+        }
+      } catch (err) {
+        console.error('Contact form error:', err);
+        showStatus(
+          'error',
+          'Network error. Please check your connection and try again.'
+        );
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  </script>
 </BaseLayout>

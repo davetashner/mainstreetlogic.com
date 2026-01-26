@@ -231,6 +231,7 @@ jobs:
       staging-distribution-id: ${{ steps.get-outputs.outputs.staging-distribution-id }}
       production-url: ${{ steps.get-outputs.outputs.production-url }}
       staging-url: ${{ steps.get-outputs.outputs.staging-url }}
+      contact-api-url: ${{ steps.get-outputs.outputs.contact-api-url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -270,6 +271,7 @@ jobs:
           STAGING_DIST_ID=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingDistributionId") | .OutputValue')
           PROD_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ProductionUrl") | .OutputValue')
           STAGING_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingUrl") | .OutputValue')
+          CONTACT_API_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ContactFormApiUrl") | .OutputValue')
 
           echo "production-bucket=$PROD_BUCKET" >> $GITHUB_OUTPUT
           echo "staging-bucket=$STAGING_BUCKET" >> $GITHUB_OUTPUT
@@ -277,12 +279,14 @@ jobs:
           echo "staging-distribution-id=$STAGING_DIST_ID" >> $GITHUB_OUTPUT
           echo "production-url=$PROD_URL" >> $GITHUB_OUTPUT
           echo "staging-url=$STAGING_URL" >> $GITHUB_OUTPUT
+          echo "contact-api-url=$CONTACT_API_URL" >> $GITHUB_OUTPUT
 
           echo "### Infrastructure Outputs" >> $GITHUB_STEP_SUMMARY
           echo "- Production Bucket: \`$PROD_BUCKET\`" >> $GITHUB_STEP_SUMMARY
           echo "- Staging Bucket: \`$STAGING_BUCKET\`" >> $GITHUB_STEP_SUMMARY
           echo "- Production URL: $PROD_URL" >> $GITHUB_STEP_SUMMARY
           echo "- Staging URL: $STAGING_URL" >> $GITHUB_STEP_SUMMARY
+          echo "- Contact API URL: $CONTACT_API_URL" >> $GITHUB_STEP_SUMMARY
 
   # Deploy to staging for PRs (only if deployable files changed)
   deploy-staging:
@@ -328,34 +332,6 @@ jobs:
         if: steps.should-deploy.outputs.skip != 'true'
         uses: actions/checkout@v4
 
-      - name: Check for package.json
-        id: check-package
-        if: steps.should-deploy.outputs.skip != 'true'
-        run: |
-          if [ -f package.json ]; then
-            echo "has_package=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_package=false" >> $GITHUB_OUTPUT
-            echo "No package.json found (early project phase)"
-          fi
-
-      - name: Setup Node.js
-        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
-        run: npm ci
-
-      - name: Build for staging
-        if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'true'
-        run: npm run build
-        env:
-          BASE_PATH: /pr-${{ github.event.pull_request.number }}/
-
       - name: Configure AWS credentials
         if: steps.should-deploy.outputs.skip != 'true'
         uses: aws-actions/configure-aws-credentials@v5
@@ -384,9 +360,40 @@ jobs:
 
           STAGING_BUCKET=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingBucketName") | .OutputValue')
           STAGING_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="StagingDistributionDomain") | .OutputValue')
+          CONTACT_API_URL=$(echo $OUTPUTS | jq -r '.[] | select(.OutputKey=="ContactFormApiUrl") | .OutputValue // empty')
 
           echo "staging-bucket=$STAGING_BUCKET" >> $GITHUB_OUTPUT
           echo "staging-url=$STAGING_URL" >> $GITHUB_OUTPUT
+          echo "contact-api-url=$CONTACT_API_URL" >> $GITHUB_OUTPUT
+
+      - name: Check for package.json
+        id: check-package
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true'
+        run: |
+          if [ -f package.json ]; then
+            echo "has_package=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_package=false" >> $GITHUB_OUTPUT
+            echo "No package.json found (early project phase)"
+          fi
+
+      - name: Setup Node.js
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true' && steps.check-package.outputs.has_package == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true' && steps.check-package.outputs.has_package == 'true'
+        run: npm ci
+
+      - name: Build for staging
+        if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true' && steps.check-package.outputs.has_package == 'true'
+        run: npm run build
+        env:
+          BASE_PATH: /pr-${{ github.event.pull_request.number }}/
+          PUBLIC_CONTACT_API_URL: ${{ steps.infra.outputs.contact-api-url }}
 
       - name: Create placeholder if no build
         if: steps.should-deploy.outputs.skip != 'true' && steps.check-package.outputs.has_package == 'false' && steps.infra.outputs.stack_exists == 'true'
@@ -477,22 +484,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check for build artifacts
-        id: check-artifacts
+      - name: Check for package.json
+        id: check-package
         run: |
           if [ -f package.json ]; then
-            echo "has_artifacts=true" >> $GITHUB_OUTPUT
+            echo "has_package=true" >> $GITHUB_OUTPUT
           else
-            echo "has_artifacts=false" >> $GITHUB_OUTPUT
-            echo "No build artifacts expected (early project phase)"
+            echo "has_package=false" >> $GITHUB_OUTPUT
+            echo "No package.json found (early project phase)"
           fi
 
-      - name: Download build artifacts
-        if: steps.check-artifacts.outputs.has_artifacts == 'true'
-        uses: actions/download-artifact@v7
+      - name: Setup Node.js
+        if: steps.check-package.outputs.has_package == 'true'
+        uses: actions/setup-node@v4
         with:
-          name: build
-          path: dist/
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm ci
+
+      - name: Build for production
+        if: steps.check-package.outputs.has_package == 'true'
+        run: npm run build
+        env:
+          PUBLIC_CONTACT_API_URL: ${{ needs.deploy-infrastructure.outputs.contact-api-url }}
 
       - name: Create placeholder if no build
         if: steps.check-artifacts.outputs.has_artifacts == 'false'
