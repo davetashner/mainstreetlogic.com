@@ -48,4 +48,38 @@
   a:hover {
     text-decoration: underline;
   }
+
+  /* Focus indicators for keyboard navigation (WCAG 2.1 AA) */
+  :focus-visible {
+    outline: 2px solid var(--color-steel-blue);
+    outline-offset: 2px;
+  }
+
+  /* Remove default outline for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Skip link styles */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-navy);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    z-index: 100;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .dark .skip-link {
+    background-color: var(--color-steel-blue);
+  }
 }
