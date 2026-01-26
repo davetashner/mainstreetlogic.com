@@ -7,7 +7,7 @@ test.describe('Smoke Tests', () => {
   test('homepage loads', async ({ page }) => {
     await page.goto(suffix || './');
     await expect(page).toHaveTitle(/Home.*Main Street Logic/);
-    await expect(page.locator('h1')).toContainText('technology consulting');
+    await expect(page.locator('h1')).toContainText('software');
   });
 
   test('about page loads', async ({ page }) => {
