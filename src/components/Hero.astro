@@ -8,7 +8,14 @@ interface Props {
   showImage?: boolean;
 }
 
-const { title, subtitle, outcome, ctaText, ctaHref, showImage = true } = Astro.props;
+const {
+  title,
+  subtitle,
+  outcome,
+  ctaText,
+  ctaHref,
+  showImage = true,
+} = Astro.props;
 ---
 
 <section
