@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
+
 const navItems = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
@@ -10,15 +12,22 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="bg-white shadow-sm sticky top-0 z-50">
+<header
+  class="bg-white/80 dark:bg-dark-bg/80 backdrop-blur-sm shadow-sm sticky top-0 z-50"
+>
   <nav class="max-w-6xl mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center no-underline">
         <img
-          src="/images/logo/light-and-dark-logo-name.png"
+          src="/images/logo/logo-and-name-light.png"
           alt="Main Street Logic"
-          class="h-10"
+          class="h-10 dark:hidden"
+        />
+        <img
+          src="/images/logo/logo-and-name-dark.png"
+          alt="Main Street Logic"
+          class="h-10 hidden dark:block"
         />
       </a>
 
@@ -30,7 +39,7 @@ const currentPath = Astro.url.pathname;
               <a
                 href={item.href}
                 class:list={[
-                  'text-navy font-medium transition-colors hover:text-steel-blue',
+                  'text-navy dark:text-soft-gray font-medium transition-colors hover:text-steel-blue',
                   currentPath === item.href && 'text-steel-blue',
                 ]}
               >
@@ -41,26 +50,31 @@ const currentPath = Astro.url.pathname;
         }
       </ul>
 
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-button"
-        class="md:hidden p-2 text-navy hover:text-steel-blue"
-        aria-label="Toggle menu"
-        aria-expanded="false"
-      >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <!-- Theme Toggle & Mobile Menu Button -->
+      <div class="flex items-center gap-2">
+        <ThemeToggle />
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-button"
+          class="md:hidden p-2 text-navy dark:text-soft-gray hover:text-steel-blue"
+          aria-label="Toggle menu"
+          aria-expanded="false"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Navigation -->
@@ -72,7 +86,7 @@ const currentPath = Astro.url.pathname;
               <a
                 href={item.href}
                 class:list={[
-                  'block py-2 text-navy font-medium transition-colors hover:text-steel-blue',
+                  'block py-2 text-navy dark:text-soft-gray font-medium transition-colors hover:text-steel-blue',
                   currentPath === item.href && 'text-steel-blue',
                 ]}
               >

@@ -11,10 +11,10 @@ const { title, subtitle, ctaText, ctaHref, showImage = true } = Astro.props;
 ---
 
 <section
-  class="relative bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24 overflow-hidden"
+  class="relative bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24 overflow-hidden"
 >
   <!-- Wave Pattern Background -->
-  <div class="absolute inset-0 opacity-10">
+  <div class="absolute inset-0 opacity-10 dark:opacity-5">
     <svg
       class="w-full h-full"
       viewBox="0 0 1440 320"
@@ -30,10 +30,18 @@ const { title, subtitle, ctaText, ctaHref, showImage = true } = Astro.props;
   <div class="max-w-6xl mx-auto px-4 relative">
     <div class="grid md:grid-cols-2 gap-12 items-center">
       <div>
-        <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6 leading-tight">
+        <h1
+          class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6 leading-tight"
+        >
           {title}
         </h1>
-        {subtitle && <p class="text-xl text-navy/70 mb-8">{subtitle}</p>}
+        {
+          subtitle && (
+            <p class="text-xl text-navy/70 dark:text-soft-gray/70 mb-8">
+              {subtitle}
+            </p>
+          )
+        }
         {
           ctaText && ctaHref && (
             <a

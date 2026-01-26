@@ -65,10 +65,16 @@ const services = [
   description="Our technology consulting services for small businesses: custom software, website development, system integration, SaaS optimization, and more."
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-light-bg to-soft-gray py-16 md:py-24">
+  <section
+    class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
+  >
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-6">Services</h1>
-      <p class="text-xl text-navy/70">
+      <h1
+        class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6"
+      >
+        Services
+      </h1>
+      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
         Technology solutions designed for the unique needs of small businesses.
       </p>
     </div>
@@ -80,7 +86,7 @@ const services = [
       <div class="space-y-12">
         {
           services.map((service, index) => (
-            <div class="bg-white rounded-lg p-8 shadow-sm border border-soft-gray/50">
+            <div class="bg-white dark:bg-navy rounded-lg p-8 shadow-sm border border-soft-gray/50 dark:border-soft-gray/20">
               <div class="md:flex md:items-start md:gap-8">
                 <div class="flex-shrink-0 w-12 h-12 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-4 md:mb-0">
                   <span class="text-steel-blue font-bold text-lg">
@@ -88,13 +94,15 @@ const services = [
                   </span>
                 </div>
                 <div class="flex-grow">
-                  <h2 class="text-2xl font-semibold text-navy mb-3">
+                  <h2 class="text-2xl font-semibold text-navy dark:text-soft-gray mb-3">
                     {service.title}
                   </h2>
-                  <p class="text-navy/70 mb-4">{service.description}</p>
+                  <p class="text-navy/70 dark:text-soft-gray/70 mb-4">
+                    {service.description}
+                  </p>
                   <ul class="grid md:grid-cols-2 gap-2">
                     {service.details.map((detail) => (
-                      <li class="flex items-start gap-2 text-navy/60">
+                      <li class="flex items-start gap-2 text-navy/60 dark:text-soft-gray/60">
                         <svg
                           class="w-5 h-5 text-steel-blue mt-0.5 flex-shrink-0"
                           fill="none"

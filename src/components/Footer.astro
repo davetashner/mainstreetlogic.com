@@ -10,17 +10,17 @@ const navLinks = [
 ];
 ---
 
-<footer class="bg-navy text-white">
+<footer class="bg-navy dark:bg-dark-bg text-white dark:text-soft-gray">
   <div class="max-w-6xl mx-auto px-4 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Logo & Description -->
       <div>
         <img
-          src="/images/logo/light-and-dark-logo-name.png"
+          src="/images/logo/logo-and-name-light.png"
           alt="Main Street Logic"
-          class="h-10 mb-4 brightness-0 invert"
+          class="h-10 mb-4"
         />
-        <p class="text-white/70 text-sm">
+        <p class="text-white/70 dark:text-soft-gray/70 text-sm">
           Practical technology consulting for small business.
         </p>
       </div>
@@ -34,7 +34,7 @@ const navLinks = [
               <li>
                 <a
                   href={link.href}
-                  class="text-white/70 hover:text-white transition-colors"
+                  class="text-white/70 dark:text-soft-gray/70 hover:text-white dark:hover:text-soft-gray transition-colors"
                 >
                   {link.label}
                 </a>
@@ -47,11 +47,11 @@ const navLinks = [
       <!-- Contact Info -->
       <div>
         <h3 class="font-semibold mb-4">Contact</h3>
-        <ul class="space-y-2 text-white/70">
+        <ul class="space-y-2 text-white/70 dark:text-soft-gray/70">
           <li>
             <a
               href="mailto:hello@mainstreetlogic.com"
-              class="hover:text-white transition-colors"
+              class="hover:text-white dark:hover:text-soft-gray transition-colors"
             >
               hello@mainstreetlogic.com
             </a>
@@ -63,7 +63,7 @@ const navLinks = [
 
     <!-- Copyright -->
     <div
-      class="border-t border-white/20 mt-8 pt-8 text-center text-white/50 text-sm"
+      class="border-t border-white/20 dark:border-soft-gray/20 mt-8 pt-8 text-center text-white/50 dark:text-soft-gray/50 text-sm"
     >
       <p>&copy; {currentYear} Main Street Logic. All rights reserved.</p>
     </div>

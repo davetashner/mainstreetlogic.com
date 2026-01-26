@@ -18,23 +18,34 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Base styles */
-html {
-  scroll-behavior: smooth;
-}
+/* Enable dark mode variant */
+@variant dark (&:where(.dark, .dark *));
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-light-bg);
-  color: var(--color-navy);
-}
+@layer base {
+  /* Base styles */
+  html {
+    scroll-behavior: smooth;
+  }
 
-/* Link styles */
-a {
-  color: var(--color-steel-blue);
-  transition: color 0.2s ease;
-}
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-light-bg);
+    color: var(--color-navy);
+  }
 
-a:hover {
-  text-decoration: underline;
+  /* Dark mode base styles */
+  .dark body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-soft-gray);
+  }
+
+  /* Link styles */
+  a {
+    color: var(--color-steel-blue);
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }

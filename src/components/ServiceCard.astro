@@ -9,7 +9,7 @@ const { title, description, icon } = Astro.props;
 ---
 
 <div
-  class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-soft-gray/50"
+  class="bg-white dark:bg-navy rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-soft-gray/50 dark:border-soft-gray/20"
 >
   {
     icon && (
@@ -18,6 +18,8 @@ const { title, description, icon } = Astro.props;
       </div>
     )
   }
-  <h3 class="text-xl font-semibold text-navy mb-3">{title}</h3>
-  <p class="text-navy/70">{description}</p>
+  <h3 class="text-xl font-semibold text-navy dark:text-soft-gray mb-3">
+    {title}
+  </h3>
+  <p class="text-navy/70 dark:text-soft-gray/70">{description}</p>
 </div>
