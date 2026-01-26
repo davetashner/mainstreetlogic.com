@@ -7,13 +7,22 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  canonicalUrl?: string;
 }
+
+const siteUrl = 'https://mainstreetlogic.com';
 
 const {
   title,
   description = 'Practical technology consulting for small business. Helping Main Street businesses make smart decisions in a digital world.',
   ogImage = '/images/hero/hero-light.png',
+  canonicalUrl,
 } = Astro.props;
+
+const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, siteUrl).href;
 ---
 
 <!doctype html>
@@ -49,20 +58,25 @@ const {
     <title>{title} | Main Street Logic</title>
     <meta name="title" content={`${title} | Main Street Logic`} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={`${title} | Main Street Logic`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:site_name" content="Main Street Logic" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:url" content={canonical} />
     <meta property="twitter:title" content={`${title} | Main Street Logic`} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={ogImage} />
+    <meta property="twitter:image" content={absoluteOgImage} />
+
+    <!-- Additional head content (structured data, etc.) -->
+    <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
