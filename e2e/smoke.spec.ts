@@ -35,6 +35,13 @@ test.describe('Smoke Tests', () => {
     await expect(page).toHaveTitle(/Blog.*Main Street Logic/);
   });
 
+  test('hosting discount page loads', async ({ page }) => {
+    await page.goto(`resources/hosting-discount/${suffix}`);
+    await expect(page).toHaveTitle(/50% Off Hosting.*Main Street Logic/);
+    await expect(page.locator('h1')).toContainText('50% Off');
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+  });
+
   test('navigation links exist', async ({ page }) => {
     await page.goto(suffix || './');
 
