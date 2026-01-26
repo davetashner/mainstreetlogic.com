@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GuaranteeBadge from '../components/GuaranteeBadge.astro';
+import AvailabilityBadge from '../components/AvailabilityBadge.astro';
 ---
 
 <BaseLayout
@@ -238,12 +239,21 @@ import GuaranteeBadge from '../components/GuaranteeBadge.astro';
               Discuss your business needs with no strings attached. We'll help
               you understand your options—whether you work with us or not.
             </p>
-            <a
-              href="mailto:hello@mainstreetlogic.com?subject=Consultation%20Request"
-              class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-medium-steel transition-colors no-underline"
-            >
-              Request a Call
-            </a>
+            <div class="space-y-3">
+              <a
+                href="mailto:hello@mainstreetlogic.com?subject=Consultation%20Request"
+                class="inline-block bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-medium-steel transition-colors no-underline"
+              >
+                Request a Call
+              </a>
+              <div>
+                <AvailabilityBadge
+                  spotsAvailable={3}
+                  period="this month"
+                  variant="highlight"
+                />
+              </div>
+            </div>
           </div>
 
           <!-- Response Time -->

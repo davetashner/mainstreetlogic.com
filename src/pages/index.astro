@@ -6,6 +6,7 @@ import ProcessSteps from '../components/ProcessSteps.astro';
 import GuaranteeBadge from '../components/GuaranteeBadge.astro';
 import FAQ from '../components/FAQ.astro';
 import Testimonials from '../components/Testimonials.astro';
+import AvailabilityBadge from '../components/AvailabilityBadge.astro';
 
 const siteUrl = 'https://mainstreetlogic.com';
 const pageDescription =
@@ -148,6 +149,9 @@ const services = [
     outcome="Save 10+ hours per week with custom automation tailored to your workflow."
     ctaText="Get Started"
     ctaHref="/contact"
+    showAvailability={true}
+    spotsAvailable={3}
+    availabilityPeriod="this month"
   />
 
   <!-- Services Section -->
@@ -234,15 +238,23 @@ const services = [
       <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
         Ready to simplify your technology?
       </h2>
-      <p class="text-xl text-white/70 mb-8">
+      <p class="text-xl text-white/70 mb-6">
         Let's talk about how we can help your business run more efficiently.
       </p>
-      <a
-        href="/contact"
-        class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
-      >
-        Schedule a Consultation
-      </a>
+      <div class="flex flex-col items-center gap-4">
+        <a
+          href="/contact"
+          class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
+        >
+          Schedule a Consultation
+        </a>
+        <AvailabilityBadge
+          spotsAvailable={3}
+          period="this month"
+          variant="subtle"
+          customMessage="Currently accepting 3 new clients per month"
+        />
+      </div>
     </div>
   </section>
 </BaseLayout>
