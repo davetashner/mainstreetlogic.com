@@ -1,0 +1,73 @@
+---
+const faqs = [
+  {
+    question: 'How long do projects take?',
+    answer:
+      "Most projects take 2-6 weeks depending on scope. Simple automations or website updates might be done in a week, while custom software typically takes 4-6 weeks. You'll get a clear timeline in your proposal before we start.",
+  },
+  {
+    question: 'What if I need changes after the project is done?',
+    answer:
+      "We offer ongoing support packages, or you can request changes on an hourly basis. During the project, we build in review checkpoints so you can request adjustments before final delivery. Our satisfaction guarantee means we'll make it right.",
+  },
+  {
+    question: 'How do we communicate during the project?',
+    answer:
+      "You'll have direct access to your developer via email and scheduled calls. We provide regular progress updates and are responsive to questions. No ticket systems or support queues—just straightforward communication.",
+  },
+  {
+    question: "What's the payment process?",
+    answer:
+      'For most projects, we require 50% upfront to begin work, with the remaining 50% due upon completion. For larger projects, we can arrange milestone-based payments. We accept credit cards, ACH transfers, and checks.',
+  },
+];
+---
+
+<section class="py-16 md:py-24 bg-soft-gray/30 dark:bg-navy/50">
+  <div class="max-w-3xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
+      >
+        Common Questions
+      </h2>
+      <p class="text-xl text-navy/70 dark:text-soft-gray/70 max-w-2xl mx-auto">
+        Everything you need to know about working together.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {
+        faqs.map((faq, index) => (
+          <details class="group bg-white dark:bg-navy rounded-lg border border-soft-gray/50 dark:border-soft-gray/20 shadow-sm">
+            <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
+              <span class="text-lg font-semibold text-navy dark:text-soft-gray pr-4">
+                {faq.question}
+              </span>
+              <span class="flex-shrink-0 ml-2">
+                <svg
+                  class="w-5 h-5 text-steel-blue transition-transform group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </span>
+            </summary>
+            <div class="px-6 pb-6 pt-0">
+              <p class="text-navy/70 dark:text-soft-gray/70 leading-relaxed">
+                {faq.answer}
+              </p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
