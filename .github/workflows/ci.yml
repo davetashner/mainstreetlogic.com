@@ -252,6 +252,7 @@ jobs:
               DomainName=mainstreetlogic.com \
               HostedZoneId=Z0323027WXRAQQHL711J \
               IncludeWww=true \
+            --capabilities CAPABILITY_NAMED_IAM \
             --no-fail-on-empty-changeset \
             --tags Project=mainstreetlogic
 
