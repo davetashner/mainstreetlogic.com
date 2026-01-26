@@ -2,12 +2,20 @@
 interface Props {
   title: string;
   subtitle?: string;
+  outcome?: string;
   ctaText?: string;
   ctaHref?: string;
   showImage?: boolean;
 }
 
-const { title, subtitle, ctaText, ctaHref, showImage = true } = Astro.props;
+const {
+  title,
+  subtitle,
+  outcome,
+  ctaText,
+  ctaHref,
+  showImage = true,
+} = Astro.props;
 ---
 
 <section
@@ -37,8 +45,15 @@ const { title, subtitle, ctaText, ctaHref, showImage = true } = Astro.props;
         </h1>
         {
           subtitle && (
-            <p class="text-xl text-navy/70 dark:text-soft-gray/70 mb-8">
+            <p class="text-xl text-navy/70 dark:text-soft-gray/70 mb-4">
               {subtitle}
+            </p>
+          )
+        }
+        {
+          outcome && (
+            <p class="text-lg font-medium text-steel-blue dark:text-medium-steel mb-8">
+              {outcome}
             </p>
           )
         }
