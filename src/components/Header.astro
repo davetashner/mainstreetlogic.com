@@ -85,14 +85,14 @@ const currentPath = Astro.url.pathname;
 
     <!-- Mobile Navigation -->
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
-      <ul class="flex flex-col gap-4">
+      <ul class="flex flex-col gap-1">
         {
           navItems.map((item) => (
             <li>
               <a
                 href={item.href}
                 class:list={[
-                  'block py-2 text-navy dark:text-soft-gray font-medium transition-colors hover:text-steel-blue',
+                  'block py-3 text-navy dark:text-soft-gray font-medium transition-colors hover:text-steel-blue',
                   currentPath === item.href && 'text-steel-blue',
                 ]}
               >
