@@ -5,14 +5,19 @@
 @import '@fontsource/inter/700.css';
 
 @theme {
-  /* Brand Colors */
-  --color-steel-blue: #7b9dbb;
+  /* Brand Colors - Updated for stronger visual identity */
+  --color-steel-blue: #4a90d9;
   --color-navy: #2d4966;
-  --color-medium-steel: #5c7e9e;
-  --color-dark-steel: #3c5e7e;
+  --color-medium-steel: #3b7fc8;
+  --color-dark-steel: #2a6bb5;
   --color-soft-gray: #d1cdc7;
   --color-light-bg: #f5f5f5;
   --color-dark-bg: #1a2530;
+
+  /* Accent color for primary CTAs */
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-accent-dark: #fb923c;
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -81,5 +86,83 @@
 
   .dark .skip-link {
     background-color: var(--color-steel-blue);
+  }
+}
+
+@layer components {
+  /* Primary CTA Button - warm accent color */
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      var(--color-accent-hover) 100%
+    );
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+    box-shadow: 0 2px 4px rgba(249, 115, 22, 0.2);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+    text-decoration: none;
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(249, 115, 22, 0.2);
+  }
+
+  .dark .btn-primary {
+    background: linear-gradient(
+      135deg,
+      var(--color-accent-dark) 0%,
+      var(--color-accent) 100%
+    );
+    box-shadow: 0 2px 4px rgba(251, 146, 60, 0.2);
+  }
+
+  .dark .btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(251, 146, 60, 0.35);
+  }
+
+  /* Secondary Button - steel blue outline */
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--color-steel-blue);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    border: 2px solid var(--color-steel-blue);
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-steel-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.25);
+    text-decoration: none;
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0);
+  }
+
+  .dark .btn-secondary {
+    color: var(--color-steel-blue);
+    border-color: var(--color-steel-blue);
+  }
+
+  .dark .btn-secondary:hover {
+    background: var(--color-steel-blue);
+    color: white;
   }
 }
