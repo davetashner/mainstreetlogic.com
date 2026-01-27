@@ -375,7 +375,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub 'mainstreetlogic-contact-form-${AWS::AccountId}'
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Handler: index.handler
       Role: !GetAtt ContactFormLambdaRole.Arn
       Timeout: 10
