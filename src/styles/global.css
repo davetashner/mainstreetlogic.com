@@ -165,4 +165,73 @@
     background: var(--color-steel-blue);
     color: white;
   }
+
+  /* Entrance Animations */
+
+  /* Fade-in animation keyframes */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Base animate class - elements start hidden */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* When element is visible (JS adds this class) */
+  .animate-on-scroll.is-visible {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  /* Staggered delays for grid children */
+  .stagger-children.is-visible > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .stagger-children.is-visible > *:nth-child(2) {
+    animation-delay: 100ms;
+  }
+  .stagger-children.is-visible > *:nth-child(3) {
+    animation-delay: 200ms;
+  }
+  .stagger-children.is-visible > *:nth-child(4) {
+    animation-delay: 300ms;
+  }
+  .stagger-children.is-visible > *:nth-child(5) {
+    animation-delay: 400ms;
+  }
+  .stagger-children.is-visible > *:nth-child(6) {
+    animation-delay: 500ms;
+  }
+
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .stagger-children.is-visible > * {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll,
+    .stagger-children > * {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .animate-on-scroll.is-visible,
+    .stagger-children.is-visible > * {
+      animation: none;
+    }
+  }
 }

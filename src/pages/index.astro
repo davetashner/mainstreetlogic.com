@@ -157,7 +157,7 @@ const services = [
   <!-- Services Section -->
   <section class="py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
+      <div class="text-center mb-12 animate-on-scroll">
         <h2
           class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
         >
@@ -171,7 +171,7 @@ const services = [
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
         {
           services.map((service) => (
             <ServiceCard
@@ -197,7 +197,7 @@ const services = [
   <!-- Guarantee Section -->
   <section class="py-16 md:py-20 bg-white dark:bg-navy">
     <div class="max-w-4xl mx-auto px-4">
-      <div class="text-center mb-8">
+      <div class="text-center mb-8 animate-on-scroll">
         <h2
           class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
         >
@@ -211,7 +211,7 @@ const services = [
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto stagger-children">
         <GuaranteeBadge
           title="Satisfaction Guaranteed"
           description="Not happy with our first project? We'll make it right—no questions asked."
