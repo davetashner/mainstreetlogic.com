@@ -47,11 +47,18 @@
   /* Link styles */
   a {
     color: var(--color-steel-blue);
-    transition: color 0.2s ease;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition:
+      background-size 0.2s ease-out,
+      color 0.2s ease;
   }
 
   a:hover {
-    text-decoration: underline;
+    background-size: 100% 1px;
   }
 
   /* Focus indicators for keyboard navigation (WCAG 2.1 AA) */
