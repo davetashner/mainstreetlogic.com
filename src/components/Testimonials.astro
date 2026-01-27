@@ -1,98 +1,13 @@
 ---
-interface Testimonial {
-  name: string;
-  business: string;
-  quote: string;
-  rating: number;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    name: 'Sarah Mitchell',
-    business: 'Mitchell Family Dentistry',
-    quote:
-      'We were drowning in appointment scheduling chaos. Now our booking system runs itself and we save hours every week. Best investment we made this year.',
-    rating: 5,
-  },
-  {
-    name: 'Marcus Chen',
-    business: 'Riverside Property Management',
-    quote:
-      'Finally, someone who speaks our language. No technical jargon, just practical solutions that actually work for our team.',
-    rating: 5,
-  },
-  {
-    name: 'Jennifer Okafor',
-    business: 'Okafor Catering Co.',
-    quote:
-      'Our new website has brought in more inquiries in two months than our old site did in a year. The ROI speaks for itself.',
-    rating: 5,
-  },
-];
-
-function renderStars(rating: number): string[] {
-  return Array(5)
-    .fill(null)
-    .map((_, i) => (i < rating ? 'filled' : 'empty'));
-}
 ---
 
 <section
-  class="py-16 md:py-24 bg-soft-gray/30 dark:bg-navy/50 -mt-8 pt-24 md:pt-32"
+  class="py-16 md:py-24 bg-soft-gray/30 dark:bg-navy/50"
 >
   <div class="max-w-6xl mx-auto px-4">
-    <div class="text-center mb-12">
-      <h2
-        class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
-      >
-        What Our Clients Say
-      </h2>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70 max-w-2xl mx-auto">
-        Small business owners trust us to solve their technology challenges.
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6">
-      {
-        testimonials.map((testimonial) => (
-          <div class="bg-white dark:bg-navy rounded-lg border border-soft-gray/50 dark:border-soft-gray/20 shadow-sm p-6 flex flex-col">
-            <div
-              class="flex gap-1 mb-4"
-              role="img"
-              aria-label={`${testimonial.rating} out of 5 stars`}
-            >
-              {renderStars(testimonial.rating).map((star) => (
-                <svg
-                  class={`w-5 h-5 ${star === 'filled' ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-
-            <blockquote class="text-navy/80 dark:text-soft-gray/80 leading-relaxed mb-6 flex-grow">
-              "{testimonial.quote}"
-            </blockquote>
-
-            <div class="border-t border-soft-gray/30 dark:border-soft-gray/10 pt-4">
-              <p class="font-semibold text-navy dark:text-soft-gray">
-                {testimonial.name}
-              </p>
-              <p class="text-sm text-navy/60 dark:text-soft-gray/60">
-                {testimonial.business}
-              </p>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-
     <!-- Trust Badges -->
     <div
-      class="mt-12 flex flex-wrap justify-center items-center gap-8 text-navy/50 dark:text-soft-gray/50"
+      class="flex flex-wrap justify-center items-center gap-8 text-navy/50 dark:text-soft-gray/50"
     >
       <div class="flex items-center gap-2">
         <svg
