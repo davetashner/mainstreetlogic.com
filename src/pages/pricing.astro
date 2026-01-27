@@ -58,12 +58,29 @@ const faqs = [
       "We stand behind our work. If you're not happy with your first project, we'll make it right—no questions asked. Your satisfaction is our priority.",
   },
 ];
+
+// FAQPage structured data for SEO
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <BaseLayout
   title="Pricing"
   description="Transparent pricing for small business technology consulting. Monthly hosting plans, project work, and flexible engagement models."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
   <!-- Hero Section -->
   <section
     class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
