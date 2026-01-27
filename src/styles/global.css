@@ -93,7 +93,11 @@
   /* Primary CTA Button - warm accent color */
   .btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      var(--color-accent-hover) 100%
+    );
     color: white;
     font-weight: 500;
     padding: 0.75rem 1.5rem;
@@ -115,7 +119,11 @@
   }
 
   .dark .btn-primary {
-    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-accent-dark) 0%,
+      var(--color-accent) 100%
+    );
     box-shadow: 0 2px 4px rgba(251, 146, 60, 0.2);
   }
 
