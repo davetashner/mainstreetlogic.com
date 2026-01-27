@@ -166,6 +166,65 @@
     color: white;
   }
 
+  /* Form Input Styling */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-soft-gray);
+    border-radius: 0.5rem;
+    background-color: white;
+    color: var(--color-navy);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .form-input::placeholder {
+    color: rgba(45, 73, 102, 0.5);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-steel-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+  }
+
+  .dark .form-input {
+    background-color: var(--color-dark-bg);
+    border-color: rgba(209, 205, 199, 0.2);
+    color: var(--color-soft-gray);
+  }
+
+  .dark .form-input::placeholder {
+    color: rgba(209, 205, 199, 0.5);
+  }
+
+  .dark .form-input:focus {
+    border-color: var(--color-steel-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.25);
+  }
+
+  /* Form textarea variant */
+  .form-textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  /* Form label */
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .dark .form-label {
+    color: var(--color-soft-gray);
+  }
+
   /* Entrance Animations */
 
   /* Fade-in animation keyframes */
