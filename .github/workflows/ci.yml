@@ -96,7 +96,7 @@ jobs:
       - name: Lint CloudFormation template
         uses: scottbrenner/cfn-lint-action@v2
         with:
-          args: infrastructure/cloudformation.yml
+          command: cfn-lint infrastructure/cloudformation.yml
 
   # Detect what files changed to skip unnecessary deployments
   changes:

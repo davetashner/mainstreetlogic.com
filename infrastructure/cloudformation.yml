@@ -63,7 +63,7 @@ Resources:
         - Key: Project
           Value: mainstreetlogic
         - Key: Environment
-          Value: production
+          Value: !Ref Environment
 
   # CloudFront Function to rewrite URLs for static site routing
   # Handles: /about -> /about/index.html, /about/ -> /about/index.html
@@ -112,7 +112,7 @@ Resources:
         - Key: Project
           Value: mainstreetlogic
         - Key: Environment
-          Value: production
+          Value: !Ref Environment
 
   # S3 bucket for staging/PR previews
   StagingBucket:
@@ -251,7 +251,7 @@ Resources:
         - Key: Project
           Value: mainstreetlogic
         - Key: Environment
-          Value: production
+          Value: !Ref Environment
 
   # CloudFront distribution for staging
   StagingDistribution:
