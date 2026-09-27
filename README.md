@@ -8,7 +8,8 @@ Built with Astro and Tailwind CSS v4. It deploys to S3/CloudFront via GitHub Act
 npm install
 npm run dev       # http://localhost:4321
 npm run build     # production build to dist/
-npm test          # Playwright smoke tests (against npm run preview)
+npm run test:run  # unit tests with coverage (CI fails below 98%)
+npm test          # Playwright browser tests (against npm run preview)
 ```
 
 - `docs/CONTENT-GUIDE.md`: how to edit pages and content

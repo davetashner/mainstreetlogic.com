@@ -20,7 +20,9 @@ export default defineConfig({
   webServer: process.env.CI
     ? undefined
     : {
-        command: 'npm run preview',
+        // --ignore-lock keeps Astro from moving the server to the background
+        // when it detects an AI agent, which Playwright reads as a crash
+        command: 'npm run preview -- --ignore-lock',
         url: 'http://localhost:4321',
         reuseExistingServer: !process.env.CI,
       },
