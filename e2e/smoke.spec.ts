@@ -35,18 +35,21 @@ test.describe('Smoke Tests', () => {
   test('navigation links exist', async ({ page }) => {
     await page.goto(suffix || './');
 
-    // Verify navigation links are present (first one in header)
-    await expect(page.locator('header a[href="/about"]').first()).toBeVisible();
+    // Match on the end of the href so links work under a base path
+    // (staging previews are served from /pr-N/)
     await expect(
-      page.locator('header a[href="/services"]').first()
+      page.locator('header a[href$="/about"]').first()
     ).toBeVisible();
     await expect(
-      page.locator('header a[href="/pricing"]').first()
+      page.locator('header a[href$="/services"]').first()
     ).toBeVisible();
     await expect(
-      page.locator('header a[href="/contact"]').first()
+      page.locator('header a[href$="/pricing"]').first()
     ).toBeVisible();
-    await expect(page.locator('footer a[href="/blog"]').first()).toBeVisible();
+    await expect(
+      page.locator('header a[href$="/contact"]').first()
+    ).toBeVisible();
+    await expect(page.locator('footer a[href$="/blog"]').first()).toBeVisible();
   });
 
   test('homepage links to the Supply Checkout demo', async ({ page }) => {

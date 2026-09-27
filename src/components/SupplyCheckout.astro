@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 interface Props {
   headingLevel?: 'h2' | 'h3';
 }
@@ -15,7 +16,7 @@ const features = [
 <div class="work">
   <div class="shot">
     <img
-      src="/images/work/supply-checkout-sheet.webp"
+      src={withBase('/images/work/supply-checkout-sheet.webp')}
       alt="Supply Checkout on a phone: a checkout sheet for Acme Offices with a Scan to check out button and totals for items taken, returned, used, and the $42.00 charge."
       width="390"
       height="780"

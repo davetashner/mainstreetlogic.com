@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const principles = [
@@ -43,7 +44,7 @@ const principles = [
     <div class="wrap story-grid">
       <figure class="portrait">
         <img
-          src="/images/headshot.webp"
+          src={withBase('/images/headshot.webp')}
           alt="Dave Tashner"
           width="886"
           height="886"
@@ -120,7 +121,7 @@ const principles = [
         takes 30 minutes.
       </p>
       <div class="actions">
-        <a href="/contact" class="btn btn-lg">Book a free call</a>
+        <a href={withBase('/contact')} class="btn btn-lg">Book a free call</a>
       </div>
     </div>
   </section>

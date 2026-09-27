@@ -1,7 +1,9 @@
 ---
+import { withBase } from '../lib/url';
 /**
  * Main Street Logic logo: storefront illustration + serif wordmark.
  * The illustration swaps for the lamp-lit night version in dark mode.
+ * Both are transparent WebPs (725x382), so they sit on any background.
  * The wordmark is live text in Source Serif 4, matching the logo artwork.
  */
 interface Props {
@@ -12,20 +14,20 @@ interface Props {
   class?: string;
 }
 const { height = 52, tagline = false, class: className } = Astro.props;
-const width = Math.round((height * 552) / 336);
+const width = Math.round((height * 725) / 382);
 ---
 
 <span class:list={['logo', className]}>
   <span class="art" style={`width:${width}px;height:${height}px`}>
     <img
-      src="/images/brand/storefront-light.webp"
+      src={withBase('/images/brand/storefront-light.webp')}
       alt=""
       width={width}
       height={height}
       class="light"
     />
     <img
-      src="/images/brand/storefront-dark.webp"
+      src={withBase('/images/brand/storefront-dark.webp')}
       alt=""
       width={width}
       height={height}
@@ -62,14 +64,8 @@ const width = Math.round((height * 552) / 336);
     height: 100%;
   }
 
-  /* Soften the night version's edges into whatever navy it sits on */
   .dark-art {
     display: none;
-    mask-image: radial-gradient(
-      ellipse 72% 78% at 50% 55%,
-      #000 62%,
-      transparent 100%
-    );
   }
 
   :global(.dark) .light {
