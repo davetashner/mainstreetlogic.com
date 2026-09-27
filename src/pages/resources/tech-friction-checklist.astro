@@ -6,8 +6,7 @@ const pageDescription =
 
 const checklistSections = [
   {
-    title: 'Data Entry & Manual Work',
-    icon: '📝',
+    title: 'Data entry and manual work',
     items: [
       'I enter the same information into multiple systems',
       'I copy data between spreadsheets regularly',
@@ -17,10 +16,9 @@ const checklistSections = [
     ],
   },
   {
-    title: 'Tool Integration',
-    icon: '🔗',
+    title: 'Tool integration',
     items: [
-      "My tools don't sync with each other automatically",
+      'My tools don’t sync with each other automatically',
       'I export from one system to import into another',
       'Customer information exists in multiple disconnected places',
       'I use email to move data between team members',
@@ -28,30 +26,27 @@ const checklistSections = [
     ],
   },
   {
-    title: 'Communication & Workflow',
-    icon: '💬',
+    title: 'Communication and workflow',
     items: [
       'Important updates get lost in email threads',
-      'Team members ask "where is that file?" frequently',
+      'Team members ask “where is that file?” frequently',
       'I lack visibility into task/project status without asking',
       'Customer requests fall through the cracks sometimes',
       'Handoffs between team members cause delays or errors',
     ],
   },
   {
-    title: 'Software Subscriptions',
-    icon: '💳',
+    title: 'Software subscriptions',
     items: [
-      "I pay for features I don't use in multiple tools",
+      'I pay for features I don’t use in multiple tools',
       'I have overlapping tools that do similar things',
-      "I'm locked into expensive software due to data",
+      'I’m locked into expensive software due to data',
       'Monthly SaaS costs keep creeping up',
-      "I'm not sure what all my subscriptions cost monthly",
+      'I’m not sure what all my subscriptions cost monthly',
     ],
   },
   {
-    title: 'Time Drains',
-    icon: '⏰',
+    title: 'Time drains',
     items: [
       'Routine tasks take longer than they should',
       'I spend time waiting for slow systems or loading',
@@ -64,169 +59,327 @@ const checklistSections = [
 ---
 
 <BaseLayout title="Tech Friction Checklist" description={pageDescription}>
-  <div class="print-styles">
-    <!-- Hero Section -->
-    <section class="bg-navy py-12 md:py-16 print:bg-white print:py-4">
-      <div class="max-w-4xl mx-auto px-4 text-center">
-        <h1
-          class="text-3xl md:text-4xl font-bold text-white print:text-navy mb-4"
-        >
-          Tech Friction Checklist
-        </h1>
-        <p
-          class="text-xl text-white/80 print:text-navy/70 mb-6 max-w-2xl mx-auto"
-        >
-          Identify where technology is slowing down your business. Check each
-          item that applies to your operations.
+  <div class="checklist-page">
+    <section class="page-head">
+      <div class="wrap">
+        <h1>Tech friction checklist</h1>
+        <p class="lede measure">
+          Find where technology is slowing your business down. Check each
+          statement that sounds like your week, then see your score at the
+          bottom.
         </p>
-        <button
-          onclick="window.print()"
-          class="inline-flex items-center gap-2 bg-steel-blue text-white font-medium rounded-md px-6 py-3 hover:bg-medium-steel transition-colors print:hidden"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            ></path>
-          </svg>
-          Download as PDF
-        </button>
-        <p class="text-sm text-white/60 print:hidden mt-3">
-          Free download - no email required
-        </p>
+        <div class="head-actions no-print">
+          <button type="button" id="print-button" class="btn-outline">
+            Print or save as PDF
+          </button>
+          <p class="note">Free, and no email required.</p>
+        </div>
       </div>
     </section>
 
-    <!-- Checklist Content -->
-    <section class="py-12 md:py-16 print:py-4">
-      <div class="max-w-4xl mx-auto px-4">
-        <div class="space-y-8 print:space-y-4">
+    <section class="section list-section">
+      <div class="wrap">
+        <form id="checklist" class="sections" aria-describedby="score-live">
           {
-            checklistSections.map((section) => (
-              <div class="bg-white dark:bg-navy rounded-lg p-6 shadow-sm border border-soft-gray/30 dark:border-soft-gray/20 print:shadow-none print:border print:border-gray-300 print:p-4 print:break-inside-avoid">
-                <h2 class="text-xl font-semibold text-navy dark:text-soft-gray mb-4 flex items-center gap-3 print:text-navy">
-                  <span class="text-2xl print:text-xl">{section.icon}</span>
-                  {section.title}
-                </h2>
-                <ul class="space-y-3 print:space-y-2">
-                  {section.items.map((item) => (
-                    <li class="flex items-start gap-3">
-                      <span class="flex-shrink-0 w-5 h-5 border-2 border-steel-blue rounded mt-0.5 print:border-gray-400" />
-                      <span class="text-navy/80 dark:text-soft-gray/80 print:text-navy">
-                        {item}
-                      </span>
+            checklistSections.map((section, si) => (
+              <fieldset class="group">
+                <legend>{section.title}</legend>
+                <ul>
+                  {section.items.map((item, ii) => (
+                    <li>
+                      <input
+                        type="checkbox"
+                        id={`item-${si}-${ii}`}
+                        name="friction"
+                      />
+                      <label for={`item-${si}-${ii}`}>{item}</label>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </fieldset>
             ))
           }
-        </div>
+        </form>
 
-        <!-- Scoring Section -->
-        <div
-          class="mt-12 bg-steel-blue/10 dark:bg-steel-blue/20 rounded-lg p-6 print:bg-gray-100 print:mt-6"
-        >
-          <h2
-            class="text-xl font-semibold text-navy dark:text-soft-gray mb-4 print:text-navy"
-          >
-            Score Your Results
-          </h2>
-          <div
-            class="space-y-4 text-navy/80 dark:text-soft-gray/80 print:text-navy"
-          >
-            <p>Count the items you checked and see where you stand:</p>
-            <ul class="space-y-2">
-              <li>
-                <strong class="text-navy dark:text-soft-gray print:text-navy"
-                  >0-5 items:</strong
-                > Your tech stack is working well. Minor optimizations possible.
-              </li>
-              <li>
-                <strong class="text-navy dark:text-soft-gray print:text-navy"
-                  >6-12 items:</strong
-                > Moderate friction. A few integrations or automations could save
-                significant time.
-              </li>
-              <li>
-                <strong class="text-navy dark:text-soft-gray print:text-navy"
-                  >13-19 items:</strong
-                > High friction. You're likely spending 5-10+ hours weekly on tasks
-                that could be automated.
-              </li>
-              <li>
-                <strong class="text-navy dark:text-soft-gray print:text-navy"
-                  >20+ items:</strong
-                > Critical friction. Technology is significantly hindering your business
-                operations.
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- CTA Section (hidden in print) -->
-        <div class="mt-12 text-center bg-navy rounded-lg p-8 print:hidden">
-          <h2 class="text-2xl font-bold text-white mb-3">
-            Checked more than 5 items?
-          </h2>
-          <p class="text-white/80 mb-6 max-w-xl mx-auto">
-            Let's talk about which friction points are costing you the most time
-            and money - and how to fix them.
+        <div class="score" aria-labelledby="score-title">
+          <h2 id="score-title">Score your results</h2>
+          <p id="score-live" class="score-live" aria-live="polite" hidden>
+            You’ve checked <strong id="score-count">0</strong> of
+            <span id="score-total">25</span> items.
           </p>
-          <a
-            href="/contact"
-            class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-4 hover:bg-medium-steel transition-colors no-underline"
-          >
-            Schedule a Free Consultation
-          </a>
-          <p class="text-sm text-white/60 mt-3">
-            30 minutes. No obligation. No pressure.
-          </p>
+          <ul class="bands ruled">
+            <li data-min="0" data-max="5">
+              <span class="range">0–5 items</span>
+              <span
+                ><strong>Working well.</strong> Minor tune-ups are possible.</span
+              >
+            </li>
+            <li data-min="6" data-max="12">
+              <span class="range">6–12 items</span>
+              <span
+                ><strong>Moderate friction.</strong> A few integrations or automations
+                could save real time.</span
+              >
+            </li>
+            <li data-min="13" data-max="19">
+              <span class="range">13–19 items</span>
+              <span
+                ><strong>High friction.</strong> You’re likely spending 5–10+ hours
+                a week on work that could be automated.</span
+              >
+            </li>
+            <li data-min="20" data-max="999">
+              <span class="range">20+ items</span>
+              <span
+                ><strong>Critical friction.</strong> Technology is significantly holding
+                your business back.</span
+              >
+            </li>
+          </ul>
         </div>
 
-        <!-- Print Footer -->
-        <div
-          class="hidden print:block mt-8 pt-4 border-t border-gray-300 text-center text-sm text-gray-600"
-        >
+        <div class="cta no-print">
+          <h2>Checked more than five?</h2>
+          <p class="lede measure">
+            Let’s talk about which friction points cost you the most time and
+            money, and how to fix them. The call is free and takes 30 minutes.
+          </p>
+          <a href="/contact" class="btn btn-lg">Book a free call</a>
+        </div>
+
+        <div class="print-footer">
           <p>
-            <strong>Main Street Logic</strong> - Technology consulting for small business
+            <strong>Main Street Logic</strong>: software and automation for
+            small businesses
           </p>
-          <p>mainstreetlogic.com | Schedule a free consultation</p>
+          <p>mainstreetlogic.com</p>
+          <p>hello@mainstreetlogic.com</p>
         </div>
       </div>
     </section>
   </div>
 </BaseLayout>
 
+<script>
+  const form = document.getElementById('checklist') as HTMLFormElement | null;
+  const live = document.getElementById('score-live');
+  const count = document.getElementById('score-count');
+  const total = document.getElementById('score-total');
+  const bands = document.querySelectorAll<HTMLLIElement>('.bands li');
+  const boxes = form?.querySelectorAll<HTMLInputElement>(
+    'input[type="checkbox"]'
+  );
+
+  function update() {
+    if (!boxes || !count || !live) return;
+    const n = Array.from(boxes).filter((b) => b.checked).length;
+    count.textContent = String(n);
+    live.hidden = false;
+    bands.forEach((band) => {
+      const min = Number(band.dataset.min);
+      const max = Number(band.dataset.max);
+      band.toggleAttribute('data-active', n >= min && n <= max);
+    });
+  }
+
+  if (boxes && total) total.textContent = String(boxes.length);
+  form?.addEventListener('change', update);
+  document
+    .getElementById('print-button')
+    ?.addEventListener('click', () => window.print());
+</script>
+
 <style>
+  .head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .list-section {
+    padding-top: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+
+  .sections {
+    display: grid;
+    gap: 2.75rem;
+  }
+
+  @media (min-width: 60rem) {
+    .sections {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem 4rem;
+    }
+  }
+
+  .group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .group legend {
+    width: 100%;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    padding-bottom: 0.625rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .group ul > li {
+    display: flex;
+    gap: 0.875rem;
+    align-items: flex-start;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .group input {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.2rem;
+    accent-color: var(--green);
+    cursor: pointer;
+  }
+
+  .group label {
+    cursor: pointer;
+  }
+
+  .score {
+    margin-top: clamp(3.5rem, 3rem + 3vw, 5rem);
+    max-width: 48rem;
+  }
+
+  .score-live {
+    margin-top: 0.75rem;
+    font-size: 1.1875rem;
+  }
+
+  .bands {
+    margin-top: 1.5rem;
+    border-block: 1px solid var(--rule);
+  }
+
+  .bands li {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: 0.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .bands li {
+      grid-template-columns: 9rem 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .bands li[data-active] {
+    background: var(--green-soft);
+    box-shadow: inset 4px 0 0 var(--yellow);
+  }
+
+  .range {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bands li > span:last-child {
+    color: var(--muted);
+  }
+
+  .bands strong {
+    color: var(--ink);
+  }
+
+  .cta {
+    margin-top: clamp(3.5rem, 3rem + 3vw, 5rem);
+    padding-top: 2rem;
+    border-top: 2px solid var(--ink);
+  }
+
+  .cta .lede {
+    margin-block: 1rem 2rem;
+  }
+
+  .print-footer {
+    display: none;
+  }
+
   @media print {
-    /* Hide site header and footer in print */
     :global(header),
-    :global(footer) {
+    :global(footer),
+    :global(.awning),
+    :global(.skip-link),
+    .no-print {
       display: none !important;
     }
 
     :global(body) {
       background: white !important;
-      color: #2d4966 !important;
+      color: #13201a !important;
+      font-size: 11pt;
     }
 
-    :global(main) {
+    .page-head,
+    .list-section {
       padding: 0 !important;
     }
 
-    /* Ensure checkboxes print clearly */
-    .print-styles li span:first-child {
-      border-color: #666 !important;
+    .sections {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 2rem;
+      margin-top: 1rem;
+    }
+
+    .group {
+      break-inside: avoid;
+    }
+
+    .group ul > li {
+      padding-block: 0.3rem;
+    }
+
+    .score {
+      margin-top: 1.25rem;
+      break-inside: avoid;
+    }
+
+    .score-live {
+      display: none;
+    }
+
+    .bands li {
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .bands li[data-active] {
+      background: none;
+      box-shadow: none;
+    }
+
+    .print-footer {
+      display: block;
+      margin-top: 1.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #999;
+      font-size: 9pt;
+      text-align: center;
+      color: #444;
     }
   }
 </style>

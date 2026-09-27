@@ -1,258 +1,372 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import WhyChooseUs from '../components/WhyChooseUs.astro';
-import AvailabilityBadge from '../components/AvailabilityBadge.astro';
+import SupplyCheckout from '../components/SupplyCheckout.astro';
+import { services } from '../data/services';
 
-const services = [
+const pageDescription =
+  'Automation, system integration, custom tools, websites, software cost check-ups, and hourly tech help for small businesses. Work directly with the developer.';
+
+const demoUrl = 'https://supplycheckout.com/demo';
+
+const comparisons = [
   {
-    title: 'Custom Software & Automation',
-    description:
-      'Stop doing repetitive tasks manually. We build custom tools and automated workflows that save you hours every week.',
-    details: [
-      'Custom internal tools and dashboards',
-      'Workflow automation (Zapier, Make, custom scripts)',
-      'Data processing and reporting automation',
-      'Email and notification systems',
-    ],
-    example: {
-      client: 'Landscaping Company',
-      project: 'Automated invoice processing from job completion photos',
-      outcome: 'Reduced 10+ hours of weekly data entry to 30 minutes',
-    },
+    option: 'An agency',
+    goodFor:
+      'Large projects that need designers, developers, and a project manager at once.',
+    tradeoff:
+      'You talk to an account manager, and the person building your project changes from job to job.',
   },
   {
-    title: 'Website Development',
-    description:
-      'Your website is often the first impression customers have of your business. We build fast, modern sites that work.',
-    details: [
-      'Business websites and landing pages',
-      'E-commerce and online stores',
-      'Website redesigns and updates',
-      'Ongoing maintenance and hosting',
-    ],
-    example: {
-      client: 'Local Bakery',
-      project: 'New website with online ordering and pickup scheduling',
-      outcome: '40% increase in online orders within the first month',
-    },
+    option: 'A freelancer',
+    goodFor: 'A single, well-defined job with a specialist skill.',
+    tradeoff:
+      'Many move on after delivery, so fixes and changes mean finding someone new.',
   },
   {
-    title: 'System Integration',
-    description:
-      'Your tools should talk to each other. We connect your software so data flows automatically where it needs to go.',
-    details: [
-      'CRM and email marketing integration',
-      'Payment and accounting sync',
-      'Inventory management connections',
-      'Custom API development',
-    ],
-    example: {
-      client: 'Boutique Retailer',
-      project: 'Connected Shopify to QuickBooks with automatic inventory sync',
-      outcome:
-        'Eliminated 5 hours/week of manual entry, zero reconciliation errors',
-    },
+    option: 'Hiring in-house',
+    goodFor: 'Businesses with enough technology work to fill a full-time job.',
+    tradeoff:
+      'Salary, benefits, recruiting, and management, even in the slow months.',
   },
   {
-    title: 'SaaS Audit & Optimization',
-    description:
-      "Most businesses are paying for software they don't fully use - or don't need at all. We help you find savings.",
-    details: [
-      'Software subscription review',
-      'Duplicate tool elimination',
-      'Better alternatives recommendations',
-      'Cost-benefit analysis',
-    ],
-    example: {
-      client: 'Real Estate Agency',
-      project: 'Full software audit across 12 team members',
-      outcome: 'Reduced monthly software spend from $780 to $290',
-    },
-  },
-  {
-    title: 'Hourly Tech Consulting',
-    description:
-      'Get expert tech guidance without committing to a project or ongoing hosting. Pay only for the time you need.',
-    details: [
-      'Technology strategy sessions',
-      'Software selection guidance',
-      'Vendor evaluation',
-      'Technical problem-solving',
-      'No project or hosting commitment required',
-    ],
-    example: {
-      client: 'Growing HVAC Company',
-      project: 'Technology roadmap and software selection guidance',
-      outcome: 'Clear 12-month IT plan, avoided $15K in unnecessary purchases',
-    },
+    option: 'Doing it yourself',
+    goodFor: 'Small fixes when you enjoy learning the tools.',
+    tradeoff:
+      'Every hour spent figuring out software is an hour not spent running your business.',
   },
 ];
 ---
 
-<BaseLayout
-  title="Services"
-  description="Our technology consulting services for small businesses: custom software, website development, system integration, SaaS optimization, and more."
->
-  <!-- Hero Section -->
-  <section
-    class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
-  >
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1
-        class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6"
-      >
-        Services
-      </h1>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
-        Technology solutions designed for the unique needs of small businesses.
+<BaseLayout title="Services" description={pageDescription}>
+  <section class="intro">
+    <div class="wrap">
+      <h1>Services</h1>
+      <p class="lede measure">
+        Six ways I help small businesses spend less time on software and more
+        time on the work they opened for. Every project starts with a free
+        30-minute call.
       </p>
+      <nav class="jump" aria-label="Services on this page">
+        <ul>
+          {
+            services.map((s) => (
+              <li>
+                <a href={`#${s.slug}`}>{s.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </div>
   </section>
 
-  <!-- Services List -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-5xl mx-auto px-4">
-      <div class="space-y-12">
-        {
-          services.map((service, index) => (
-            <div class="bg-white dark:bg-navy rounded-lg p-8 shadow-sm border border-soft-gray/50 dark:border-soft-gray/20">
-              <div class="md:flex md:items-start md:gap-8">
-                <div class="flex-shrink-0 w-12 h-12 bg-steel-blue/10 rounded-lg flex items-center justify-center mb-4 md:mb-0">
-                  <span class="text-steel-blue font-bold text-lg">
-                    {index + 1}
-                  </span>
-                </div>
-                <div class="flex-grow">
-                  <h2 class="text-2xl font-semibold text-navy dark:text-soft-gray mb-3">
-                    {service.title}
-                  </h2>
-                  <p class="text-navy/70 dark:text-soft-gray/70 mb-4">
-                    {service.description}
-                  </p>
-                  <ul class="grid md:grid-cols-2 gap-2">
-                    {service.details.map((detail) => (
-                      <li class="flex items-start gap-2 text-navy/60 dark:text-soft-gray/60">
-                        <svg
-                          class="w-5 h-5 text-steel-blue mt-0.5 flex-shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                  {service.example && (
-                    <div class="mt-6 pt-6 border-t border-soft-gray/30 dark:border-soft-gray/10">
-                      <div class="flex items-start gap-3">
-                        <div class="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                          <svg
-                            class="w-4 h-4 text-green-600 dark:text-green-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <p class="text-sm font-medium text-navy dark:text-soft-gray">
-                            Example: {service.example.client}
-                          </p>
-                          <p class="text-sm text-navy/60 dark:text-soft-gray/60 mt-1">
-                            {service.example.project}
-                          </p>
-                          <p class="text-sm font-medium text-green-600 dark:text-green-400 mt-1">
-                            Result: {service.example.outcome}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+  <div class="wrap">
+    <div class="service-list ruled">
+      {
+        services.map((s) => (
+          <section
+            id={s.slug}
+            class="service"
+            aria-labelledby={`${s.slug}-title`}
+          >
+            <div class="service-head">
+              <h2 id={`${s.slug}-title`}>{s.title}</h2>
+              <p class="summary">{s.summary}</p>
             </div>
-          ))
-        }
+            <div class="service-body">
+              <h3>Usually includes</h3>
+              <ul class="includes">
+                {s.includes.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <p class="example">
+                <strong>For example:</strong>{' '}
+                {s.slug === 'custom-tools' ? (
+                  <>
+                    Supply Checkout, a barcode app that replaced a paper
+                    sign-out sheet.{' '}
+                    <a href={demoUrl} target="_blank" rel="noopener">
+                      Try the demo
+                    </a>
+                  </>
+                ) : (
+                  s.example
+                )}
+              </p>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="section work-band" aria-label="Recent work">
+    <div class="wrap">
+      <SupplyCheckout headingLevel="h2" />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="compare-title">How I compare to your other options</h2>
+        <p class="lede measure">
+          Every option has its place. I'm a good fit when you want one person
+          who knows your business, builds the thing, and is still around next
+          year.
+        </p>
+      </div>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr>
+              <th scope="col">Option</th>
+              <th scope="col">Good for</th>
+              <th scope="col">The trade-off</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              comparisons.map((c) => (
+                <tr>
+                  <th scope="row">{c.option}</th>
+                  <td>{c.goodFor}</td>
+                  <td>{c.tradeoff}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">Working with me</th>
+              <td>
+                Small businesses that want ongoing help without a full-time
+                hire.
+              </td>
+              <td>
+                I'm one person, so large or rush projects get scheduled around
+                work already underway.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us Section -->
-  <WhyChooseUs />
-
-  <!-- CTA Section -->
-  <section class="bg-navy py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">
-        Not sure what you need?
-      </h2>
-      <p class="text-xl text-white/70 mb-6">
-        Let's talk. We'll help you figure out the best approach for your
-        business.
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">Not sure which of these you need?</h2>
+      <p class="lede measure">
+        That's what the free call is for. Tell me what's slowing you down, and
+        I'll tell you honestly whether I can help. If you're not happy with our
+        first project, I'll make it right.
       </p>
-      <div
-        class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-8 text-white/80 text-sm"
-      >
-        <div class="flex items-center gap-2">
-          <svg
-            class="w-5 h-5 text-steel-blue"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            ></path>
-          </svg>
-          <span>Free 30-minute consultation</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <svg
-            class="w-5 h-5 text-steel-blue"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            ></path>
-          </svg>
-          <span>Satisfaction guaranteed</span>
-        </div>
-      </div>
-      <div class="flex flex-col items-center gap-4">
-        <a href="/contact" class="btn-primary px-8 py-4 text-lg">
-          Schedule a Free Consultation
-        </a>
-        <AvailabilityBadge
-          spotsAvailable={3}
-          period="this month"
-          variant="subtle"
-        />
+      <div class="actions">
+        <a href="/contact" class="btn btn-lg">Book a free call</a>
+        <a href="/pricing" class="quiet">See pricing</a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .intro {
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+
+  .intro .lede {
+    margin-top: 1.5rem;
+  }
+
+  .jump ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .jump a {
+    display: inline-block;
+    padding-block: 0.375rem;
+    color: var(--ink);
+  }
+
+  .service-list {
+    border-block: 1px solid var(--rule);
+    margin-bottom: clamp(4rem, 3rem + 5vw, 7rem);
+  }
+
+  .service {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    scroll-margin-top: 1rem;
+  }
+
+  @media (min-width: 52rem) {
+    .service {
+      grid-template-columns: 5fr 7fr;
+      gap: 3rem;
+    }
+  }
+
+  .service h2 {
+    font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.125rem);
+  }
+
+  .summary {
+    margin-top: 0.875rem;
+    color: var(--muted);
+    max-width: 30em;
+  }
+
+  .service-body h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .includes {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.5rem;
+    max-width: 36em;
+  }
+
+  .includes li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .includes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.5rem;
+    height: 2px;
+    background: var(--green);
+  }
+
+  .example {
+    margin-top: 1.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--yellow);
+    max-width: 36em;
+  }
+
+  .work-band {
+    background: var(--green-soft);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.0625rem;
+  }
+
+  .compare th,
+  .compare td {
+    text-align: left;
+    vertical-align: top;
+    padding: 1.125rem 1.5rem 1.125rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .compare thead th {
+    border-top: none;
+    padding-top: 0;
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .compare tbody th,
+  .compare tfoot th {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .compare td {
+    color: var(--muted);
+  }
+
+  .compare tfoot th,
+  .compare tfoot td {
+    border-top: 2px solid var(--ink);
+    color: var(--ink);
+  }
+
+  .compare tfoot th {
+    color: var(--green);
+  }
+
+  /* Stack rows on small screens instead of scrolling sideways */
+  @media (max-width: 47.99rem) {
+    .compare thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    .compare tr {
+      display: block;
+      border-top: 1px solid var(--rule);
+      padding-block: 1.25rem;
+    }
+
+    .compare tfoot tr {
+      border-top: 2px solid var(--ink);
+    }
+
+    .compare th,
+    .compare td {
+      display: block;
+      border: none;
+      padding: 0;
+    }
+
+    .compare td {
+      margin-top: 0.5rem;
+    }
+
+    .compare td:nth-of-type(1)::before {
+      content: 'Good for: ';
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .compare td:nth-of-type(2)::before {
+      content: 'The trade-off: ';
+      font-weight: 700;
+      color: var(--ink);
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .quiet {
+    font-weight: 600;
+    color: #f6f7f2;
+    padding-block: 0.5rem;
+  }
+</style>

@@ -1,13 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PricingCard from '../components/PricingCard.astro';
-import GuaranteeBadge from '../components/GuaranteeBadge.astro';
+import FAQ from '../components/FAQ.astro';
+import type { FaqItem } from '../data/faqs';
+
+const pageDescription =
+  'Clear pricing for small business technology work: website hosting from $12 a month, project ranges, and The Backlog Model for ongoing improvements.';
 
 const hostingPlans = [
   {
-    title: 'Basic Hosting',
+    title: 'Basic hosting',
     price: '$12',
-    description: 'Perfect for simple business websites',
+    description: 'For a simple business website.',
     features: [
       'Static website hosting',
       'SSL certificate included',
@@ -17,9 +20,9 @@ const hostingPlans = [
     ],
   },
   {
-    title: 'Pro Hosting',
+    title: 'Pro hosting',
     price: '$15',
-    description: 'For sites that need more',
+    description: 'For sites that take messages or change often.',
     features: [
       'Everything in Basic',
       'Contact form handling',
@@ -27,269 +30,391 @@ const hostingPlans = [
       'Priority support',
       'Uptime monitoring',
     ],
-    highlighted: true,
+    note: 'Most sites need this',
   },
 ];
 
-const faqs = [
+const projectRanges = [
+  {
+    size: 'Small projects',
+    price: '$500–$2,000',
+    examples: 'Simple websites, basic automation, quick integrations',
+  },
+  {
+    size: 'Medium projects',
+    price: '$2,000–$10,000',
+    examples: 'Custom applications, complex integrations, full site redesigns',
+  },
+  {
+    size: 'Large projects',
+    price: 'Custom quote',
+    examples: 'Multi-system overhauls and complex requirements',
+  },
+];
+
+const backlogSteps = [
+  'I keep a prioritized list of improvements, features, and fixes for your systems.',
+  'You decide what matters most and set the order.',
+  'I work through the list at a pace that fits your budget.',
+  'Your systems keep getting better, without a big up-front investment.',
+];
+
+const faqs: FaqItem[] = [
   {
     question: 'How does project pricing work?',
     answer:
-      "We provide fixed-price quotes for defined projects, or we can work on an hourly basis. After an initial consultation, we'll provide a clear estimate so there are no surprises.",
+      "For defined projects I give a fixed-price quote; for open-ended work I bill hourly. After the free call, you'll get a written estimate so there are no surprises.",
   },
   {
     question: 'What is The Backlog Model?',
     answer:
-      'For ongoing clients, we maintain a prioritized list of improvements and features for your systems. You control the priorities, and we work through items as your budget allows. This gives you predictable costs while ensuring continuous improvement.',
+      'For ongoing clients, I keep a prioritized list of improvements and features for your systems. You control the priorities, and I work through them as your budget allows. You get predictable costs and steady improvement.',
   },
   {
     question: 'Do you offer monthly retainers?',
     answer:
-      'Yes. For clients who need ongoing support, we offer monthly retainer arrangements that guarantee availability and often come with discounted hourly rates.',
+      'Yes. If you need ongoing support, a monthly retainer reserves my time for you and usually comes with a lower hourly rate.',
   },
   {
-    question: "What's included in a free consultation?",
+    question: "What's included in the free call?",
     answer:
-      "A 30-minute call where we learn about your business, understand your challenges, and discuss whether we're a good fit to help. No pressure, no strings attached.",
+      "Thirty minutes to learn about your business and what's slowing you down, and to decide together whether I'm the right person to help. No pressure and no obligation.",
   },
   {
-    question: "What if I'm not satisfied with the work?",
+    question: "What if I'm not happy with the work?",
     answer:
-      "We stand behind our work. If you're not happy with your first project, we'll make it right—no questions asked. Your satisfaction is our priority.",
+      "If you're not happy with our first project, I'll make it right. No questions asked.",
   },
 ];
 
-// FAQPage structured data for SEO
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: faqs.map((faq) => ({
     '@type': 'Question',
     name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
   })),
 };
 ---
 
-<BaseLayout
-  title="Pricing"
-  description="Transparent pricing for small business technology consulting. Monthly hosting plans, project work, and flexible engagement models."
->
+<BaseLayout title="Pricing" description={pageDescription}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   </Fragment>
-  <!-- Hero Section -->
-  <section
-    class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
-  >
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1
-        class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6"
-      >
-        Simple, Transparent Pricing
-      </h1>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
-        No hidden fees. No surprises. Just honest pricing for quality work.
+
+  <section class="intro">
+    <div class="wrap">
+      <h1>Pricing</h1>
+      <p class="lede measure">
+        No hidden fees and no surprise invoices. Here's what hosting costs, what
+        projects usually run, and how ongoing work is billed.
       </p>
     </div>
   </section>
 
-  <!-- Hosting Plans -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2
-        class="text-3xl font-bold text-navy dark:text-soft-gray mb-4 text-center"
-      >
-        Monthly Hosting Plans
-      </h2>
-      <p
-        class="text-center text-navy/70 dark:text-soft-gray/70 mb-12 max-w-2xl mx-auto"
-      >
-        Keep your website running smoothly with our managed hosting. Everything
-        you need, nothing you don't.
-      </p>
-
-      <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+  <section class="section block" aria-labelledby="hosting-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="hosting-title">Website hosting</h2>
+        <p class="lede measure">
+          I keep your site online, secure, and fast. Billed monthly, cancel any
+          time.
+        </p>
+      </div>
+      <div class="plans">
         {
-          hostingPlans.map((plan) => (
-            <PricingCard
-              title={plan.title}
-              price={plan.price}
-              description={plan.description}
-              features={plan.features}
-              highlighted={plan.highlighted}
-            />
+          hostingPlans.map((plan, i) => (
+            <section class="plan" aria-labelledby={`plan-${i}`}>
+              <div class="plan-head">
+                <h3 id={`plan-${i}`}>{plan.title}</h3>
+                {plan.note && <p class="plan-note">{plan.note}</p>}
+              </div>
+              <p class="price">
+                <span class="amount">{plan.price}</span>
+                <span class="per">per month</span>
+              </p>
+              <p class="plan-desc">{plan.description}</p>
+              <ul class="features">
+                {plan.features.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            </section>
           ))
         }
       </div>
     </div>
   </section>
 
-  <!-- Project Work -->
-  <section class="bg-white dark:bg-navy py-16 md:py-24">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2
-        class="text-3xl font-bold text-navy dark:text-soft-gray mb-4 text-center"
-      >
-        Project Work
-      </h2>
-      <p
-        class="text-center text-navy/70 dark:text-soft-gray/70 mb-12 max-w-2xl mx-auto"
-      >
-        For larger initiatives, we provide custom quotes based on your specific
-        needs.
-      </p>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">
-            Small Projects
-          </h3>
-          <p class="text-2xl font-bold text-steel-blue mb-2">$500 - $2,000</p>
-          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
-            Simple websites, basic automation, quick integrations
-          </p>
-        </div>
-        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">
-            Medium Projects
-          </h3>
-          <p class="text-2xl font-bold text-steel-blue mb-2">
-            $2,000 - $10,000
-          </p>
-          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
-            Custom applications, complex integrations, full site redesigns
-          </p>
-        </div>
-        <div class="bg-light-bg dark:bg-dark-bg rounded-lg p-6 text-center">
-          <h3 class="font-semibold text-navy dark:text-soft-gray mb-2">
-            Large Projects
-          </h3>
-          <p class="text-2xl font-bold text-steel-blue mb-2">Let's Chat</p>
-          <p class="text-sm text-navy/60 dark:text-soft-gray/60">
-            Multi-system overhauls, complex requirements
-          </p>
-        </div>
-      </div>
-
-      <p class="text-center text-navy/60 dark:text-soft-gray/60 mt-8 text-sm">
-        These are general ranges. Every project is quoted individually based on
-        your specific requirements.
-      </p>
-    </div>
-  </section>
-
-  <!-- The Backlog Model -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="bg-navy rounded-lg p-8 md:p-12">
-        <h2 class="text-3xl font-bold text-white mb-4">The Backlog Model</h2>
-        <p class="text-white/80 mb-6">
-          Technology needs don't stop after the initial build. The Backlog Model
-          is our approach to ongoing improvement:
+  <section class="section block" aria-labelledby="projects-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="projects-title">Project work</h2>
+        <p class="lede measure">
+          Every project gets its own written quote. These ranges give you a
+          sense of scale before we talk.
         </p>
-        <ul class="space-y-4 text-white/80">
-          <li class="flex items-start gap-3">
-            <span class="text-steel-blue font-bold">1.</span>
-            <span
-              >We maintain a prioritized list of improvements, features, and
-              fixes for your systems.</span
-            >
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="text-steel-blue font-bold">2.</span>
-            <span
-              >You control the priorities based on what matters most to your
-              business.</span
-            >
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="text-steel-blue font-bold">3.</span>
-            <span>We work through items at a pace that fits your budget.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="text-steel-blue font-bold">4.</span>
-            <span
-              >Your systems get better continuously, without big up-front
-              investments.</span
-            >
-          </li>
-        </ul>
       </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="bg-white dark:bg-navy py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2
-        class="text-3xl font-bold text-navy dark:text-soft-gray mb-12 text-center"
-      >
-        Frequently Asked Questions
-      </h2>
-
-      <div class="space-y-8">
+      <dl class="ranges ruled">
         {
-          faqs.map((faq) => (
-            <div class="border-b border-soft-gray dark:border-soft-gray/20 pb-6">
-              <h3 class="text-xl font-semibold text-navy dark:text-soft-gray mb-2">
-                {faq.question}
-              </h3>
-              <p class="text-navy/70 dark:text-soft-gray/70">{faq.answer}</p>
+          projectRanges.map((r) => (
+            <div class="range">
+              <dt>{r.size}</dt>
+              <dd class="range-price">{r.price}</dd>
+              <dd class="range-examples">{r.examples}</dd>
             </div>
           ))
         }
-      </div>
+      </dl>
     </div>
   </section>
 
-  <!-- Guarantee Section -->
-  <section class="py-16 md:py-20">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="grid md:grid-cols-2 gap-6">
-        <GuaranteeBadge
-          title="Satisfaction Guaranteed"
-          description="Not happy with our first project? We'll make it right—no questions asked."
-        />
-        <GuaranteeBadge
-          title="Free Consultation"
-          description="30-minute consultation to discuss your needs. No pressure, no obligation."
-        />
+  <section class="section backlog" aria-labelledby="backlog-title">
+    <div class="wrap backlog-grid">
+      <div>
+        <h2 id="backlog-title">The Backlog Model</h2>
+        <p class="lede">
+          Technology needs don't stop after launch. This is how I handle ongoing
+          improvements.
+        </p>
       </div>
+      <ol class="backlog-steps">
+        {backlogSteps.map((step) => <li>{step}</li>)}
+      </ol>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="bg-navy py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-      <p class="text-xl text-white/70 mb-6">
-        Schedule a free consultation to discuss your project and get a custom
-        quote.
+  <section class="section" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <h2 id="faq-title">Pricing questions</h2>
+      <FAQ items={faqs} />
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">Get a quote for your project.</h2>
+      <p class="lede measure">
+        Start with a free 30-minute call. I'll follow up with a written
+        estimate, and there's no obligation to go ahead.
       </p>
-      <div class="flex items-center justify-center gap-2 mb-8 text-white/80">
-        <svg
-          class="w-5 h-5 text-steel-blue"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-          ></path>
-        </svg>
-        <span class="text-sm">No strings attached</span>
+      <div class="actions">
+        <a href="/contact" class="btn btn-lg">Book a free call</a>
+        <a href="/services" class="quiet">See services</a>
       </div>
-      <a href="/contact" class="btn-primary px-8 py-4 text-lg">
-        Schedule Free Consultation
-      </a>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .intro {
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(1rem, 0.5rem + 2vw, 2rem);
+  }
+
+  .intro .lede {
+    margin-top: 1.5rem;
+  }
+
+  .block + .block {
+    padding-top: 0;
+  }
+
+  .plans {
+    display: grid;
+    border-block: 2px solid var(--ink);
+  }
+
+  @media (min-width: 48rem) {
+    .plans {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .plan + .plan {
+      border-left: 1px solid var(--rule);
+      padding-left: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .plan:first-child {
+      padding-right: clamp(2rem, 4vw, 3.5rem);
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .plan + .plan {
+      border-top: 1px solid var(--rule);
+    }
+  }
+
+  .plan {
+    padding-block: 2rem;
+  }
+
+  .plan-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+
+  .plan-note {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .per {
+    color: var(--muted);
+  }
+
+  .plan-desc {
+    margin-top: 0.75rem;
+    color: var(--muted);
+  }
+
+  .features {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .features li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 0.5rem;
+    height: 2px;
+    background: var(--green);
+  }
+
+  .ranges {
+    border-block: 1px solid var(--rule);
+  }
+
+  .range {
+    display: grid;
+    gap: 0.25rem;
+    padding-block: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .range {
+      grid-template-columns: 4fr 3fr 5fr;
+      gap: 2rem;
+      align-items: baseline;
+    }
+  }
+
+  .range dt {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+  }
+
+  .range-price {
+    font-family: var(--font-display);
+    font-size: 1.625rem;
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .range-examples {
+    color: var(--muted);
+  }
+
+  .backlog {
+    background: var(--green-soft);
+  }
+
+  .backlog-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 60rem) {
+    .backlog-grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .backlog .lede {
+    margin-top: 1rem;
+  }
+
+  .backlog-steps {
+    counter-reset: step;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .backlog-steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .backlog-steps li::before {
+    content: counter(step);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--green);
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 60rem) {
+    .faq-grid {
+      grid-template-columns: 4fr 8fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .quiet {
+    font-weight: 600;
+    color: #f6f7f2;
+    padding-block: 0.5rem;
+  }
+</style>

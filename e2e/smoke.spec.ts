@@ -37,9 +37,22 @@ test.describe('Smoke Tests', () => {
 
     // Verify navigation links are present (first one in header)
     await expect(page.locator('header a[href="/about"]').first()).toBeVisible();
-    await expect(page.locator('header a[href="/services"]').first()).toBeVisible();
-    await expect(page.locator('header a[href="/pricing"]').first()).toBeVisible();
-    await expect(page.locator('header a[href="/contact"]').first()).toBeVisible();
-    await expect(page.locator('header a[href="/blog"]').first()).toBeVisible();
+    await expect(
+      page.locator('header a[href="/services"]').first()
+    ).toBeVisible();
+    await expect(
+      page.locator('header a[href="/pricing"]').first()
+    ).toBeVisible();
+    await expect(
+      page.locator('header a[href="/contact"]').first()
+    ).toBeVisible();
+    await expect(page.locator('footer a[href="/blog"]').first()).toBeVisible();
+  });
+
+  test('homepage links to the Supply Checkout demo', async ({ page }) => {
+    await page.goto(suffix || './');
+    await expect(
+      page.locator('a[href="https://supplycheckout.com/demo"]').first()
+    ).toBeVisible();
   });
 });

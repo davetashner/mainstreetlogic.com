@@ -1,59 +1,82 @@
----
-
----
-
 <button
   id="theme-toggle"
   type="button"
-  class="p-2 text-navy hover:text-steel-blue dark:text-soft-gray dark:hover:text-steel-blue transition-colors"
-  aria-label="Toggle dark mode"
+  class="theme-toggle"
+  aria-label="Switch to dark mode"
 >
-  <!-- Sun icon (shown in dark mode) -->
   <svg
-    class="w-5 h-5 hidden dark:block"
+    class="sun"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke-linecap="round"
     aria-hidden="true"
   >
+    <circle cx="12" cy="12" r="4"></circle>
     <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
     ></path>
   </svg>
-  <!-- Moon icon (shown in light mode) -->
   <svg
-    class="w-5 h-5 block dark:hidden"
+    class="moon"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-    ></path>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
   </svg>
 </button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: #f6f7f2;
+    border-radius: 0.375rem;
+    opacity: 0.85;
+  }
+
+  .theme-toggle:hover {
+    opacity: 1;
+  }
+
+  .sun,
+  :global(.dark) .moon {
+    display: none;
+  }
+
+  :global(.dark) .sun {
+    display: block;
+  }
+</style>
 
 <script>
   const toggle = document.getElementById('theme-toggle');
 
-  function setTheme(theme: 'light' | 'dark') {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
+  function sync() {
+    const dark = document.documentElement.classList.contains('dark');
+    toggle?.setAttribute(
+      'aria-label',
+      dark ? 'Switch to light mode' : 'Switch to dark mode'
+    );
   }
 
+  sync();
   toggle?.addEventListener('click', () => {
-    const isDark = document.documentElement.classList.contains('dark');
-    setTheme(isDark ? 'light' : 'dark');
+    const dark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+    sync();
   });
 </script>

@@ -1,204 +1,215 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const principles = [
+  {
+    title: 'I listen first',
+    description:
+      'Every business is different. Before I recommend anything, I learn how your days actually run, what gets in the way, and what you can spend.',
+  },
+  {
+    title: 'I keep it simple',
+    description:
+      'Technology should make your day easier. I favor tools that are easy to maintain and that your team will actually use.',
+  },
+  {
+    title: 'I think long-term',
+    description:
+      'I’m not here to sell you something and disappear. I stick around, keep things running, and help you plan what comes next.',
+  },
+  {
+    title: 'I stay honest',
+    description:
+      'If you don’t need something, I’ll tell you, even when the right answer is to change nothing.',
+  },
+];
 ---
 
 <BaseLayout
   title="About"
-  description="Learn about Main Street Logic - our history, mission, and the small businesses we serve."
+  description="Main Street Logic is Dave Tashner, a developer in Central Virginia who builds software, automation, and websites for small businesses."
 >
-  <!-- Hero Section -->
-  <section
-    class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
-  >
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1
-        class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6"
-      >
-        Technology that works for your business
-      </h1>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
-        We believe every small business deserves access to smart, practical
-        technology solutions.
+  <section class="page-head">
+    <div class="wrap">
+      <h1>Hi, I’m Dave.</h1>
+      <p class="lede measure">
+        Main Street Logic is me: one developer who builds practical software for
+        small businesses and sticks around after it ships.
       </p>
     </div>
   </section>
 
-  <!-- Meet the Founder Section -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="md:flex md:gap-12 md:items-start">
-        <!-- Photo -->
-        <div class="flex-shrink-0 mb-8 md:mb-0">
-          <img
-            src="/images/headshot.webp"
-            alt="Dave Tashner, Founder of Main Street Logic"
-            width="224"
-            height="224"
-            loading="lazy"
-            class="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover mx-auto md:mx-0 shadow-lg"
-          />
-        </div>
-
-        <!-- Bio -->
-        <div>
-          <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-2">
-            Dave Tashner
-          </h2>
-          <p class="text-steel-blue font-medium mb-6">Founder</p>
-          <div class="text-navy/80 dark:text-soft-gray/80 space-y-4">
-            <p>
-              Main Street Logic was founded with a simple idea: small businesses
-              shouldn't have to navigate the complex world of technology alone.
-              Too often, I saw local businesses struggling with outdated
-              systems, paying for software they didn't need, or missing
-              opportunities because they didn't know what was possible.
-            </p>
-            <p>
-              I started by helping a few local businesses in my community. Word
-              spread, and I realized there was a real need for technology
-              consulting that speaks the language of small business owners - not
-              tech jargon, but practical solutions that make sense.
-            </p>
-            <p>
-              Today, I work with small businesses across the country, helping
-              them make smart technology decisions that save time, reduce costs,
-              and set them up for growth.
-            </p>
-          </div>
+  <section class="section story" aria-labelledby="story-title">
+    <div class="wrap story-grid">
+      <figure class="portrait">
+        <img
+          src="/images/headshot.webp"
+          alt="Dave Tashner"
+          width="886"
+          height="886"
+          loading="eager"
+          decoding="async"
+        />
+        <figcaption>Dave Tashner, founder</figcaption>
+      </figure>
+      <div class="measure">
+        <h2 id="story-title">Why I started Main Street Logic</h2>
+        <div class="prose">
+          <p>
+            I started Main Street Logic with a simple idea: small businesses
+            shouldn’t have to figure out technology alone. Too often I saw local
+            businesses stuck with outdated systems, paying for software they
+            didn’t need, or missing chances because nobody had shown them what
+            was possible.
+          </p>
+          <p>
+            I began by helping a few businesses in my own community. Word
+            spread, and it became clear there was real demand for technology
+            help that speaks the language of small business owners: plain
+            answers and practical fixes instead of jargon.
+          </p>
+          <p>
+            Today I work with small businesses across the country, helping them
+            make sound technology decisions that save time, cut costs, and leave
+            room to grow.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- What We Do Section -->
-  <section class="bg-white dark:bg-navy py-16 md:py-24">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-6">
-        What We Do
-      </h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="flex gap-4">
-          <img
-            src="/images/section_header_listener.webp"
-            alt=""
-            width="64"
-            height="64"
-            loading="lazy"
-            class="w-16 h-16 flex-shrink-0 object-contain"
-          />
-          <div>
-            <h3
-              class="text-xl font-semibold text-navy dark:text-soft-gray mb-3"
-            >
-              We Listen First
-            </h3>
-            <p class="text-navy/70 dark:text-soft-gray/70">
-              Every business is different. We start by understanding your unique
-              challenges, goals, and constraints before recommending any
-              solution.
-            </p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <img
-            src="/images/section_header_target_arrow.webp"
-            alt=""
-            width="64"
-            height="64"
-            loading="lazy"
-            class="w-16 h-16 flex-shrink-0 object-contain"
-          />
-          <div>
-            <h3
-              class="text-xl font-semibold text-navy dark:text-soft-gray mb-3"
-            >
-              We Keep It Simple
-            </h3>
-            <p class="text-navy/70 dark:text-soft-gray/70">
-              Technology should make your life easier, not harder. We focus on
-              solutions that are practical, maintainable, and actually get used.
-            </p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <img
-            src="/images/section_header_ascending_graph_bulb.webp"
-            alt=""
-            width="64"
-            height="64"
-            loading="lazy"
-            class="w-16 h-16 flex-shrink-0 object-contain"
-          />
-          <div>
-            <h3
-              class="text-xl font-semibold text-navy dark:text-soft-gray mb-3"
-            >
-              We Think Long-Term
-            </h3>
-            <p class="text-navy/70 dark:text-soft-gray/70">
-              We're not here to sell you something and disappear. We build
-              relationships and help you plan for the future.
-            </p>
-          </div>
-        </div>
-        <div class="flex gap-4">
-          <img
-            src="/images/section_header_handshake.webp"
-            alt=""
-            width="64"
-            height="64"
-            loading="lazy"
-            class="w-16 h-16 flex-shrink-0 object-contain"
-          />
-          <div>
-            <h3
-              class="text-xl font-semibold text-navy dark:text-soft-gray mb-3"
-            >
-              We Stay Honest
-            </h3>
-            <p class="text-navy/70 dark:text-soft-gray/70">
-              If you don't need something, we'll tell you. Our job is to help
-              you make the best decision, even if that means doing nothing.
-            </p>
-          </div>
-        </div>
+  <section class="section principles" aria-labelledby="principles-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="principles-title">How I work</h2>
       </div>
+      <ul class="principle-list ruled">
+        {
+          principles.map((p) => (
+            <li>
+              <h3>{p.title}</h3>
+              <p>{p.description}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  <!-- Locations Section -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-navy dark:text-soft-gray mb-6">
-        Where We Work
-      </h2>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70 mb-8">
-        We work with small businesses across the United States. Most of our work
-        is done remotely, which means we can help you no matter where you're
-        located. For local clients, we're happy to meet in person when it makes
-        sense.
-      </p>
-      <div class="bg-soft-gray/30 dark:bg-navy/50 rounded-lg p-6">
-        <p class="text-navy/70 dark:text-soft-gray/70">
-          <strong class="text-navy dark:text-soft-gray">Based in:</strong> Beautiful
-          Central Virginia<br />
-          <strong class="text-navy dark:text-soft-gray">Serving:</strong> Small businesses
-          everywhere
+  <section class="section where" aria-labelledby="where-title">
+    <div class="wrap where-grid">
+      <h2 id="where-title">Where I work</h2>
+      <div class="measure prose">
+        <p>
+          I’m based in Central Virginia. Most of my work happens remotely, so I
+          can help your business wherever it is.
+        </p>
+        <p>
+          If you’re nearby, I’m glad to meet in person when it’s useful: walking
+          through your shop or office often shows me more than a call can.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="bg-navy py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">Let's work together</h2>
-      <p class="text-xl text-white/70 mb-8">
-        Ready to see how we can help your business? Get in touch.
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">Let’s see if I can help.</h2>
+      <p class="lede measure">
+        Tell me what’s slowing your business down. The first call is free and
+        takes 30 minutes.
       </p>
-      <a href="/contact" class="btn-primary px-8 py-4 text-lg">
-        Start a Conversation
-      </a>
+      <div class="actions">
+        <a href="/contact" class="btn btn-lg">Book a free call</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .story-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 48rem) {
+    .story-grid {
+      grid-template-columns: minmax(14rem, 4fr) 8fr;
+      gap: clamp(2.5rem, 6vw, 5rem);
+    }
+  }
+
+  .portrait {
+    margin: 0;
+    max-width: 20rem;
+  }
+
+  .portrait img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    border: 1px solid var(--rule);
+  }
+
+  .portrait figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .prose > * + * {
+    margin-top: 1.125rem;
+  }
+
+  .story h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  .principles {
+    background: var(--green-soft);
+  }
+
+  .principle-list {
+    border-block: 1px solid var(--rule);
+  }
+
+  .principle-list li {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .principle-list li {
+      grid-template-columns: 5fr 7fr;
+      gap: 2.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .principle-list p {
+    color: var(--muted);
+    max-width: 36em;
+  }
+
+  .where-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 60rem) {
+    .where-grid {
+      grid-template-columns: 4fr 8fr;
+      gap: 4rem;
+      align-items: baseline;
+    }
+  }
+
+  .actions {
+    margin-top: 2.25rem;
+  }
+</style>

@@ -22,12 +22,12 @@ src/
 
 public/
 ├── images/          # Website images
-│   ├── hero/        # Hero section images
-│   ├── logo/        # Logo variations
+│   ├── work/        # Screenshots of real projects
 │   └── headshot.webp
 ├── downloads/       # Downloadable files (PDFs, etc.)
-├── favicon.png      # Light mode favicon
-└── favicon-dark.png # Dark mode favicon
+├── favicon.svg      # Logo mark favicon
+├── logo.png         # Logo mark, 512px (structured data)
+└── og/default.png   # Social sharing card
 ```
 
 ## Local Development
@@ -78,35 +78,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 Pages typically follow this structure:
 
 ```astro
-<!-- Hero Section -->
-<section class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24">
-  <div class="max-w-4xl mx-auto px-4 text-center">
-    <h1 class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6">
-      Page Heading
-    </h1>
-    <p class="text-xl text-navy/70 dark:text-soft-gray/70">
-      Subheading text
-    </p>
+<!-- Page intro -->
+<section class="section">
+  <div class="wrap">
+    <h1>Page heading</h1>
+    <p class="lede measure">One or two sentences of plain explanation.</p>
   </div>
 </section>
 
-<!-- Content Section -->
-<section class="py-16 md:py-24">
-  <div class="max-w-4xl mx-auto px-4">
+<!-- Content section -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Section heading</h2>
+    </div>
     <!-- Content here -->
   </div>
 </section>
-
-<!-- CTA Section -->
-<section class="bg-navy py-16 md:py-24">
-  <div class="max-w-4xl mx-auto px-4 text-center">
-    <h2 class="text-3xl font-bold text-white mb-4">Call to Action</h2>
-    <a href="/contact" class="inline-block bg-steel-blue text-white ...">
-      Button Text
-    </a>
-  </div>
-</section>
 ```
+
+Headings get their font and size from the base styles, so you don't need classes on `h1`, `h2`, or `h3`.
 
 ## Managing Images
 
@@ -131,8 +122,9 @@ Pages typically follow this structure:
 
 | Type | Directory | Example |
 |------|-----------|---------|
-| Hero images | `public/images/hero/` | `hero-light.webp` |
-| Logos | `public/images/logo/` | `logo.svg` |
+| Project screenshots | `public/images/work/` | `supply-checkout-sheet.webp` |
+| Illustrations (optional) | `public/images/art/` | see `ART-DIRECTION.md` |
+| Logo | `src/components/LogoMark.astro`, `public/favicon.svg` | |
 | Profile photos | `public/images/` | `headshot.webp` |
 | Downloadable files | `public/downloads/` | `checklist.pdf` |
 
@@ -152,44 +144,39 @@ import ServiceCard from '../components/ServiceCard.astro';
 
 | Component | Purpose |
 |-----------|---------|
-| `Header.astro` | Site navigation |
+| `Header.astro` | Green awning header and navigation |
 | `Footer.astro` | Site footer |
-| `Hero.astro` | Hero sections |
-| `ServiceCard.astro` | Service offering cards |
-| `PricingCard.astro` | Pricing tier cards |
-| `FAQ.astro` | FAQ accordion |
-| `Testimonials.astro` | Customer testimonials |
-| `LeadCapture.astro` | Email capture modal |
+| `LogoMark.astro` | Storefront logo mark (SVG) |
+| `Receipt.astro` | Home page hero receipt |
+| `SupplyCheckout.astro` | Supply Checkout work sample with demo link |
+| `ProcessSteps.astro` | The four steps of working together |
+| `FAQ.astro` | FAQ disclosure list (pass `items`, or it uses `src/data/faqs.ts`) |
+
+Shared content lives in `src/data/`: `services.ts` is used by the home and services pages, and `faqs.ts` holds the default FAQs.
 
 ## Styling
 
-This site uses Tailwind CSS. Common utility classes:
+See `docs/ART-DIRECTION.md` for the palette, type, logo, and image guidelines.
 
-### Colors (with dark mode support)
-
-```html
-<!-- Text colors -->
-<p class="text-navy dark:text-soft-gray">Main text</p>
-<p class="text-navy/70 dark:text-soft-gray/70">Secondary text</p>
-<p class="text-steel-blue">Accent text</p>
-
-<!-- Background colors -->
-<div class="bg-white dark:bg-navy">...</div>
-<div class="bg-soft-gray/30 dark:bg-navy/50">...</div>
-```
-
-### Spacing & Layout
+Colors are CSS variables in `src/styles/global.css` that switch automatically in dark mode, so you don't need `dark:` classes:
 
 ```html
-<!-- Section padding -->
-<section class="py-16 md:py-24">
-
-<!-- Container with max-width -->
-<div class="max-w-4xl mx-auto px-4">
-
-<!-- Grid layouts -->
-<div class="grid md:grid-cols-2 gap-8">
+<p class="text-ink">Main text</p>
+<p class="text-muted">Secondary text</p>
+<div class="bg-green-soft">Tinted section</div>
 ```
+
+Reusable classes:
+
+```html
+<section class="section">          <!-- vertical section padding -->
+  <div class="wrap">               <!-- page-width container with side gutters -->
+    <p class="lede measure">…</p>  <!-- larger intro text at a readable width -->
+    <a class="btn" href="/contact">Book a free call</a>   <!-- primary (yellow) -->
+    <a class="btn-outline" href="/pricing">See pricing</a> <!-- secondary -->
+```
+
+Voice: write in the first person ("I"). Use plain sentence case. Don't invent client results. Real work goes in its own section with a link people can check.
 
 ## Adding Blog Posts (Future)
 
@@ -275,7 +262,4 @@ Run `npm run build` locally to catch errors before pushing.
 
 ### Dark mode not working
 
-Ensure elements have both light and dark classes:
-```html
-<p class="text-navy dark:text-soft-gray">...</p>
-```
+Use the token colors (`text-ink`, `bg-paper`, `var(--green)` and so on) instead of fixed hex values. The tokens switch automatically.
