@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -145,14 +145,14 @@ jobs:
         if: steps.check-package.outputs.has_package == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Setup Node.js (no cache)
         if: steps.check-package.outputs.has_package == 'false'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install dependencies
         if: steps.check-package.outputs.has_package == 'true'
@@ -382,7 +382,7 @@ jobs:
         if: steps.should-deploy.outputs.skip != 'true' && steps.infra.outputs.stack_exists == 'true' && steps.check-package.outputs.has_package == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -499,7 +499,7 @@ jobs:
         if: steps.check-package.outputs.has_package == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -574,7 +574,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -635,7 +635,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Lighthouse
         run: npm install -g lighthouse
