@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import LeadCapture from '../components/LeadCapture.astro';
 
 interface Props {
   title: string;
@@ -15,11 +14,12 @@ const siteUrl = 'https://mainstreetlogic.com';
 
 const {
   title,
-  description = 'Practical technology consulting for small business. Helping Main Street businesses make smart decisions in a digital world.',
-  ogImage = '/images/hero/hero-light.png',
+  description = 'Custom software, automation, and websites for small businesses. Work directly with the developer who builds it.',
+  ogImage = '/og/default.png',
   canonicalUrl,
 } = Astro.props;
 
+const fullTitle = `${title} | Main Street Logic`;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
@@ -31,68 +31,46 @@ const absoluteOgImage = ogImage.startsWith('http')
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      href="/favicon.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      href="/favicon-dark.png"
-      media="(prefers-color-scheme: dark)"
-    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1d4b3b" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Preload hero images for LCP optimization (theme-aware) -->
-    <link
-      rel="preload"
-      href="/images/hero/hero-light.webp"
-      as="image"
-      type="image/webp"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="preload"
-      href="/images/hero/hero-dark.webp"
-      as="image"
-      type="image/webp"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <!-- Theme initialization (prevents FOUC) -->
+    <!-- Theme initialization (prevents a flash of the wrong theme) -->
     <script is:inline>
       (function () {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia(
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {}
+        var prefersDark = window.matchMedia(
           '(prefers-color-scheme: dark)'
         ).matches;
-        const theme = stored || (prefersDark ? 'dark' : 'light');
-        if (theme === 'dark') document.documentElement.classList.add('dark');
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
       })();
     </script>
 
-    <!-- Primary Meta Tags -->
-    <title>{title} | Main Street Logic</title>
-    <meta name="title" content={`${title} | Main Street Logic`} />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={`${title} | Main Street Logic`} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Main Street Logic" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonical} />
-    <meta property="twitter:title" content={`${title} | Main Street Logic`} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={absoluteOgImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
 
-    <!-- Additional head content (structured data, etc.) -->
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
@@ -102,31 +80,5 @@ const absoluteOgImage = ogImage.startsWith('http')
       <slot />
     </main>
     <Footer />
-    <LeadCapture triggerPercent={50} dismissHours={24} />
-
-    <!-- Scroll animation observer -->
-    <script>
-      // Only run animations if user hasn't requested reduced motion
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-        );
-        document
-          .querySelectorAll('.animate-on-scroll, .stagger-children')
-          .forEach((el) => observer.observe(el));
-      } else {
-        document
-          .querySelectorAll('.animate-on-scroll, .stagger-children')
-          .forEach((el) => el.classList.add('is-visible'));
-      }
-    </script>
   </body>
 </html>

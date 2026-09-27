@@ -1,100 +1,90 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FAQ from '../../components/FAQ.astro';
 
 const pageDescription =
-  'Get 50% off your first year of website hosting with Main Street Logic. Enter your email to claim your exclusive discount code.';
+  'Get 50% off your first year of website hosting with Main Street Logic. Enter your email to get the discount code.';
 
 const benefits = [
   {
-    icon: '🚀',
-    title: 'Lightning Fast',
-    description: 'Sites load in under 2 seconds with global CDN',
+    title: 'Fast',
+    description:
+      'Your site is served from a global CDN, so pages load quickly on any phone.',
   },
   {
-    icon: '🔒',
-    title: 'Secure & Reliable',
-    description: 'Free SSL, daily backups, 99.9% uptime',
+    title: 'Secure',
+    description:
+      'An SSL certificate is included. Pro adds monthly backups and uptime monitoring.',
   },
   {
-    icon: '🛠️',
-    title: 'Fully Managed',
-    description: 'Updates, security patches, and monitoring included',
+    title: 'Managed',
+    description: 'Updates and security patches are handled for you.',
   },
   {
-    icon: '📞',
-    title: 'Direct Support',
-    description: 'Talk to a developer, not a ticket queue',
+    title: 'Direct support',
+    description:
+      'You talk to the developer who runs your site, not a ticket queue.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How long does the discount last?',
+    answer:
+      'The 50% discount covers your first 12 months. After that, hosting is the regular $15 a month.',
+  },
+  {
+    question: 'Is there a contract?',
+    answer:
+      'No. Cancel any time with 30 days’ notice. You should stay because it works for you, not because you’re locked in.',
+  },
+  {
+    question: 'Can I move an existing website?',
+    answer:
+      'Yes. The discount is for new hosting clients, and I’ll migrate your current site at no extra charge.',
+  },
+  {
+    question: 'What if I need a new website too?',
+    answer:
+      'I build websites for small businesses, and this discount can be combined with a new site project.',
   },
 ];
 ---
 
-<BaseLayout
-  title="50% Off Hosting - Limited Offer"
-  description={pageDescription}
->
-  <!-- Hero Section -->
-  <section class="bg-navy py-12 md:py-20">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <span
-        class="inline-block bg-steel-blue/30 text-steel-blue text-sm font-medium px-4 py-1.5 rounded-full mb-6"
-      >
-        Limited Time Offer
-      </span>
-      <h1 class="text-3xl md:text-5xl font-bold text-white mb-6">
-        Get <span class="text-steel-blue">50% Off</span> Your First Year of Hosting
-      </h1>
-      <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-        Professional website hosting without the headaches. No hidden fees, no
-        long-term contracts, no surprises.
-      </p>
-
-      <!-- Pricing Preview -->
-      <div
-        class="inline-flex items-center gap-4 bg-white/10 rounded-lg px-6 py-4"
-      >
-        <div class="text-left">
-          <span class="text-white/60 text-sm block">Regular price</span>
-          <span class="text-white/60 text-xl line-through">$15/month</span>
-        </div>
-        <div class="text-left border-l border-white/20 pl-4">
-          <span class="text-steel-blue text-sm block">With discount</span>
-          <span class="text-white text-2xl font-bold">$7.50/month</span>
-        </div>
+<BaseLayout title="50% Off Hosting" description={pageDescription}>
+  <section class="page-head">
+    <div class="wrap head-grid">
+      <div>
+        <h1><span class="sign">50% Off</span> your first year of hosting</h1>
+        <p class="lede measure">
+          Website hosting without the headaches: no hidden fees, no long-term
+          contract, and a real person to talk to.
+        </p>
+        <p class="price">
+          <span class="was"><s>$15</s> a month</span>
+          <span class="now">$7.50 a month for the first year</span>
+        </p>
       </div>
-    </div>
-  </section>
 
-  <!-- Email Form Section -->
-  <section class="py-12 md:py-16 bg-light-bg dark:bg-dark-bg">
-    <div class="max-w-xl mx-auto px-4">
-      <div
-        class="bg-white dark:bg-navy rounded-xl p-8 shadow-lg border border-soft-gray/30 dark:border-soft-gray/20"
-      >
-        <!-- Form State: Initial -->
+      <div class="claim">
         <div id="form-container">
-          <h2
-            class="text-2xl font-bold text-navy dark:text-white text-center mb-2"
-          >
-            Claim Your Discount Code
-          </h2>
-          <p class="text-navy/70 dark:text-soft-gray/70 text-center mb-6">
-            Enter your email and we'll send you the exclusive discount code.
-          </p>
-
-          <form id="discount-form" class="space-y-4">
+          <h2>Get your discount code</h2>
+          <p class="claim-sub">Enter your email and I’ll send you the code.</p>
+          <form id="discount-form" class="form">
             <div>
-              <label for="email" class="form-label">Email Address</label>
+              <label for="email" class="form-label">Email</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 required
-                class="form-input"
+                autocomplete="email"
                 placeholder="you@example.com"
+                class="form-input"
               />
             </div>
 
-            <!-- Honeypot field -->
+            <!-- Honeypot field - hidden from users, bots will fill it -->
             <div class="hidden" aria-hidden="true">
               <label for="website">Website</label>
               <input
@@ -106,194 +96,78 @@ const benefits = [
               />
             </div>
 
-            <!-- Error message -->
-            <div
-              id="form-error"
-              class="hidden text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md p-3 text-sm"
-            >
+            <p id="form-error" class="hidden status-error" role="alert">
               <span id="error-message"
                 >Something went wrong. Please try again.</span
               >
-            </div>
+            </p>
 
-            <button
-              type="submit"
-              id="submit-button"
-              class="btn-primary w-full py-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
-            >
-              <span id="button-text">Get My Discount Code</span>
+            <button type="submit" id="submit-button" class="btn btn-lg">
+              <span id="button-text">Get my discount code</span>
               <svg
                 id="button-spinner"
-                class="hidden animate-spin h-5 w-5"
+                class="hidden spinner"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
+                fill="none"
                 aria-hidden="true"
               >
                 <circle
-                  class="opacity-25"
                   cx="12"
                   cy="12"
-                  r="10"
+                  r="9"
                   stroke="currentColor"
-                  stroke-width="4"
-                  fill="none"></circle>
+                  stroke-width="3"
+                  opacity="0.25"></circle>
                 <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
+                  d="M21 12a9 9 0 0 0-9-9"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"></path>
               </svg>
             </button>
+            <p class="fine">I’ll only email you about this discount.</p>
           </form>
-
-          <p
-            class="text-xs text-navy/50 dark:text-soft-gray/50 text-center mt-4"
-          >
-            No spam. We'll only contact you about your hosting discount.
-          </p>
         </div>
 
-        <!-- Success State -->
-        <div id="success-container" class="hidden text-center">
-          <div
-            class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-8 h-8 text-green-600 dark:text-green-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-navy dark:text-white mb-2">
-            Here's Your Discount Code!
-          </h2>
-          <p class="text-navy/70 dark:text-soft-gray/70 mb-6">
-            Use this code when signing up for hosting:
+        <div id="success-container" class="hidden" role="status">
+          <h2>Here’s your code</h2>
+          <p class="claim-sub">Use it when you sign up for hosting:</p>
+          <!-- TODO: code says 2024; confirm it is still valid -->
+          <p id="coupon-code" class="coupon">HALFOFF2024</p>
+          <p class="fine">
+            50% off your first year of hosting. New hosting clients only.
           </p>
-
-          <!-- Coupon Code Display -->
-          <div
-            class="bg-steel-blue/10 dark:bg-steel-blue/20 border-2 border-dashed border-steel-blue rounded-lg p-6 mb-6"
-          >
-            <span
-              id="coupon-code"
-              class="text-3xl font-mono font-bold text-navy dark:text-white tracking-wider"
-            >
-              HALFOFF2024
-            </span>
-          </div>
-
-          <p class="text-sm text-navy/60 dark:text-soft-gray/60 mb-6">
-            This code gives you <strong>50% off your first year</strong> of hosting.
-            Valid for new clients only.
-          </p>
-
-          <a
-            href="/contact"
-            class="inline-block bg-steel-blue text-white font-medium rounded-md px-8 py-3 hover:bg-dark-steel transition-colors no-underline"
-          >
-            Get Started with Hosting
-          </a>
+          <a href="/contact" class="btn">Set up hosting</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Benefits Section -->
-  <section class="py-12 md:py-16">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2
-        class="text-2xl md:text-3xl font-bold text-navy dark:text-white text-center mb-12"
-      >
-        What's Included in Your Hosting
-      </h2>
-
-      <div class="grid md:grid-cols-2 gap-6">
+  <section class="section" aria-labelledby="included-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="included-title">What’s included</h2>
+      </div>
+      <ul class="benefits ruled">
         {
-          benefits.map((benefit) => (
-            <div class="flex gap-4 p-6 bg-white dark:bg-navy rounded-lg shadow-sm border border-soft-gray/30 dark:border-soft-gray/20">
-              <span class="text-3xl flex-shrink-0">{benefit.icon}</span>
-              <div>
-                <h3 class="font-semibold text-navy dark:text-white mb-1">
-                  {benefit.title}
-                </h3>
-                <p class="text-navy/70 dark:text-soft-gray/70 text-sm">
-                  {benefit.description}
-                </p>
-              </div>
-            </div>
+          benefits.map((b) => (
+            <li>
+              <h3>{b.title}</h3>
+              <p>{b.description}</p>
+            </li>
           ))
         }
-      </div>
+      </ul>
+      <p class="more"><a href="/pricing">Compare hosting plans</a></p>
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="py-12 md:py-16 bg-soft-gray/30 dark:bg-navy/50">
-    <div class="max-w-3xl mx-auto px-4">
-      <h2 class="text-2xl font-bold text-navy dark:text-white text-center mb-8">
-        Common Questions
-      </h2>
-
-      <div class="space-y-4">
-        <details
-          class="bg-white dark:bg-navy rounded-lg p-6 border border-soft-gray/30 dark:border-soft-gray/20"
-        >
-          <summary class="font-medium text-navy dark:text-white cursor-pointer">
-            How long is the discount valid?
-          </summary>
-          <p class="mt-3 text-navy/70 dark:text-soft-gray/70">
-            The 50% discount applies to your first 12 months of hosting. After
-            that, you'll pay the regular rate of $15/month.
-          </p>
-        </details>
-
-        <details
-          class="bg-white dark:bg-navy rounded-lg p-6 border border-soft-gray/30 dark:border-soft-gray/20"
-        >
-          <summary class="font-medium text-navy dark:text-white cursor-pointer">
-            Is there a long-term contract?
-          </summary>
-          <p class="mt-3 text-navy/70 dark:text-soft-gray/70">
-            No contracts. You can cancel anytime with 30 days notice. We believe
-            you should stay because you want to, not because you're locked in.
-          </p>
-        </details>
-
-        <details
-          class="bg-white dark:bg-navy rounded-lg p-6 border border-soft-gray/30 dark:border-soft-gray/20"
-        >
-          <summary class="font-medium text-navy dark:text-white cursor-pointer">
-            Can I use this with an existing website?
-          </summary>
-          <p class="mt-3 text-navy/70 dark:text-soft-gray/70">
-            This discount is for new hosting clients. If you have an existing
-            site elsewhere, we can help migrate it at no extra charge.
-          </p>
-        </details>
-
-        <details
-          class="bg-white dark:bg-navy rounded-lg p-6 border border-soft-gray/30 dark:border-soft-gray/20"
-        >
-          <summary class="font-medium text-navy dark:text-white cursor-pointer">
-            What if I need a new website too?
-          </summary>
-          <p class="mt-3 text-navy/70 dark:text-soft-gray/70">
-            We build custom websites for small businesses. This hosting discount
-            can be combined with our website development services.
-            <a href="/services" class="text-steel-blue hover:underline"
-              >See our services</a
-            >.
-          </p>
-        </details>
-      </div>
+  <section class="section faq-section" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <h2 id="faq-title">Common questions</h2>
+      <FAQ items={faqs} />
     </div>
   </section>
 </BaseLayout>
@@ -330,10 +204,10 @@ const benefits = [
   function setLoading(loading: boolean): void {
     submitButton.disabled = loading;
     if (loading) {
-      buttonText.textContent = 'Sending...';
+      buttonText.textContent = 'Sending…';
       buttonSpinner.classList.remove('hidden');
     } else {
-      buttonText.textContent = 'Get My Discount Code';
+      buttonText.textContent = 'Get my discount code';
       buttonSpinner.classList.add('hidden');
     }
   }
@@ -396,3 +270,161 @@ const benefits = [
     }
   });
 </script>
+
+<style>
+  .head-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (min-width: 60rem) {
+    .head-grid {
+      grid-template-columns: 7fr 5fr;
+      gap: 4rem;
+    }
+  }
+
+  .sign {
+    display: inline-block;
+    background: var(--yellow);
+    color: #13201a;
+    padding: 0 0.2em;
+    border-radius: 0.1em;
+  }
+
+  .page-head .lede {
+    margin-top: 1.5rem;
+  }
+
+  .price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    align-items: baseline;
+    margin-top: 1.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .was {
+    color: var(--muted);
+  }
+
+  .now {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--green);
+  }
+
+  .claim {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: 4px solid var(--awning);
+    border-radius: 0.375rem;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  }
+
+  .claim h2 {
+    font-size: 1.75rem;
+  }
+
+  .claim-sub {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+
+  .form {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .form .btn {
+    width: 100%;
+  }
+
+  .fine {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .status-error {
+    padding: 0.75rem 1rem;
+    border-left: 4px solid #b42318;
+    border-radius: 0.375rem;
+    background: color-mix(in srgb, #b42318 10%, var(--paper));
+    font-size: 1rem;
+  }
+
+  .spinner {
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .coupon {
+    margin-block: 1.25rem;
+    padding: 1rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border: 2px dashed var(--green);
+    border-radius: 0.375rem;
+    user-select: all;
+  }
+
+  #success-container .btn {
+    margin-top: 1.5rem;
+  }
+
+  .benefits {
+    border-block: 1px solid var(--rule);
+  }
+
+  .benefits li {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .benefits li {
+      grid-template-columns: 5fr 7fr;
+      gap: 2.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .benefits p {
+    color: var(--muted);
+    max-width: 36em;
+  }
+
+  .more {
+    margin-top: 1.75rem;
+    font-weight: 600;
+  }
+
+  .faq-section {
+    padding-top: 0;
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 60rem) {
+    .faq-grid {
+      grid-template-columns: 4fr 8fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+</style>

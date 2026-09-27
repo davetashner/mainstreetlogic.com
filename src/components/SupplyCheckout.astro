@@ -1,0 +1,133 @@
+---
+interface Props {
+  headingLevel?: 'h2' | 'h3';
+}
+const { headingLevel: Heading = 'h2' } = Astro.props;
+
+const features = [
+  'Staff scan a barcode with their phone camera to check items out or back in.',
+  'Stock counts update on their own as things leave and come back.',
+  'Each sheet adds up what was used and what to charge for it.',
+  'Any sheet exports to CSV for billing or bookkeeping.',
+];
+---
+
+<div class="work">
+  <div class="shot">
+    <img
+      src="/images/work/supply-checkout-sheet.webp"
+      alt="Supply Checkout on a phone: a checkout sheet for Acme Offices with a Scan to check out button and totals for items taken, returned, used, and the $42.00 charge."
+      width="390"
+      height="780"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="copy">
+    <Heading class="title">Something I built: Supply Checkout</Heading>
+    <p class="lede">
+      A replacement for the paper sign-out sheet on the supply closet door. It
+      runs in a phone browser, so there's nothing to install.
+    </p>
+    <ul class="features">
+      {features.map((f) => <li>{f}</li>)}
+    </ul>
+    <div class="cta">
+      <a
+        href="https://supplycheckout.com/demo"
+        class="btn"
+        target="_blank"
+        rel="noopener">Try the demo</a
+      >
+      <p class="note">
+        Opens supplycheckout.com in a new tab. Nothing you enter is saved.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .work {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 48rem) {
+    .work {
+      grid-template-columns: minmax(16rem, 5fr) 7fr;
+      gap: clamp(2.5rem, 6vw, 5rem);
+    }
+  }
+
+  .shot {
+    justify-self: center;
+    width: min(100%, 20rem);
+    padding: 0.625rem;
+    background: #13201a;
+    border-radius: 2.25rem;
+    box-shadow: 0 24px 48px -12px rgb(19 32 26 / 0.35);
+  }
+
+  :global(.dark) .shot {
+    background: #2b3b33;
+    box-shadow: 0 24px 48px -12px rgb(0 0 0 / 0.6);
+  }
+
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 1.75rem;
+  }
+
+  .title {
+    font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .lede {
+    margin-top: 1rem;
+    max-width: 34em;
+  }
+
+  .features {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 0.875rem;
+    max-width: 34em;
+  }
+
+  .features li {
+    position: relative;
+    padding-left: 1.75rem;
+  }
+
+  /* barcode tick, a nod to the app */
+  .features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 0.875rem;
+    height: 0.75rem;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--green) 0 2px,
+      transparent 2px 3px,
+      var(--green) 3px 4px,
+      transparent 4px 6px
+    );
+  }
+
+  .cta {
+    margin-top: 2rem;
+  }
+
+  .note {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+</style>

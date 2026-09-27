@@ -4,77 +4,82 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Blog"
-  description="Insights and tips for small business technology from Main Street Logic."
+  description="Practical writing on technology for small businesses, from Main Street Logic. Coming soon."
 >
-  <!-- Hero Section -->
-  <section
-    class="bg-gradient-to-br from-light-bg to-soft-gray dark:from-dark-bg dark:to-navy py-16 md:py-24"
-  >
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1
-        class="text-4xl md:text-5xl font-bold text-navy dark:text-soft-gray mb-6"
-      >
-        Blog
-      </h1>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70">
-        Practical insights and tips for small business technology.
+  <section class="page-head">
+    <div class="wrap">
+      <h1>Blog</h1>
+      <p class="lede measure">
+        Nothing posted yet. I’m writing plain-language articles on automation,
+        software costs, and picking tools that fit a small business.
       </p>
     </div>
   </section>
 
-  <!-- Coming Soon -->
-  <section class="py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4">
-      <div
-        class="bg-white dark:bg-navy rounded-lg p-12 shadow-sm border border-soft-gray/50 dark:border-soft-gray/20 text-center"
-      >
-        <div
-          class="w-16 h-16 bg-steel-blue/10 rounded-full flex items-center justify-center mx-auto mb-6"
-          aria-hidden="true"
-        >
-          <svg
-            class="w-8 h-8 text-steel-blue"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-            ></path>
-          </svg>
-        </div>
-        <h2 class="text-2xl font-bold text-navy dark:text-soft-gray mb-4">
-          Coming Soon
-        </h2>
-        <p class="text-navy/70 dark:text-soft-gray/70 max-w-md mx-auto mb-8">
-          We're working on helpful content about technology for small
-          businesses. Check back soon for articles on automation, efficiency,
-          and making smart tech decisions.
-        </p>
-        <a
-          href="/contact"
-          class="inline-block border border-steel-blue text-steel-blue font-medium rounded-md px-6 py-3 hover:bg-steel-blue hover:text-white transition-colors no-underline"
-        >
-          Get Notified When We Launch
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter CTA -->
-  <section class="bg-navy py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">Don't miss an update</h2>
-      <p class="text-xl text-white/70 mb-8">
-        Want to know when we publish new content? Get in touch and we'll keep
-        you informed.
-      </p>
-      <a href="/contact" class="btn-primary px-8 py-4 text-lg">
-        Stay Updated
-      </a>
+  <section class="section">
+    <div class="wrap">
+      <ul class="next ruled">
+        <li>
+          <h2>In the meantime, try the checklist</h2>
+          <div>
+            <p>
+              Twenty-five quick yes-or-no questions that show where technology
+              is costing your business time.
+            </p>
+            <p class="link">
+              <a href="/resources/tech-friction-checklist"
+                >Open the tech friction checklist</a
+              >
+            </p>
+          </div>
+        </li>
+        <li>
+          <h2>Or ask me directly</h2>
+          <div>
+            <p>
+              If you have a question you’d like to see answered here, send it
+              over. I’ll answer you now and may write it up later.
+            </p>
+            <p class="link"><a href="/contact">Send a question</a></p>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .next {
+    border-block: 1px solid var(--rule);
+  }
+
+  .next li {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .next li {
+      grid-template-columns: 5fr 7fr;
+      gap: 2.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .next h2 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .next p {
+    color: var(--muted);
+    max-width: 36em;
+  }
+
+  .next .link {
+    margin-top: 0.75rem;
+    font-weight: 600;
+  }
+</style>

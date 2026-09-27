@@ -1,70 +1,78 @@
 ---
 const steps = [
   {
-    number: 1,
-    title: 'Free Consultation',
+    title: 'Free call',
     description:
-      'We start with a conversation to understand your business, challenges, and goals.',
+      "Thirty minutes by phone or video. You tell me what's slowing you down, and I tell you honestly whether I can help.",
   },
   {
-    number: 2,
-    title: 'Custom Proposal',
+    title: 'Written proposal',
     description:
-      'You receive a clear proposal with scope, timeline, and pricing tailored to your needs.',
+      "What I'll build, how long it will take, and what it costs, in writing before any work starts.",
   },
   {
-    number: 3,
-    title: 'Build & Iterate',
+    title: 'Build and check in',
     description:
-      'We develop your solution with regular check-ins to ensure it meets your expectations.',
+      'You see it working along the way and can change course before anything is final.',
   },
   {
-    number: 4,
-    title: 'Ongoing Support',
+    title: 'Launch and support',
     description:
-      'After launch, we provide training and support to keep everything running smoothly.',
+      'I show your team how it works and stay on for fixes and improvements.',
   },
 ];
 ---
 
-<section class="bg-soft-gray/30 dark:bg-navy/50 py-16 md:py-24">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="text-center mb-12">
-      <h2
-        class="text-3xl md:text-4xl font-bold text-navy dark:text-soft-gray mb-4"
-      >
-        How It Works
-      </h2>
-      <p class="text-xl text-navy/70 dark:text-soft-gray/70 max-w-2xl mx-auto">
-        A simple, straightforward process to get your technology working for
-        you.
-      </p>
-    </div>
+<ol class="steps">
+  {
+    steps.map((step, i) => (
+      <li>
+        <span class="num" aria-hidden="true">
+          {i + 1}
+        </span>
+        <h3>{step.title}</h3>
+        <p>{step.description}</p>
+      </li>
+    ))
+  }
+</ol>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {
-        steps.map((step, index) => (
-          <div class="relative text-center">
-            {/* Connector line (hidden on mobile, shown between items on desktop) */}
-            {index < steps.length - 1 && (
-              <div class="hidden lg:block absolute top-8 left-1/2 w-full h-0.5 bg-steel-blue/20" />
-            )}
+<style>
+  .steps {
+    display: grid;
+    gap: 2.5rem;
+  }
 
-            {/* Step number circle */}
-            <div class="relative z-10 w-16 h-16 mx-auto mb-4 bg-steel-blue rounded-full flex items-center justify-center">
-              <span class="text-2xl font-bold text-white">{step.number}</span>
-            </div>
+  @media (min-width: 40rem) {
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-            {/* Content */}
-            <h3 class="text-lg font-semibold text-navy dark:text-soft-gray mb-2">
-              {step.title}
-            </h3>
-            <p class="text-navy/70 dark:text-soft-gray/70 text-sm">
-              {step.description}
-            </p>
-          </div>
-        ))
-      }
-    </div>
-  </div>
-</section>
+  @media (min-width: 64rem) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  li {
+    border-top: 2px solid var(--ink);
+    padding-top: 1rem;
+  }
+
+  .num {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2.75rem;
+    line-height: 1;
+    color: var(--green);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+</style>
