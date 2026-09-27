@@ -55,10 +55,10 @@ Small business owners (5-50 employees) struggling with:
 
 ### Recommended Next Items
 Phase 3 (Integrations & Lead Generation):
-1. **Implement contact form backend** (`mainstreetlogic.com-1ta`) - Lambda + SES
-2. **Integrate consultation booking** (`mainstreetlogic.com-hov`) - Calendly embed
-3. **Configure CloudFlare Web Analytics** (`mainstreetlogic.com-dd5`)
-4. **Set up newsletter signup** (`mainstreetlogic.com-wv5`) - Buttondown
+1. **Implement contact form backend** (`msl-1ta`) - Lambda + SES
+2. **Integrate consultation booking** (`msl-hov`) - Calendly embed
+3. **Configure CloudFlare Web Analytics** (`msl-dd5`)
+4. **Set up newsletter signup** (`msl-wv5`) - Buttondown
 
 ### Technical Decisions
 | Decision | Choice | Notes |
