@@ -197,9 +197,18 @@ jobs:
         if: steps.check-package.outputs.has_package == 'true'
         run: npm run typecheck --if-present
 
-      - name: Run tests
+      - name: Unit tests with coverage
         if: steps.check-package.outputs.has_package == 'true'
-        run: npm run test:run --if-present || npm test --if-present -- --passWithNoTests
+        # Fails if coverage drops below the thresholds in vitest.config.ts
+        run: npm run test:run
+
+      - name: Coverage summary
+        if: always() && hashFiles('coverage/coverage-summary.json') != ''
+        run: |
+          echo "### Unit test coverage" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Covered |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          jq -r '.total | to_entries[] | select(.key != "branchesTrue") | "| \(.key) | \(.value.pct)% |"' coverage/coverage-summary.json >> $GITHUB_STEP_SUMMARY
 
       - name: Build
         if: steps.check-package.outputs.has_package == 'true'

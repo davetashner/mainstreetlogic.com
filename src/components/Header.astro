@@ -203,12 +203,7 @@ const isCurrent = (href: string) => currentPath === href;
 </style>
 
 <script>
-  const button = document.getElementById('menu-button');
-  const menu = document.getElementById('mobile-menu');
+  import { initMenu } from '../scripts/menu';
 
-  button?.addEventListener('click', () => {
-    const open = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!open));
-    if (menu) menu.hidden = open;
-  });
+  initMenu();
 </script>

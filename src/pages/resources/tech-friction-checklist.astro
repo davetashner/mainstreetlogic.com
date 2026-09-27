@@ -162,32 +162,9 @@ const checklistSections = [
 </BaseLayout>
 
 <script>
-  const form = document.getElementById('checklist') as HTMLFormElement | null;
-  const live = document.getElementById('score-live');
-  const count = document.getElementById('score-count');
-  const total = document.getElementById('score-total');
-  const bands = document.querySelectorAll<HTMLLIElement>('.bands li');
-  const boxes = form?.querySelectorAll<HTMLInputElement>(
-    'input[type="checkbox"]'
-  );
+  import { initChecklist } from '../../scripts/checklist';
 
-  function update() {
-    if (!boxes || !count || !live) return;
-    const n = Array.from(boxes).filter((b) => b.checked).length;
-    count.textContent = String(n);
-    live.hidden = false;
-    bands.forEach((band) => {
-      const min = Number(band.dataset.min);
-      const max = Number(band.dataset.max);
-      band.toggleAttribute('data-active', n >= min && n <= max);
-    });
-  }
-
-  if (boxes && total) total.textContent = String(boxes.length);
-  form?.addEventListener('change', update);
-  document
-    .getElementById('print-button')
-    ?.addEventListener('click', () => window.print());
+  initChecklist();
 </script>
 
 <style>

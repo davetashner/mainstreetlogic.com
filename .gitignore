@@ -24,6 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # test output
+coverage/
 test-results/
 playwright-report/
 
