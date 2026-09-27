@@ -27,12 +27,12 @@ Olive is the only button color. Lamp amber is for focus and highlight, never dec
 ## Logo
 
 - `src/components/Logo.astro` is the storefront illustration plus a live-text wordmark. It switches to the lamp-lit night illustration in dark mode. Pass `tagline` to show the tagline.
-- The illustrations (`public/images/brand/storefront-light.webp` and `storefront-dark.webp`) are transparent, 929×607. They are a redrawn version of the logo's storefront with a striped awning and a bench.
+- The illustrations (`public/images/brand/storefront-light.webp` and `storefront-dark.webp`) are the realistic evening storefront: transparent, 725×382, solid navy awning, lit interiors. The dark-mode version has a darker neighboring building.
 - `public/logo.png` is the full horizontal lockup.
 - The favicons (`favicon.png`, `apple-touch-icon.png`, `icon-512.png`) are an "M" monogram on navy with the logo's olive dot.
 - The rule, olive dot, rule divider under the wordmark is available as `.ornament`.
 
-**Note:** `public/logo.png` is still cropped from the original logo sheet, which shows a solid navy awning. If the striped-awning art becomes the official logo, re-export the lockup to match.
+**To do:** the illustration is 725px wide, about 1.3× at hero size on high-density screens. A 2× export (about 1500px wide) would make it fully crisp.
 
 ## Photography
 

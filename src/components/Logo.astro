@@ -3,7 +3,7 @@ import { withBase } from '../lib/url';
 /**
  * Main Street Logic logo: storefront illustration + serif wordmark.
  * The illustration swaps for the lamp-lit night version in dark mode.
- * Both are transparent PNG-derived WebPs (929x607), so they sit on any background.
+ * Both are transparent WebPs (725x382), so they sit on any background.
  * The wordmark is live text in Source Serif 4, matching the logo artwork.
  */
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   class?: string;
 }
 const { height = 52, tagline = false, class: className } = Astro.props;
-const width = Math.round((height * 929) / 607);
+const width = Math.round((height * 725) / 382);
 ---
 
 <span class:list={['logo', className]}>
