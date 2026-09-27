@@ -1,40 +1,43 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/public-sans';
-@import '@fontsource/zilla-slab/600.css';
-@import '@fontsource/zilla-slab/700.css';
+@import '@fontsource-variable/source-serif-4/standard.css';
+@import '@fontsource-variable/source-serif-4/standard-italic.css';
+@import '@fontsource-variable/montserrat';
 
 /*
- * Main Street Logic design tokens.
+ * Main Street Logic design tokens, taken from the logo:
+ * navy "Main Street", olive "Logic", cream paper, lamp-lit windows, brick.
  * Colors are CSS variables so dark mode is a single swap here,
  * not a `dark:` variant on every element.
  */
 :root {
-  --paper: #f6f7f2; /* page background, cool ledger white */
+  --paper: #fefdf9; /* logo cream: page background */
   --surface: #ffffff; /* raised panels, receipt paper */
-  --ink: #13201a; /* body text, green-black */
-  --muted: #4d5c54; /* secondary text */
-  --rule: #d5dcd3; /* hairlines and borders */
-  --green: #1d4b3b; /* awning green: brand, links */
-  --green-soft: #e3ece6; /* tinted section background */
-  --yellow: #f0b429; /* sign yellow: primary action only */
-  --yellow-deep: #d69a12;
-  --on-green: #f6f7f2;
-  --awning: #1d4b3b; /* header band, stays deep green in both modes */
+  --ink: #0c2135; /* logo navy: text */
+  --muted: #4a5a6b; /* secondary text */
+  --rule: #d6dde4; /* hairlines, from the logo's divider */
+  --accent: #4d612d; /* logo olive ("Logic"): links, primary action */
+  --accent-hover: #3d4e22;
+  --on-accent: #fefdf9;
+  --accent-soft: #eef1e6; /* tinted section background */
+  --brick: #a8452b; /* storefront brick: small secondary accents */
+  --lamp: #f2c46d; /* lamplight: focus rings, selection */
+  --band: #0f263a; /* logo dark background: closing band */
   color-scheme: light;
 }
 
 .dark {
-  --paper: #0f1914;
-  --surface: #17241e;
-  --ink: #e6ece7;
-  --muted: #a3b2a9;
-  --rule: #2b3b33;
-  --green: #86c9a8;
-  --green-soft: #15261e;
-  --yellow: #f0b429;
-  --yellow-deep: #f5c552;
-  --on-green: #0f1914;
-  --awning: #173d30;
+  --paper: #0f263a; /* logo dark background */
+  --surface: #15314a;
+  --ink: #fefdf8;
+  --muted: #a9b7c4;
+  --rule: #26435d;
+  --accent: #9caf64; /* logo olive, dark variant */
+  --accent-hover: #b1c27c;
+  --on-accent: #0c2135;
+  --accent-soft: #132d44;
+  --brick: #e0805f;
+  --lamp: #f2c46d;
+  --band: #0a1c2c;
   color-scheme: dark;
 }
 
@@ -44,12 +47,11 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
-  --color-green: var(--green);
-  --color-green-soft: var(--green-soft);
-  --color-yellow: var(--yellow);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
 
-  --font-sans: 'Public Sans Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Zilla Slab', ui-serif, Georgia, serif;
+  --font-serif: 'Source Serif 4 Variable', ui-serif, Georgia, serif;
+  --font-sans: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono:
     ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 }
@@ -62,10 +64,11 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Serif body, like the logo; Montserrat is kept for interface text */
   body {
-    font-family: var(--font-sans);
-    font-size: 1.125rem;
-    line-height: 1.6;
+    font-family: var(--font-serif);
+    font-size: 1.1875rem;
+    line-height: 1.65;
     background-color: var(--paper);
     color: var(--ink);
     font-feature-settings: 'kern', 'liga';
@@ -74,29 +77,30 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     color: var(--ink);
     text-wrap: balance;
   }
 
   h1 {
-    font-size: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
-    font-weight: 700;
+    font-size: clamp(2.625rem, 1.6rem + 4.2vw, 4.75rem);
+    font-weight: 800;
     line-height: 1.02;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025em;
   }
 
   h2 {
-    font-size: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.875rem, 1.35rem + 2.1vw, 2.875rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
   }
 
   h3 {
     font-size: 1.375rem;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.25;
+    letter-spacing: -0.01em;
   }
 
   p {
@@ -104,7 +108,7 @@
   }
 
   a {
-    color: var(--green);
+    color: var(--accent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
@@ -116,14 +120,14 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--yellow);
+    outline: 3px solid var(--lamp);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
   ::selection {
-    background: var(--yellow);
-    color: #13201a;
+    background: var(--lamp);
+    color: #0c2135;
   }
 
   .skip-link {
@@ -133,6 +137,7 @@
     background: var(--ink);
     color: var(--paper);
     padding: 0.75rem 1.25rem;
+    font-family: var(--font-sans);
     font-weight: 600;
     z-index: 100;
   }
@@ -151,15 +156,20 @@
     padding-inline: clamp(1.25rem, 4vw, 2.5rem);
   }
 
-  /* Comfortable reading measure for running text */
+  /* Comfortable reading measure for running serif text */
   .measure {
-    max-width: 36em;
+    max-width: 34em;
   }
 
   .lede {
-    font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
+    font-size: clamp(1.25rem, 1.15rem + 0.45vw, 1.4375rem);
     line-height: 1.55;
     color: var(--muted);
+  }
+
+  /* Interface text: nav, buttons, labels, small meta */
+  .ui {
+    font-family: var(--font-sans);
   }
 
   .section {
@@ -183,37 +193,62 @@
     margin-top: 1.25rem;
   }
 
-  /* Closing call-to-action band, same green as the header awning */
+  /* Closing call-to-action band: the logo's navy night sky */
   .closing {
-    background: var(--awning);
-    color: #f6f7f2;
+    background: var(--band);
+    color: #fefdf8;
     padding-block: clamp(4rem, 3rem + 4vw, 6rem);
   }
 
   .closing h2 {
-    color: #f6f7f2;
+    color: #fefdf8;
   }
 
   .closing .lede {
     margin-top: 1rem;
-    color: rgb(246 247 242 / 0.8);
+    color: #c9d3dc;
   }
 
-  /*
-   * The awning scallop: half-circles hanging from a green band.
-   * Used once under the header; the logo mark echoes it.
-   */
-  .awning {
-    height: 12px;
-    background: radial-gradient(
-        circle at 50% 0,
-        var(--awning) 11.5px,
-        transparent 12px
-      )
-      0 0 / 24px 12px repeat-x;
+  .closing a:not(.btn) {
+    color: #fefdf8;
   }
 
-  /* Primary action: sign yellow with ink lettering */
+  /* On the navy band, the button uses the logo's dark-variant olive */
+  .closing .btn {
+    background: #9caf64;
+    color: #0c2135;
+  }
+
+  .closing .btn:hover {
+    background: #b1c27c;
+  }
+
+  /* The logo's divider: rule, olive dot, rule */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--accent);
+  }
+
+  .ornament::before,
+  .ornament::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #99a8b4;
+    opacity: 0.8;
+  }
+
+  .ornament > span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+    transform: translateY(0.25rem);
+  }
+
+  /* Primary action: olive, like "Logic" in the logo */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -221,22 +256,20 @@
     gap: 0.5rem;
     min-height: 3rem;
     padding: 0.75rem 1.5rem;
-    background: var(--yellow);
-    color: #13201a;
-    font-weight: 650;
-    font-size: 1.0625rem;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
     line-height: 1.2;
+    letter-spacing: 0.01em;
     text-decoration: none;
     border-radius: 0.375rem;
-    box-shadow: inset 0 -3px 0 var(--yellow-deep);
-    transition:
-      background-color 0.15s ease,
-      box-shadow 0.15s ease;
+    transition: background-color 0.15s ease;
   }
 
   .btn:hover {
-    background: var(--yellow-deep);
-    box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.15);
+    background: var(--accent-hover);
   }
 
   .btn:disabled {
@@ -247,7 +280,7 @@
   .btn-lg {
     min-height: 3.5rem;
     padding: 1rem 1.75rem;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
   }
 
   /* Secondary action: outlined in ink */
@@ -259,17 +292,18 @@
     min-height: 3rem;
     padding: 0.75rem 1.5rem;
     color: var(--ink);
+    font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 1.0625rem;
+    font-size: 1rem;
     line-height: 1.2;
     text-decoration: none;
-    border: 2px solid var(--ink);
+    border: 1.5px solid var(--ink);
     border-radius: 0.375rem;
     transition: background-color 0.15s ease;
   }
 
   .btn-outline:hover {
-    background: var(--green-soft);
+    background: var(--accent-soft);
   }
 
   /* Plain definition-style list with hairlines between rows */
@@ -280,7 +314,8 @@
   /* Forms */
   .form-label {
     display: block;
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
     font-weight: 600;
     margin-bottom: 0.375rem;
   }
@@ -298,6 +333,7 @@
     color: var(--ink);
     border: 1.5px solid var(--rule);
     border-radius: 0.375rem;
+    font-family: var(--font-serif);
     font-size: 1.0625rem;
     line-height: 1.5;
     transition:
@@ -312,8 +348,8 @@
 
   .form-input:focus {
     outline: none;
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--yellow) 55%, transparent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lamp) 60%, transparent);
   }
 
   .form-textarea {
@@ -330,10 +366,11 @@
     padding-block: 1.25rem;
     cursor: pointer;
     list-style: none;
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-size: 1.3125rem;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.3;
+    letter-spacing: -0.01em;
   }
 
   .faq summary::-webkit-details-marker {
@@ -347,7 +384,7 @@
     font-weight: 400;
     font-size: 1.5rem;
     line-height: 1;
-    color: var(--green);
+    color: var(--accent);
     transition: transform 0.2s ease;
   }
 
@@ -358,7 +395,7 @@
   .faq details > div {
     padding-bottom: 1.5rem;
     color: var(--muted);
-    max-width: 38em;
+    max-width: 36em;
   }
 }
 

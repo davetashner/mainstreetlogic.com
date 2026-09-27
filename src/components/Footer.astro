@@ -1,5 +1,5 @@
 ---
-import LogoMark from './LogoMark.astro';
+import Logo from './Logo.astro';
 
 const year = new Date().getFullYear();
 
@@ -19,9 +19,8 @@ const links = [
 <footer class="site-footer">
   <div class="wrap grid">
     <div>
-      <a href="/" class="brand">
-        <LogoMark size={30} />
-        <span>Main Street Logic</span>
+      <a href="/" class="brand" aria-label="Main Street Logic, home">
+        <Logo height={56} tagline />
       </a>
       <p class="blurb">
         Software, automation, and websites for small businesses. Built by Dave
@@ -60,6 +59,7 @@ const links = [
     </div>
   </div>
   <div class="wrap">
+    <div class="ornament" aria-hidden="true"><span></span></div>
     <p class="fine">&copy; {year} Main Street Logic</p>
   </div>
 </footer>
@@ -67,9 +67,10 @@ const links = [
 <style>
   .site-footer {
     border-top: 1px solid var(--rule);
-    background: var(--green-soft);
+    background: var(--accent-soft);
     padding-top: 3.5rem;
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
   }
 
   .grid {
@@ -85,17 +86,13 @@ const links = [
 
   .brand {
     display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--ink);
     text-decoration: none;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.25rem;
   }
 
   .blurb {
-    margin-top: 0.875rem;
+    margin-top: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
     color: var(--muted);
     max-width: 24em;
   }
@@ -124,10 +121,12 @@ const links = [
     margin-top: 0.5rem;
   }
 
-  .fine {
+  .ornament {
     margin-top: 3rem;
+  }
+
+  .fine {
     padding-block: 1.25rem;
-    border-top: 1px solid var(--rule);
     color: var(--muted);
     font-size: 0.9375rem;
   }

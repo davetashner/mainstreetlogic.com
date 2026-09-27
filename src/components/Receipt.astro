@@ -49,8 +49,8 @@ const fmt = (h: number) => `${h.toFixed(1)} h`;
     margin: 0;
     width: min(100%, 26rem);
     rotate: -1.5deg;
-    filter: drop-shadow(0 1px 1px rgb(19 32 26 / 0.08))
-      drop-shadow(0 12px 24px rgb(19 32 26 / 0.12));
+    filter: drop-shadow(0 1px 1px rgb(12 33 53 / 0.08))
+      drop-shadow(0 12px 24px rgb(12 33 53 / 0.12));
   }
 
   :global(.dark) .receipt {
@@ -58,8 +58,8 @@ const fmt = (h: number) => `${h.toFixed(1)} h`;
   }
 
   .paper {
-    background: #fffef9;
-    color: #1f2a24;
+    background: #fffdf6;
+    color: #1c2b3b;
     font-family: var(--font-mono);
     font-size: 0.9375rem;
     line-height: 1.5;
@@ -72,7 +72,6 @@ const fmt = (h: number) => `${h.toFixed(1)} h`;
         #0000 90deg
       )
       50% / calc(2 * var(--tear)) 100%;
-    animation: print 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s both;
   }
 
   .head,
@@ -87,9 +86,9 @@ const fmt = (h: number) => `${h.toFixed(1)} h`;
   }
 
   .sub {
-    color: #5b665f;
+    color: #5a6878;
     padding-bottom: 1rem;
-    border-bottom: 1.5px dashed #b9c1ba;
+    border-bottom: 1.5px dashed #c3ccd5;
   }
 
   table {
@@ -118,25 +117,13 @@ const fmt = (h: number) => `${h.toFixed(1)} h`;
     font-weight: 700;
     font-size: 1.0625rem;
     padding-top: 0.75rem;
-    border-top: 1.5px dashed #b9c1ba;
+    border-top: 1.5px dashed #c3ccd5;
   }
 
   .foot {
     padding-top: 0.75rem;
-    border-top: 1.5px dashed #b9c1ba;
-    color: #1d4b3b;
+    border-top: 1.5px dashed #c3ccd5;
+    color: #4d612d;
     font-weight: 700;
-  }
-
-  /* One orchestrated moment: the receipt prints on page load */
-  @keyframes print {
-    from {
-      clip-path: inset(0 0 100% 0);
-      translate: 0 -1.5rem;
-    }
-    to {
-      clip-path: inset(0 0 0 0);
-      translate: 0 0;
-    }
   }
 </style>

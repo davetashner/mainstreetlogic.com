@@ -1,5 +1,5 @@
 ---
-import LogoMark from './LogoMark.astro';
+import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const navItems = [
@@ -16,9 +16,8 @@ const isCurrent = (href: string) => currentPath === href;
 <header class="site-header">
   <nav class="wrap" aria-label="Main">
     <div class="bar">
-      <a href="/" class="brand">
-        <LogoMark size={34} />
-        <span>Main Street Logic</span>
+      <a href="/" class="brand" aria-label="Main Street Logic, home">
+        <Logo height={48} />
       </a>
 
       <ul class="links">
@@ -80,12 +79,11 @@ const isCurrent = (href: string) => currentPath === href;
     </ul>
   </nav>
 </header>
-<div class="awning" aria-hidden="true"></div>
 
 <style>
   .site-header {
-    background: var(--awning);
-    color: #f6f7f2;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
   }
 
   .bar {
@@ -93,20 +91,12 @@ const isCurrent = (href: string) => currentPath === href;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    min-height: 4.5rem;
+    min-height: 5rem;
   }
 
   .brand {
     display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    color: #f6f7f2;
     text-decoration: none;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.375rem;
-    letter-spacing: -0.005em;
-    white-space: nowrap;
   }
 
   .links {
@@ -117,18 +107,19 @@ const isCurrent = (href: string) => currentPath === href;
 
   .links a,
   .mobile a {
-    color: #f6f7f2;
+    color: var(--ink);
     text-decoration: none;
+    font-family: var(--font-sans);
     font-weight: 500;
-    font-size: 1.0625rem;
+    font-size: 0.9375rem;
   }
 
   .links a:hover,
   .links a[aria-current='page'] {
+    color: var(--accent);
     text-decoration: underline;
-    text-decoration-color: #f0b429;
     text-decoration-thickness: 2px;
-    text-underline-offset: 0.4em;
+    text-underline-offset: 0.45em;
   }
 
   .actions {
@@ -141,7 +132,7 @@ const isCurrent = (href: string) => currentPath === href;
     display: none;
     min-height: 2.75rem;
     padding: 0.5rem 1.125rem;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     margin-left: 0.75rem;
   }
 
@@ -151,7 +142,7 @@ const isCurrent = (href: string) => currentPath === href;
     justify-content: center;
     width: 2.75rem;
     height: 2.75rem;
-    color: #f6f7f2;
+    color: var(--ink);
     border-radius: 0.375rem;
   }
 
@@ -162,10 +153,38 @@ const isCurrent = (href: string) => currentPath === href;
   .mobile a {
     display: block;
     padding-block: 0.75rem;
-    border-top: 1px solid rgb(246 247 242 / 0.15);
+    border-top: 1px solid var(--rule);
+    font-size: 1.0625rem;
   }
 
-  @media (min-width: 52rem) {
+  /* Phones: a smaller lockup keeps the bar on one line */
+  @media (max-width: 30rem) {
+    .bar {
+      gap: 0.5rem;
+    }
+
+    .brand :global(.logo) {
+      gap: 0.5rem;
+    }
+
+    .brand :global(.word) {
+      font-size: 1.25rem;
+    }
+
+    .brand :global(.art) {
+      width: 62px !important;
+      height: 38px !important;
+    }
+  }
+
+  /* Very narrow phones: wordmark only */
+  @media (max-width: 22.5rem) {
+    .brand :global(.art) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 56rem) {
     .links,
     .call {
       display: flex;

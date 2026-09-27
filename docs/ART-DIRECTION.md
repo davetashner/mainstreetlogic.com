@@ -1,33 +1,38 @@
 # Art Direction
 
-The visual identity is **storefront, not SaaS**. Main Street Logic helps shops, contractors, and offices on real main streets, so the look borrows from that world: shop awnings, sign-painter lettering, till receipts, and barcode labels. The site should feel like a trustworthy local business that happens to write software. It should not look like another tech startup.
-
-The site ships **without any generated art**. Everything on it is type, CSS, SVG, a real headshot, and a real product screenshot. New art is optional. Commission or generate it only if it adds something the page can't say in words, and keep it in this system.
+The identity comes from the Main Street Logic logo: a brick storefront on a lamp-lit small-town main street, beside a heavy serif wordmark with "Main Street" in navy and "Logic" in olive, and the tagline *Technology solutions & custom software*. The site should feel like that street: classic, trustworthy, local, and warm, with modern software behind it.
 
 ## Palette
 
-| Token        | Light     | Dark      | Use                                           |
-| ------------ | --------- | --------- | --------------------------------------------- |
-| `paper`      | `#F6F7F2` | `#0F1914` | Page background                               |
-| `ink`        | `#13201A` | `#E6ECE7` | Text                                          |
-| `green`      | `#1D4B3B` | `#86C9A8` | Brand, links                                  |
-| `awning`     | `#1D4B3B` | `#173D30` | Header band, closing band                     |
-| `yellow`     | `#F0B429` | `#F0B429` | Primary buttons only, focus rings             |
-| `green-soft` | `#E3ECE6` | `#15261E` | Tinted sections                               |
+All colors are sampled from the logo artwork.
 
-Yellow is reserved for "do this next." Don't use it for decoration.
+| Token         | Light     | Dark      | Use                                               |
+| ------------- | --------- | --------- | ------------------------------------------------- |
+| `paper`       | `#FEFDF9` | `#0F263A` | Page background (the logo's cream and night navy) |
+| `ink`         | `#0C2135` | `#FEFDF8` | Text (the "Main Street" navy)                     |
+| `accent`      | `#4D612D` | `#9CAF64` | "Logic" olive: links, primary buttons             |
+| `accent-soft` | `#EEF1E6` | `#132D44` | Tinted sections                                   |
+| `band`        | `#0F263A` | `#0A1C2C` | Navy closing band                                 |
+| `lamp`        | `#F2C46D` | `#F2C46D` | Lamplight: focus rings and selection only         |
+| `brick`       | `#A8452B` | `#E0805F` | Storefront brick: rare secondary accent           |
+
+Olive is the only button color. Lamp amber is for focus and highlight, never decoration.
 
 ## Type
 
-- **Zilla Slab** 600/700: headlines. It's a sturdy slab serif, like painted shop signs.
-- **Public Sans** (variable): everything else. It's plain and civic.
-- The system monospace font appears only on the receipt, where a till would use it.
+- **Source Serif 4** (variable, weights 200–900): headlines at 800 with tight tracking, which matches the wordmark, and body text at 400.
+- **Montserrat** (variable): interface text only, meaning navigation, buttons, form labels, and the logo tagline. It matches the tagline in the logo.
+- The system monospace font appears only on the receipt.
 
 ## Logo
 
-`src/components/LogoMark.astro` / `public/favicon.svg` is a storefront: a green shop front under a scalloped yellow awning, with a window and a door. The wordmark is live text in Zilla Slab 700, so no image is needed. `public/logo.png`, `public/apple-touch-icon.png`, `public/favicon.png`, and `public/og/default.png` are rendered from the same SVG.
+- `src/components/Logo.astro` is the storefront illustration plus a live-text wordmark. It switches to the lamp-lit night illustration in dark mode. Pass `tagline` to show the tagline.
+- The illustrations (`public/images/brand/storefront-light.webp` and `storefront-dark.webp`) are cropped from the logo sheet at 552px wide.
+- `public/logo.png` is the full horizontal lockup.
+- The favicons (`favicon.png`, `apple-touch-icon.png`, `icon-512.png`) are an "M" monogram on navy with the logo's olive dot.
+- The rule, olive dot, rule divider under the wordmark is available as `.ornament`.
 
-If you hire a designer to refine it, the brief is: _keep the storefront and the scallops; make it a little more hand-made, like a sign-painter's mark, and make sure it still reads at 16px._
+**To do:** get the logo as a transparent PNG or SVG at 2x or higher. The current illustration crops are 552px wide, which looks soft on high-density screens at hero size.
 
 ## Photography
 
@@ -41,15 +46,15 @@ Real photos beat generated ones for a one-person business. People are hiring **y
 
 These work with any current image model. The style lock-in paragraph matters most. Keep it word for word so every piece matches.
 
-**Style lock-in (append to every prompt):**
+**Style lock-in (append to every prompt):** it matches the logo illustration.
 
 ```
-Two-color screenprint illustration on warm off-white paper (#F6F7F2).
-Ink colors only: deep awning green (#1D4B3B) and sign yellow (#F0B429),
-with the paper showing through as a third color. Slight ink misregistration
-and fine paper grain, like a small-batch letterpress poster. Flat shapes,
-no gradients, no glow, no 3D, no isometric, no people's faces, no text or
-lettering anywhere in the image.
+Flat vector illustration in the style of a modern small-town storefront
+logo: clean shapes with subtle shading, warm lamplit windows (#F2C46D),
+red-brick buildings (#A8452B), navy details (#0C2135), olive-green
+awnings and trees (#4D612D, #9CAF64), cream background (#FEFDF9).
+Friendly and classic, not cartoonish. No text or lettering, no people's
+faces, no gradients beyond soft window glow.
 ```
 
 ### A. Optional hero or About-page illustration (pick one, 3:2)
@@ -85,4 +90,7 @@ Use these sparingly. The ruled service list reads fine without pictures, and six
 
 ## Retired
 
-The steel-blue and orange palette, the wave and network hero art, the geometric and topographic backgrounds, and the navy block logo were removed in the 2026 redesign. The four `section_header_*` spot illustrations are retired too. Don't bring them back.
+These are retired; don't bring them back:
+- The steel-blue and orange palette, wave and network hero art, geometric and topographic backgrounds, and the navy block logo (removed in #56)
+- The four `section_header_*` spot illustrations (removed in #56)
+- The interim awning-green and sign-yellow identity, the Zilla Slab and Public Sans type, and the SVG storefront mark (replaced by the current logo)
