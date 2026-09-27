@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import type { FaqItem } from '../data/faqs';
@@ -200,8 +201,8 @@ const faqSchema = {
         estimate, and there's no obligation to go ahead.
       </p>
       <div class="actions">
-        <a href="/contact" class="btn btn-lg">Book a free call</a>
-        <a href="/services" class="quiet">See services</a>
+        <a href={withBase('/contact')} class="btn btn-lg">Book a free call</a>
+        <a href={withBase('/services')} class="quiet">See services</a>
       </div>
     </div>
   </section>

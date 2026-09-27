@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/url';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQ from '../../components/FAQ.astro';
 
@@ -139,7 +140,7 @@ const faqs = [
           <p class="fine">
             50% off your first year of hosting. New hosting clients only.
           </p>
-          <a href="/contact" class="btn">Set up hosting</a>
+          <a href={withBase('/contact')} class="btn">Set up hosting</a>
         </div>
       </div>
     </div>
@@ -160,7 +161,9 @@ const faqs = [
           ))
         }
       </ul>
-      <p class="more"><a href="/pricing">Compare hosting plans</a></p>
+      <p class="more">
+        <a href={withBase('/pricing')}>Compare hosting plans</a>
+      </p>
     </div>
   </section>
 

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Receipt from '../components/Receipt.astro';
 import SupplyCheckout from '../components/SupplyCheckout.astro';
@@ -71,13 +72,15 @@ const websiteSchema = {
           and I stay on to keep them working.
         </p>
         <div class="hero-actions">
-          <a href="/contact" class="btn btn-lg">Book a free 30-minute call</a>
+          <a href={withBase('/contact')} class="btn btn-lg"
+            >Book a free 30-minute call</a
+          >
           <a href="#work" class="see-work">See something I built</a>
         </div>
       </div>
       <div class="hero-art">
         <img
-          src="/images/brand/storefront-light.webp"
+          src={withBase('/images/brand/storefront-light.webp')}
           alt="A brick storefront and two neighboring shops on a small-town main street, with a lit lamppost and trees."
           width="929"
           height="607"
@@ -85,7 +88,7 @@ const websiteSchema = {
           class="art-light"
         />
         <img
-          src="/images/brand/storefront-dark.webp"
+          src={withBase('/images/brand/storefront-dark.webp')}
           alt="The same main street storefronts at night, windows glowing under a lit lamppost."
           width="929"
           height="607"
@@ -117,7 +120,7 @@ const websiteSchema = {
           }
         </ul>
         <p class="more">
-          <a href="/services">What each service includes</a>
+          <a href={withBase('/services')}>What each service includes</a>
         </p>
       </div>
     </div>
@@ -154,7 +157,7 @@ const websiteSchema = {
         make it right.
       </p>
       <div class="hero-actions">
-        <a href="/contact" class="btn btn-lg">Book a free call</a>
+        <a href={withBase('/contact')} class="btn btn-lg">Book a free call</a>
         <a href="mailto:hello@mainstreetlogic.com" class="see-work"
           >Or email hello@mainstreetlogic.com</a
         >

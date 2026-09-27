@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/url';
 /**
  * Main Street Logic logo: storefront illustration + serif wordmark.
  * The illustration swaps for the lamp-lit night version in dark mode.
@@ -19,14 +20,14 @@ const width = Math.round((height * 929) / 607);
 <span class:list={['logo', className]}>
   <span class="art" style={`width:${width}px;height:${height}px`}>
     <img
-      src="/images/brand/storefront-light.webp"
+      src={withBase('/images/brand/storefront-light.webp')}
       alt=""
       width={width}
       height={height}
       class="light"
     />
     <img
-      src="/images/brand/storefront-dark.webp"
+      src={withBase('/images/brand/storefront-dark.webp')}
       alt=""
       width={width}
       height={height}
