@@ -64,6 +64,18 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /*
+   * Vertical-only page scrolling: nothing may widen the page. `clip`
+   * (unlike `hidden`) doesn't create a scroll container, so sticky
+   * positioning and anchor links keep working.
+   */
+  html,
+  body {
+    overflow-x: hidden; /* fallback for iOS < 16 */
+    overflow-x: clip;
+    overscroll-behavior-x: none;
+  }
+
   /* Serif body, like the logo; Montserrat is kept for interface text */
   body {
     font-family: var(--font-serif);

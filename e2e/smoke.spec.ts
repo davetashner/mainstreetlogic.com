@@ -58,4 +58,30 @@ test.describe('Smoke Tests', () => {
       page.locator('a[href="https://supplycheckout.com/demo"]').first()
     ).toBeVisible();
   });
+
+  test('no page is wider than a phone screen', async ({ browser }) => {
+    const context = await browser.newContext({
+      viewport: { width: 360, height: 800 },
+      isMobile: true,
+      hasTouch: true,
+    });
+    const page = await context.newPage();
+    for (const target of [
+      suffix || './',
+      ...pages.map((p) => `${p.path}${suffix}`),
+    ]) {
+      await page.goto(target);
+      const overflow = await page.evaluate(() => {
+        const vw = document.documentElement.clientWidth;
+        return [...document.querySelectorAll('body *')]
+          .filter((el) => el.getBoundingClientRect().right > vw + 1)
+          .map((el) => el.tagName.toLowerCase())
+          .slice(0, 3);
+      });
+      expect(overflow, `elements wider than the screen on ${target}`).toEqual(
+        []
+      );
+    }
+    await context.close();
+  });
 });
