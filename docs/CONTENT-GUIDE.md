@@ -25,8 +25,8 @@ public/
 │   ├── work/        # Screenshots of real projects
 │   └── headshot.webp
 ├── downloads/       # Downloadable files (PDFs, etc.)
-├── favicon.svg      # Logo mark favicon
-├── logo.png         # Logo mark, 512px (structured data)
+├── favicon.png      # Monogram favicon
+├── logo.png         # Full horizontal logo (structured data)
 └── og/default.png   # Social sharing card
 ```
 
@@ -124,7 +124,7 @@ Headings get their font and size from the base styles, so you don't need classes
 |------|-----------|---------|
 | Project screenshots | `public/images/work/` | `supply-checkout-sheet.webp` |
 | Illustrations (optional) | `public/images/art/` | see `ART-DIRECTION.md` |
-| Logo | `src/components/LogoMark.astro`, `public/favicon.svg` | |
+| Logo | `src/components/Logo.astro`, `public/images/brand/` | |
 | Profile photos | `public/images/` | `headshot.webp` |
 | Downloadable files | `public/downloads/` | `checklist.pdf` |
 
@@ -144,9 +144,9 @@ import ServiceCard from '../components/ServiceCard.astro';
 
 | Component | Purpose |
 |-----------|---------|
-| `Header.astro` | Green awning header and navigation |
+| `Header.astro` | Header with logo and navigation |
 | `Footer.astro` | Site footer |
-| `LogoMark.astro` | Storefront logo mark (SVG) |
+| `Logo.astro` | Storefront illustration and wordmark (`tagline` prop adds the tagline) |
 | `Receipt.astro` | Home page hero receipt |
 | `SupplyCheckout.astro` | Supply Checkout work sample with demo link |
 | `ProcessSteps.astro` | The four steps of working together |
@@ -163,7 +163,7 @@ Colors are CSS variables in `src/styles/global.css` that switch automatically in
 ```html
 <p class="text-ink">Main text</p>
 <p class="text-muted">Secondary text</p>
-<div class="bg-green-soft">Tinted section</div>
+<div class="bg-accent-soft">Tinted section</div>
 ```
 
 Reusable classes:
@@ -172,7 +172,7 @@ Reusable classes:
 <section class="section">          <!-- vertical section padding -->
   <div class="wrap">               <!-- page-width container with side gutters -->
     <p class="lede measure">…</p>  <!-- larger intro text at a readable width -->
-    <a class="btn" href="/contact">Book a free call</a>   <!-- primary (yellow) -->
+    <a class="btn" href="/contact">Book a free call</a>   <!-- primary (olive) -->
     <a class="btn-outline" href="/pricing">See pricing</a> <!-- secondary -->
 ```
 
@@ -262,4 +262,4 @@ Run `npm run build` locally to catch errors before pushing.
 
 ### Dark mode not working
 
-Use the token colors (`text-ink`, `bg-paper`, `var(--green)` and so on) instead of fixed hex values. The tokens switch automatically.
+Use the token colors (`text-ink`, `bg-paper`, `var(--accent)` and so on) instead of fixed hex values. The tokens switch automatically.
