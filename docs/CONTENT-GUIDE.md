@@ -122,7 +122,7 @@ Headings get their font and size from the base styles, so you don't need classes
 
 | Type | Directory | Example |
 |------|-----------|---------|
-| Project screenshots | `public/images/work/` | `supply-checkout-sheet.webp` |
+| Project screenshots | `public/images/work/` | `supply-checkout-project.webp` |
 | Illustrations (optional) | `public/images/art/` | see `ART-DIRECTION.md` |
 | Logo | `src/components/Logo.astro`, `public/images/brand/` | |
 | Profile photos | `public/images/` | `headshot.webp` |
