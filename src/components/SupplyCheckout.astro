@@ -8,18 +8,18 @@ const { headingLevel: Heading = 'h2' } = Astro.props;
 const features = [
   'Staff scan a barcode with their phone camera to check items out or back in.',
   'Stock counts update on their own as things leave and come back.',
-  'Each sheet adds up what was used and what to charge for it.',
-  'Any sheet exports to CSV for billing or bookkeeping.',
+  'Each project adds up what was used and what to charge for it.',
+  'Any project exports to CSV for billing or bookkeeping.',
 ];
 ---
 
 <div class="work">
   <div class="shot">
     <img
-      src={withBase('/images/work/supply-checkout-sheet.webp')}
-      alt="Supply Checkout on a phone: a checkout sheet for Acme Offices with a Scan to check out button and totals for items taken, returned, used, and the $42.00 charge."
+      src={withBase('/images/work/supply-checkout-project.webp')}
+      alt="Supply Checkout on a phone: the Acme Offices project with a Scan to check out button and totals for items taken, returned, used, and the $42.00 charge."
       width="390"
-      height="780"
+      height="844"
       loading="lazy"
       decoding="async"
     />
